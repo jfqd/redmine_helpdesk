@@ -1,0 +1,3 @@
+    <fieldset><legend>Support</legend>
+    <%=  check_box_tag 'support_sendmail', "doSend", true %> Send answer to supportmail (<%= @email %>)
+    </fieldset>

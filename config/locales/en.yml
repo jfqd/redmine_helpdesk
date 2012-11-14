@@ -1,0 +1,3 @@
+en:
+  label_support_checkbox: "Send mail to supportclient"
+  email_was_send_to_supportclient: "This answer was send to the supportclient."
