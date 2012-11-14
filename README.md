@@ -11,7 +11,7 @@ Lightweight helpdesk plugin for redmine. Adds the email sender-address of an ano
 
 ## Getting the plugin
 
-A copy of the plugin can be downloaded from {GitHub}[http://github.com/jfqd/redmine_helpdesk]
+A copy of the plugin can be downloaded from GitHub: http://github.com/jfqd/redmine_helpdesk
 
 ## Installation
 
@@ -31,7 +31,7 @@ rake db:migrate:plugin NAME=redmine_helpdesk VERSION=0 RAILS_ENV=production
 rm -rf vendor/plugin/redmine_helpdesk
 ```
 
-Further information about plugin installation can be found at: http://www.redmine.org/wiki/redmine/Plugins.
+Further information about plugin installation can be found at: http://www.redmine.org/wiki/redmine/Plugins
 
 ## Usage
 
