@@ -50,11 +50,23 @@ module RedmineHelpdesk
                         'Issue-Author' => issue.author.login
         redmine_headers 'Issue-Assignee' => issue.assigned_to.login if issue.assigned_to
         message_id issue
-        recipients [sender_email]
+        recipients sender_email
         subject "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] (#{issue.status.name}) #{issue.subject}"
-        body :issue => issue,
-             :issue_url => url_for(:controller => 'issues', :action => 'show', :id => issue)
-        render_multipart('issue_add', body)
+        # If a custom field with text for the first reply is
+        # available then use this one instead of the regular
+        r = CustomField.find_by_name('helpdesk-first-reply')
+        f = CustomField.find_by_name('helpdesk-email-footer')
+        p = issue.project
+        reply  = p.nil? || r.nil? ? '' : p.custom_value_for(r).try(:value)
+        footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
+        unless reply.blank?
+          content_type "text/plain"
+          body "#{reply}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s)
+        else
+          body :issue => issue,
+               :issue_url => url_for(:controller => 'issues', :action => 'show', :id => issue)
+          render_multipart('issue_add', body)
+        end
       end
       
     end # module InstanceMethods
