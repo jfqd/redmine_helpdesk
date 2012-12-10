@@ -6,6 +6,8 @@ Lightweight helpdesk plugin for redmine. Adds the email sender-address of an ano
 
 * No need to create any user accounts for anonymous user
 * Support for sending an email notification to the (anonymous user) supportclient on ticket creation
+* A standard first reply message can be send to the supportclient on ticket creation (optional, per project)
+* The email-footer for the email notification to the supportclient can be adjusted (optional, per project)
 * Internal communication is not send to the supportclient
 * The supportclient will get an email notification if the support checkbox on the journal is checked
 
@@ -38,6 +40,8 @@ Further information about plugin installation can be found at: http://www.redmin
 To use the helpdesk functionality you need to
 
 * add the custom field 'owner-email' to a project in the project configuration
+* add a standard first reply message into the custom_field 'helpdesk-first-reply' in the project configuration (optional)
+* add an email-footer into the custom_field 'helpdesk-email-footer' in the project configuration (optional)
 * make sure 'Issue added' and 'Issue updated' in the general redmine settings for email notifications are checked
 * add a cronjob for creating issues from support emails
 
