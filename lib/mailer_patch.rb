@@ -69,7 +69,7 @@ module RedmineHelpdesk
         if !text.blank?
           content_type "text/plain"
           body "#{text}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s)
-        elsif reply.blank?
+        elsif !reply.blank?
           content_type "text/plain"
           body "#{reply}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s)
         else
