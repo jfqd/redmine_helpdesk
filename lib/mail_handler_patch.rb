@@ -10,7 +10,9 @@ module RedmineHelpdesk
     
     module InstanceMethods
       private
-      # Overrides the dispatch_to_default method
+      # Overrides the dispatch_to_default method to
+      # set the owner-email of a new issue created by
+      # an email request
       def dispatch_to_default_with_helpdesk
         issue = receive_issue
         # add owner-email only if the email is comming from an AnonymousUser

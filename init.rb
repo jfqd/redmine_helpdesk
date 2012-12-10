@@ -2,6 +2,7 @@ require 'redmine'
 require 'helpdesk_hooks'
 require 'mailer_patch'
 require 'mail_handler_patch'
+require 'journal_observer_patch'
 
 Redmine::Plugin.register :redmine_helpdesk do
   name 'Redmine helpdesk plugin'
