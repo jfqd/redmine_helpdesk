@@ -34,6 +34,19 @@ module RedmineHelpdesk
         issue
       end
       
+      # Fix an issue with email.has_attachments?
+      def add_attachments(obj)
+         if !email.attachments.nil? && email.attachments.size > 0
+           email.attachments.each do |attachment|
+            Attachment.create(:container => obj,
+                              :file => attachment,
+                              :author => user,
+                              :content_type => attachment.content_type)
+          end
+        end
+      end
+      
+      
     end # module InstanceMethods
   end # module MailHandlerPatch
 end # module RedmineHelpdesk
