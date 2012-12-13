@@ -29,7 +29,7 @@ module RedmineHelpdesk
             f = CustomField.find_by_name('helpdesk-email-footer')
             p = issue.project
             owner_email = issue.custom_value_for( CustomField.find_by_name('owner-email') ).value
-            if !owner_email.blank? && !f.nil? && !p.nil? && !p.custom_value_for(f).try(:value).blank?
+            if !owner_email.blank? && !f.nil? && !p.nil? && p.custom_value_for(f).try(:value).blank?
               all_recipients << owner_email
             end
           end
