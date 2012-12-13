@@ -50,7 +50,7 @@ module RedmineHelpdesk
         render_multipart('issue_edit', body)
       end
       
-      # sending email notifications to the supportclient
+      # Sending email notifications to the supportclient
       def email_to_supportclient(issue, sender_email, text='')
         redmine_headers 'Project' => issue.project.identifier,
                         'Issue-Id' => issue.id,
@@ -59,11 +59,18 @@ module RedmineHelpdesk
         message_id issue
         recipients sender_email
         subject "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] (#{issue.status.name}) #{issue.subject}"
+        # Set 'from' email-address to 'helpdesk-sender-email' if available.
+        # Falls back to regular redmine behaviour if 'sender' is empty.
+        p = issue.project
+        s = CustomField.find_by_name('helpdesk-sender-email')
+        if !p.nil? && !s.nil?
+          sender = p.custom_value_for(s).try(:value)
+          from sender unless sender.blank?
+        end
         # If a custom field with text for the first reply is
         # available then use this one instead of the regular
         r = CustomField.find_by_name('helpdesk-first-reply')
         f = CustomField.find_by_name('helpdesk-email-footer')
-        p = issue.project
         reply  = p.nil? || r.nil? ? '' : p.custom_value_for(r).try(:value)
         footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
         if !text.blank?
