@@ -1,4 +1,4 @@
-class CreateCustomFieldsForSenderEmail < ActiveRecord::Migration
+class CreateCustomFieldForSenderEmail < ActiveRecord::Migration
   def self.up
     c = CustomField.new(
       :name => 'helpdesk-sender-email',
