@@ -58,7 +58,7 @@ Further information about receiving emails with redmine can be found at: http://
 
 ## Compatibility
 
-This plugin was written for Redmine v1.2.x. Any other version might work.
+This plugin was written for Redmine v1.2.x. and is working up to version 1.4.7.
 
 ## License
 
@@ -66,4 +66,4 @@ This plugin is licensed under the MIT license. See LICENSE-file for details.
 
 ## Copyright
 
-Copyright (c) 2012 Stefan Husch, qutic development. The development has been fully sponsored by netz98.de
+Copyright (c) 2012-2013 Stefan Husch, qutic development. The development has been fully sponsored by netz98.de
