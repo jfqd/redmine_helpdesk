@@ -8,6 +8,6 @@ Redmine::Plugin.register :redmine_helpdesk do
   name 'Redmine helpdesk plugin'
   author 'Stefan Husch'
   description 'Redmine helpdesk plugin for netz98.de'
-  version '0.0.3'
-  requires_redmine :version_or_higher => '1.2.0'
+  version '0.0.4'
+  requires_redmine :version_or_higher => '2.3.0'
 end

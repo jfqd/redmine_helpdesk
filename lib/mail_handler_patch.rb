@@ -29,7 +29,7 @@ module RedmineHelpdesk
           # on the first issue.save. So we need to send
           # the notification email to the supportclient
           # on our own.
-          Mailer.deliver_email_to_supportclient(issue, sender_email)
+          Mailer.email_to_supportclient(issue, sender_email).deliver
         end
         issue
       end
@@ -38,10 +38,11 @@ module RedmineHelpdesk
       def add_attachments(obj)
          if !email.attachments.nil? && email.attachments.size > 0
            email.attachments.each do |attachment|
-            Attachment.create(:container => obj,
-                              :file => attachment,
-                              :author => user,
-                              :content_type => attachment.content_type)
+             obj.attachments << Attachment.create(:container => obj,
+                               :file => attachment.decoded,
+                               :filename => attachment.filename,
+                               :author => user,
+                               :content_type => attachment.mime_type)
           end
         end
       end

@@ -58,7 +58,9 @@ Further information about receiving emails with redmine can be found at: http://
 
 ## Compatibility
 
-This plugin was written for Redmine v1.2.x. and is working up to version 1.4.7.
+The latest version of this plugin is only compatible with Redmine 2.3.x.
+
+A version for Redmine 1.2.x. up to 1.4.7. ist tagged with [v1.4](https://github.com/jfqd/redmine_helpdesk/tree/v1.4 "plugin version for Redmine 1.2.x up to 1.4.7") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v1.4.zip "download plugin for Redmine 1.2.x up to 1.4.7").
 
 ## License
 
