@@ -21,6 +21,19 @@ class HelpdeskMailer < ActionMailer::Base
     f = CustomField.find_by_name('helpdesk-email-footer')
     reply  = p.nil? || r.nil? ? '' : p.custom_value_for(r).try(:value)
     footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
+    # add any attachements
+    if journal.present? && text.present?
+      journal.details.each do |d|
+        if d.property == 'attachment'
+          a = Attachment.find(d.prop_key)
+          begin
+            attachments[a.filename] = File.read(a.diskfile)
+          rescue
+            # ignore rescue
+          end
+        end
+      end
+    end
     # create mail object to deliver
     mail = if text.present?
       # sending out the journal note to the support client
@@ -54,6 +67,7 @@ class HelpdeskMailer < ActionMailer::Base
         :template_name => 'issue_edit'
       )
     end
+    # return mail object to deliver it
     return mail
   end
 
