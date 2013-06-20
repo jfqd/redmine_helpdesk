@@ -11,6 +11,7 @@ Lightweight helpdesk plugin for redmine. Adds the email sender-address of an ano
 * The sender email-address can be adjusted (optional, per project)
 * Internal communication is not send to the supportclient
 * The supportclient will get an email notification if the support checkbox on the journal is checked
+* Journal attachments will be delivered too in the email notification
 
 ## Screenshot
 
