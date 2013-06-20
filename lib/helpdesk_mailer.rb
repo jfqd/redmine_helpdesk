@@ -12,9 +12,7 @@ class HelpdeskMailer < ActionMailer::Base
     # Falls back to regular redmine behaviour if 'sender' is empty.
     p = issue.project
     s = CustomField.find_by_name('helpdesk-sender-email')
-    sender = if !p.nil? && !s.nil?
-      p.custom_value_for(s).try(:value)
-    end
+    sender = p.custom_value_for(s).try(:value) if p.present? && s.present?
     # If a custom field with text for the first reply is
     # available then use this one instead of the regular
     r = CustomField.find_by_name('helpdesk-first-reply')
