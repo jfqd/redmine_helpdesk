@@ -31,7 +31,13 @@ module RedmineHelpdesk
           # on our own.
           HelpdeskMailer.email_to_supportclient(issue, sender_email).deliver
         end
-        issue
+        after_dispatch_to_default_hook issue
+        return issue
+      end
+      
+      # let other plugins the chance to override this
+      # method to hook into dispatch_to_default
+      def after_dispatch_to_default_hook(issue)
       end
       
       # Fix an issue with email.has_attachments?
@@ -46,7 +52,6 @@ module RedmineHelpdesk
           end
         end
       end
-      
       
     end # module InstanceMethods
   end # module MailHandlerPatch
