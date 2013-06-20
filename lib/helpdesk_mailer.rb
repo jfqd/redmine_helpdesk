@@ -1,4 +1,8 @@
-
+#
+# With Rails 3 mail is send with the mail method. Sadly redmine
+# uses this method-name too in their mailer. This is the reason
+# why we need our own Mailer class.
+#
 class HelpdeskMailer < ActionMailer::Base
   # Sending email notifications to the supportclient
   def email_to_supportclient(issue, recipient, journal=nil, text='')
