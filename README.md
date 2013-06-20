@@ -12,6 +12,10 @@ Lightweight helpdesk plugin for redmine. Adds the email sender-address of an ano
 * Internal communication is not send to the supportclient
 * The supportclient will get an email notification if the support checkbox on the journal is checked
 
+## Screenshot
+
+![Send mail to supportclient](doc/send-mail-to-supportclient.jpg "New checkbox 'Send mail to supportclient'")
+
 ## Getting the plugin
 
 A copy of the plugin can be downloaded from GitHub: http://github.com/jfqd/redmine_helpdesk
