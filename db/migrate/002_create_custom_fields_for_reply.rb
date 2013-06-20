@@ -6,14 +6,14 @@ class CreateCustomFieldsForReply < ActiveRecord::Migration
       :visible => false,          # do not show it on the project summary page
       :field_format => 'text')
     c.type = 'ProjectCustomField' # cannot be set by mass assignement!
-    c.save(false)
+    c.save
     d = CustomField.new(
       :name => 'helpdesk-email-footer',
       :editable => true,
       :visible => false,          # do not show it on the project summary page
       :field_format => 'text')
     d.type = 'ProjectCustomField' # cannot be set by mass assignement!
-    d.save(false)
+    d.save
   end
 
   def self.down
