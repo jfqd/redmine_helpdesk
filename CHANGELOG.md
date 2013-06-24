@@ -1,5 +1,10 @@
 0.0.3
 ---
+* Update code for redmine 2.3.x
+* Send any journal attachments with the email notification to the supportclient
+
+0.0.3
+---
 * The sender email-address is now adjustable on a per project basis
 
 0.0.2

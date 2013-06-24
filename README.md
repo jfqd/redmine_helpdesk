@@ -11,7 +11,7 @@ Lightweight helpdesk plugin for redmine. Adds the email sender-address of an ano
 * The sender email-address can be adjusted (optional, per project)
 * Internal communication is not send to the supportclient
 * The supportclient will get an email notification if the support checkbox on the journal is checked
-* Journal attachments will be delivered too in the email notification
+* Journal attachments will be delivered too
 
 ## Screenshot
 
@@ -53,7 +53,7 @@ To use the helpdesk functionality you need to
 
 ## Cronjob
 
-Creating tickets from support emails through an IMAP-account is done by a cronjob. The following syntax is for ubuntu linux:
+Creating tickets from support emails through an IMAP-account is done by a cronjob. The following syntax is for ubuntu or debian linux:
 
 ```
 */5 * * * * redmine /usr/bin/rake -f /path/to/redmine/Rakefile --silent redmine:email:receive_imap RAILS_ENV="production" host=mail.example.com port=993 username=username password=password ssl=true project=project_identifier folder=INBOX move_on_success=processed move_on_failure=failed no_permission_check=1 unknown_user=accept 1 > /dev/null
