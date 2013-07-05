@@ -1,4 +1,8 @@
-0.0.3
+0.0.5
+---
+* Fix skip validation issue 
+
+0.0.4
 ---
 * Update code for redmine 2.3.x
 * Send any journal attachments with the email notification to the supportclient
