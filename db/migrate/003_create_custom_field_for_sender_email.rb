@@ -6,7 +6,7 @@ class CreateCustomFieldForSenderEmail < ActiveRecord::Migration
       :visible => true,
       :field_format => 'string')
     c.type = 'ProjectCustomField' # cannot be set by mass assignement!
-    c.save(false)
+    c.save
   end
 
   def self.down

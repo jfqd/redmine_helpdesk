@@ -33,5 +33,5 @@ module RedmineHelpdesk
   end # module JournalObserverPatch
 end # module RedmineHelpdesk
 
-# Add module to Mailer class
+# Add module to JournalObserver class
 JournalObserver.send(:include, RedmineHelpdesk::JournalObserverPatch)
