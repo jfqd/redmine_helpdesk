@@ -27,7 +27,7 @@ To install the plugin clone the repro from github and migrate the database:
 
 ```
 cd <into your redmine root directory>
-git clone git://github.com/jfqd/redmine_helpdesk.git vendor/plugins/redmine_helpdesk
+git clone git://github.com/jfqd/redmine_helpdesk.git plugins/redmine_helpdesk
 rake db:migrate_plugins RAILS_ENV=production
 ```
 
@@ -36,7 +36,7 @@ To uninstall the plugin migrate the database back and remove the plugin:
 ```
 cd <into your redmine root directory>
 rake db:migrate:plugin NAME=redmine_helpdesk VERSION=0 RAILS_ENV=production
-rm -rf vendor/plugin/redmine_helpdesk
+rm -rf plugins/redmine_helpdesk
 ```
 
 Further information about plugin installation can be found at: http://www.redmine.org/wiki/redmine/Plugins
