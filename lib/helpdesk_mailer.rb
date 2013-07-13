@@ -46,6 +46,7 @@ class HelpdeskMailer < ActionMailer::Base
       # sending out the journal note to the support client
       mail(
         :from    => sender || Setting.mail_from,
+        :reply_to => sender || Setting.mail_from,
         :to      => recipient,
         :subject => subject,
         :body    => "#{text}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
@@ -55,6 +56,7 @@ class HelpdeskMailer < ActionMailer::Base
       # sending out the first reply message
       mail(
         :from    => sender || Setting.mail_from,
+        :reply_to => sender || Setting.mail_from,
         :to      => recipient,
         :subject => subject,
         :body    => "#{reply}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
@@ -67,6 +69,7 @@ class HelpdeskMailer < ActionMailer::Base
       @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue)
       mail(
         :from    => sender || Setting.mail_from,
+        :reply_to => sender || Setting.mail_from,
         :to      => recipient,
         :subject => subject,
         :date    => Time.zone.now,
