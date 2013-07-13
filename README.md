@@ -47,7 +47,8 @@ To use the helpdesk functionality you need to
 
 * add the custom field 'owner-email' to a project in the project configuration
 * add a standard first reply message into the custom_field 'helpdesk-first-reply' in the project configuration (optional)
-* add an email-footer into the custom_field 'helpdesk-email-footer' in the project configuration (optional)
+* add an email-footer into the custom_field 'helpdesk-email-footer' in the project configuration
+* add a sender email address into the custom_field 'helpdesk-sender-email' in the project configuration (optional)
 * make sure 'Issue added' and 'Issue updated' in the general redmine settings for email notifications are checked
 * add a cronjob for creating issues from support emails
 
