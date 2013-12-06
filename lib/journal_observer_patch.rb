@@ -25,7 +25,8 @@ module RedmineHelpdesk
         if journal.send_to_owner == true
           issue = journal.journalized.reload
           owner_email = issue.custom_value_for( CustomField.find_by_name('owner-email') ).value
-          HelpdeskMailer.email_to_supportclient(issue, owner_email, journal, journal.notes).deliver unless owner_email.blank?
+          cc_email = issue.custom_value_for( CustomField.find_by_name('cc-email') ).value
+          HelpdeskMailer.email_to_supportclient(issue, owner_email, cc_email, journal, journal.notes).deliver unless owner_email.blank?
         end
       end
       

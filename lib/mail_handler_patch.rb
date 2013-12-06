@@ -18,18 +18,28 @@ module RedmineHelpdesk
         # add owner-email only if the email is comming from an AnonymousUser
         if issue.author.class == AnonymousUser
           sender_email = @email.from.first
-          custom_field = CustomField.find_by_name('owner-email')
-          custom_value = CustomValue.find(
+          custom_sender_field = CustomField.find_by_name('owner-email')
+          custom_sender_value = CustomValue.find(
             :first,
-            :conditions => ["customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id]
+            :conditions => ["customized_id = ? AND custom_field_id = ?", issue.id, custom_sender_field.id]
           )
-          custom_value.value = sender_email
-          custom_value.save(:validate => false) # skip validation!
+          custom_sender_value.value = sender_email
+          custom_sender_value.save(:validate => false) # skip validation!
+          
+          cc_email = [@email.to_addrs, @email.cc_addrs, @email.bcc_addrs].flatten.compact.uniq.join(", ")
+          custom_cc_field = CustomField.find_by_name('cc-email')
+          custom_cc_value = CustomValue.find(
+            :first,
+            :conditions => ["customized_id = ? AND custom_field_id = ?", issue.id, custom_cc_field.id]
+          )
+          custom_cc_value.value = cc_email
+          custom_cc_value.save(:validate => false) # skip validation!
+          
           # regular email sending to known users is done
           # on the first issue.save. So we need to send
           # the notification email to the supportclient
           # on our own.
-          HelpdeskMailer.email_to_supportclient(issue, sender_email).deliver
+          HelpdeskMailer.email_to_supportclient(issue, sender_email, cc_email).deliver
         end
         after_dispatch_to_default_hook issue
         return issue
