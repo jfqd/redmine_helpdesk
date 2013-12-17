@@ -1,7 +1,7 @@
 require 'redmine'
 require 'helpdesk_hooks'
 require 'helpdesk_mailer'
-require 'journal_observer_patch'
+require 'journal_patch'
 require 'mail_handler_patch'
 require 'mailer_patch'
 
@@ -10,5 +10,5 @@ Redmine::Plugin.register :redmine_helpdesk do
   author 'Stefan Husch'
   description 'Redmine helpdesk plugin for netz98.de'
   version '0.0.5'
-  requires_redmine :version_or_higher => '2.3.0'
+  requires_redmine :version_or_higher => '2.4.0'
 end
