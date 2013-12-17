@@ -1,5 +1,9 @@
 0.0.5
 ---
+* Update code for redmine 2.4.x
+
+0.0.5
+---
 * Fix skip validation issue 
 
 0.0.4
