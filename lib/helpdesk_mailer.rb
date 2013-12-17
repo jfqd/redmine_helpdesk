@@ -10,7 +10,7 @@ class HelpdeskMailer < ActionMailer::Base
   end
   
   # Sending email notifications to the supportclient
-  def email_to_supportclient(issue, recipient, journal=nil, text='')
+  def email_to_supportclient(issue, recipient, cc_email='', journal=nil, text='')
     redmine_headers 'Project' => issue.project.identifier,
                     'Issue-Id' => issue.id,
                     'Issue-Author' => issue.author.login
@@ -47,6 +47,7 @@ class HelpdeskMailer < ActionMailer::Base
       mail(
         :from    => sender || Setting.mail_from,
         :to      => recipient,
+        :cc      => cc_email,
         :subject => subject,
         :body    => "#{text}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
         :date    => Time.zone.now
@@ -56,6 +57,7 @@ class HelpdeskMailer < ActionMailer::Base
       mail(
         :from    => sender || Setting.mail_from,
         :to      => recipient,
+        :cc      => cc_email,
         :subject => subject,
         :body    => "#{reply}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
         :date    => Time.zone.now
@@ -68,6 +70,7 @@ class HelpdeskMailer < ActionMailer::Base
       mail(
         :from    => sender || Setting.mail_from,
         :to      => recipient,
+        :cc      => cc_email,
         :subject => subject,
         :date    => Time.zone.now,
         :template_path => 'mailer',
