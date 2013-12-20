@@ -44,22 +44,25 @@ class HelpdeskMailer < ActionMailer::Base
     # create mail object to deliver
     mail = if text.present?
       # sending out the journal note to the support client
+      @footer = footer.gsub("##issue-id##", issue.id.to_s)
+      @text = text
+      @journal = journal
       mail(
         :from    => sender || Setting.mail_from,
         :to      => recipient,
         :cc      => cc_email,
         :subject => subject,
-        :body    => "#{text}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
         :date    => Time.zone.now
       )
     elsif reply.present?
       # sending out the first reply message
+      @footer = footer.gsub("##issue-id##", issue.id.to_s)
+      @text = reply.gsub("##issue-id##", issue.id.to_s)
       mail(
         :from    => sender || Setting.mail_from,
         :to      => recipient,
         :cc      => cc_email,
         :subject => subject,
-        :body    => "#{reply}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
         :date    => Time.zone.now
       )
     else
