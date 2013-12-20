@@ -4,13 +4,17 @@
 # why we need our own Mailer class.
 #
 class HelpdeskMailer < ActionMailer::Base
+  helper :application
+
+  include Redmine::I18n
+
   # set the hostname for url_for helper
   def self.default_url_options
     { :host => Setting.host_name, :protocol => Setting.protocol }
   end
   
   # Sending email notifications to the supportclient
-  def email_to_supportclient(issue, recipient, journal=nil, text='')
+  def email_to_supportclient(issue, recipient, cc_email='', journal=nil, text='')
     redmine_headers 'Project' => issue.project.identifier,
                     'Issue-Id' => issue.id,
                     'Issue-Author' => issue.author.login
@@ -44,20 +48,25 @@ class HelpdeskMailer < ActionMailer::Base
     # create mail object to deliver
     mail = if text.present?
       # sending out the journal note to the support client
+      @footer = footer.gsub("##issue-id##", issue.id.to_s)
+      @text = text
+      @journal = journal
       mail(
-        :from    => sender || Setting.mail_from,
+        :from    => sender.present? && sender || Setting.mail_from,
         :to      => recipient,
+        :cc      => cc_email,
         :subject => subject,
-        :body    => "#{text}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
         :date    => Time.zone.now
       )
     elsif reply.present?
       # sending out the first reply message
+      @footer = footer.gsub("##issue-id##", issue.id.to_s)
+      @text = reply.gsub("##issue-id##", issue.id.to_s)
       mail(
-        :from    => sender || Setting.mail_from,
+        :from    => sender.present? && sender || Setting.mail_from,
         :to      => recipient,
+        :cc      => cc_email,
         :subject => subject,
-        :body    => "#{reply}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
         :date    => Time.zone.now
       )
     else
@@ -66,8 +75,9 @@ class HelpdeskMailer < ActionMailer::Base
       @journal = journal
       @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue)
       mail(
-        :from    => sender || Setting.mail_from,
+        :from    => sender.present? && sender || Setting.mail_from,
         :to      => recipient,
+        :cc      => cc_email,
         :subject => subject,
         :date    => Time.zone.now,
         :template_path => 'mailer',
