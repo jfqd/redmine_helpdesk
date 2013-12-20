@@ -1,6 +1,7 @@
-0.0.5
+0.0.6
 ---
-* Update code for redmine 2.4.x
+* Update code for redmine 2.4.x by Craig Gowing
+* Minor compatibility issues fixed
 
 0.0.5
 ---

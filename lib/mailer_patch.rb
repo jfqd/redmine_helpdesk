@@ -13,8 +13,8 @@ module RedmineHelpdesk
       # be called on existing tickets. We will add the
       # owner-email to the recipients only if no email-
       # footer text is available.
-      def issue_edit_with_helpdesk(journal)
-        issue = journal.journalized.reload
+      def issue_edit_with_helpdesk(journal, to_users=[], cc_users=[])
+        issue = journal.journalized
         redmine_headers 'Project' => issue.project.identifier,
                         'Issue-Id' => issue.id,
                         'Issue-Author' => issue.author.login
@@ -22,7 +22,8 @@ module RedmineHelpdesk
         message_id journal
         references issue
         @author = journal.user
-        all_recipients = issue.recipients
+        
+        other_recipients = []
         # add owner-email to the recipients
         begin
           if journal.send_to_owner == true
@@ -30,25 +31,26 @@ module RedmineHelpdesk
             p = issue.project
             owner_email = issue.custom_value_for( CustomField.find_by_name('owner-email') ).value
             if !owner_email.blank? && !f.nil? && !p.nil? && p.custom_value_for(f).try(:value).blank?
-              all_recipients << owner_email
+              other_recipients << owner_email
             end
           end
         rescue Exception => e
           mylogger.error "Error while adding owner-email to recipients of email notification: \"#{e.message}\"."
         end
-        recipients = all_recipients
-        # Watchers in cc
-        watchers = journal.watcher_recipients || []
-        cc = watchers - recipients
         s = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] "
         s << "(#{issue.status.name}) " if journal.new_value_for('status_id')
         s << issue.subject
         @issue = issue
+        @users = to_users + cc_users + other_recipients
         @journal = journal
+        @journal_details = journal.visible_details(@users.first)
         @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue, :anchor => "change-#{journal.id}")
+        
+        mylogger.warn("users= #{@users.inspect}")
+        
         mail(
-          :to => recipients,
-          :cc => cc,
+          :to => to_users.map(&:mail),
+          :cc => cc_users.map(&:mail),
           :subject => s
         )
       end
