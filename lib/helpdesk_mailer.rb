@@ -4,6 +4,10 @@
 # why we need our own Mailer class.
 #
 class HelpdeskMailer < ActionMailer::Base
+  helper :application
+
+  include Redmine::I18n
+
   # set the hostname for url_for helper
   def self.default_url_options
     { :host => Setting.host_name, :protocol => Setting.protocol }
@@ -48,7 +52,7 @@ class HelpdeskMailer < ActionMailer::Base
       @text = text
       @journal = journal
       mail(
-        :from    => sender || Setting.mail_from,
+        :from    => sender.present? && sender || Setting.mail_from,
         :to      => recipient,
         :cc      => cc_email,
         :subject => subject,
@@ -59,7 +63,7 @@ class HelpdeskMailer < ActionMailer::Base
       @footer = footer.gsub("##issue-id##", issue.id.to_s)
       @text = reply.gsub("##issue-id##", issue.id.to_s)
       mail(
-        :from    => sender || Setting.mail_from,
+        :from    => sender.present? && sender || Setting.mail_from,
         :to      => recipient,
         :cc      => cc_email,
         :subject => subject,
@@ -71,7 +75,7 @@ class HelpdeskMailer < ActionMailer::Base
       @journal = journal
       @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue)
       mail(
-        :from    => sender || Setting.mail_from,
+        :from    => sender.present? && sender || Setting.mail_from,
         :to      => recipient,
         :cc      => cc_email,
         :subject => subject,
