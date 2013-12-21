@@ -49,20 +49,22 @@ class HelpdeskMailer < ActionMailer::Base
     mail = if text.present?
       # sending out the journal note to the support client
       mail(
-        :from    => sender.present? && sender || Setting.mail_from,
-        :to      => recipient,
-        :subject => subject,
-        :body    => "#{text}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
-        :date    => Time.zone.now
+        :from     => sender.present? && sender || Setting.mail_from,
+        :reply_to => sender.present? && sender || Setting.mail_from,
+        :to       => recipient,
+        :subject  => subject,
+        :body     => "#{text}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
+        :date     => Time.zone.now
       )
     elsif reply.present?
       # sending out the first reply message
       mail(
-        :from    => sender.present? && sender || Setting.mail_from,
-        :to      => recipient,
-        :subject => subject,
-        :body    => "#{reply}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
-        :date    => Time.zone.now
+        :from     => sender.present? && sender || Setting.mail_from,
+        :reply_to => sender.present? && sender || Setting.mail_from,
+        :to       => recipient,
+        :subject  => subject,
+        :body     => "#{reply}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
+        :date     => Time.zone.now
       )
     else
       # fallback to a regular notifications email with redmine view
@@ -70,10 +72,11 @@ class HelpdeskMailer < ActionMailer::Base
       @journal = journal
       @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue)
       mail(
-        :from    => sender.present? && sender || Setting.mail_from,
-        :to      => recipient,
-        :subject => subject,
-        :date    => Time.zone.now,
+        :from     => sender.present? && sender || Setting.mail_from,
+        :reply_to => sender.present? && sender || Setting.mail_from,
+        :to       => recipient,
+        :subject  => subject,
+        :date     => Time.zone.now,
         :template_path => 'mailer',
         :template_name => 'issue_edit'
       )
