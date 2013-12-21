@@ -1,3 +1,7 @@
+0.0.7
+---
+* Added reply-to header by barbazul
+
 0.0.6
 ---
 * Update code for redmine 2.4.x by Craig Gowing
