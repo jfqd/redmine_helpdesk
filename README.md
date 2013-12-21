@@ -71,7 +71,7 @@ The latest version of this plugin is only compatible with Redmine 2.4.x.
 
 ## Contribution
 
-* [Craig Gowing](https://github.com/craiggowing)
+* [Craig Gowing](https://github.com/craiggowing) - Redmine 2.4 compatibility
 
 ## License
 
