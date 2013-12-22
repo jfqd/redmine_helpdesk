@@ -1,3 +1,7 @@
+0.0.8
+---
+* Add setting for handling send to owner default value by davidef
+
 0.0.7
 ---
 * Added reply-to header by barbazul
