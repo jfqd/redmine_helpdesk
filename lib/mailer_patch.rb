@@ -45,9 +45,6 @@ module RedmineHelpdesk
         @journal = journal
         @journal_details = journal.visible_details(@users.first)
         @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue, :anchor => "change-#{journal.id}")
-        
-        mylogger.warn("users= #{@users.inspect}")
-        
         mail(
           :to => to_users.map(&:mail),
           :cc => cc_users.map(&:mail),
