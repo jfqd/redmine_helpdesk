@@ -71,6 +71,7 @@ The latest version of this plugin is only compatible with Redmine 2.4.x.
 
 ## Contribution
 
+* [benstwa](https://github.com/benstwa) - 'send' should be 'sent'
 * [davidef](https://github.com/davidef) - Add setting for handling send to owner default value
 * [Craig Gowing](https://github.com/craiggowing) - Redmine 2.4 compatibility
 * [Barbazul](https://github.com/barbazul) - Added reply-to header
