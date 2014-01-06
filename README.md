@@ -1,15 +1,15 @@
 # Redmine Helpdesk
 
-Lightweight helpdesk plugin for redmine. Adds the email sender-address of an anonymous supportclient to the custom field 'owner-email' of a ticket which was created by a support email. Answers can be send to the supportclient by checking the support checkbox on a journal.
+Lightweight helpdesk plugin for redmine. Adds the email sender-address of an anonymous supportclient to the custom field 'owner-email' of a ticket which was created by a support email. Answers can be sent to the supportclient by checking the support checkbox on a journal.
 
 ## Features
 
 * No need to create any user accounts for anonymous user
 * Support for sending an email notification to the (anonymous user) supportclient on ticket creation
-* A standard first reply message can be send to the supportclient on ticket creation (optional, per project)
+* A standard first reply message can be sent to the supportclient on ticket creation (optional, per project)
 * The email-footer for the email notification to the supportclient can be adjusted (optional, per project)
 * The sender email-address can be adjusted (optional, per project)
-* Internal communication is not send to the supportclient
+* Internal communication is not sent to the supportclient
 * The supportclient will get an email notification if the support checkbox on the journal is checked
 * Journal attachments will be delivered too
 
@@ -23,7 +23,7 @@ A copy of the plugin can be downloaded from GitHub: http://github.com/jfqd/redmi
 
 ## Installation
 
-To install the plugin clone the repro from github and migrate the database:
+To install the plugin clone the repo from github and migrate the database:
 
 ```
 cd /path/to/redmine/
@@ -45,10 +45,10 @@ Further information about plugin installation can be found at: http://www.redmin
 
 To use the helpdesk functionality you need to
 
-* add the custom field 'owner-email' to a project in the project configuration
-* add a standard first reply message into the custom_field 'helpdesk-first-reply' in the project configuration (optional)
-* add an email-footer into the custom_field 'helpdesk-email-footer' in the project configuration
-* add a sender email address into the custom_field 'helpdesk-sender-email' in the project configuration (optional)
+* add the Issue-type custom field 'owner-email' in the project configuration
+* add a standard first reply message into the Project-type custom field 'helpdesk-first-reply' in the project configuration (optional)
+* add an email-footer into the Project-type custom field 'helpdesk-email-footer' in the project configuration
+* add a sender email address into the Project-type custom field 'helpdesk-sender-email' in the project configuration (optional)
 * make sure 'Issue added' and 'Issue updated' in the general redmine settings for email notifications are checked
 * add a cronjob for creating issues from support emails
 
