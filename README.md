@@ -23,7 +23,7 @@ A copy of the plugin can be downloaded from GitHub: http://github.com/jfqd/redmi
 
 ## Installation
 
-To install the plugin clone the repro from github and migrate the database:
+To install the plugin clone the repo from github and migrate the database:
 
 ```
 cd /path/to/redmine/
@@ -52,6 +52,8 @@ To use the helpdesk functionality you need to
 * make sure 'Issue added' and 'Issue updated' in the general redmine settings for email notifications are checked
 * add a cronjob for creating issues from support emails
 
+![project configuration sample](doc/send-mail-to-supportclient.jpg "Per project configuration sample")
+
 ## Cronjob
 
 Creating tickets from support emails through an IMAP-account is done by a cronjob. The following syntax is for ubuntu or debian linux:
@@ -72,7 +74,7 @@ The latest version of this plugin is only compatible with Redmine 2.4.x.
 ## Contribution
 
 * [benstwa](https://github.com/benstwa) - 'send' should be 'sent'
-* [davidef](https://github.com/davidef) - Add setting for handling send to owner default value
+* [davidef](https://github.com/davidef) - Add setting for handling sent to owner default value
 * [Craig Gowing](https://github.com/craiggowing) - Redmine 2.4 compatibility
 * [Barbazul](https://github.com/barbazul) - Added reply-to header
 
