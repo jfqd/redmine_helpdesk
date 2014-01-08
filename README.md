@@ -52,7 +52,7 @@ To use the helpdesk functionality you need to
 * make sure 'Issue added' and 'Issue updated' in the general redmine settings for email notifications are checked
 * add a cronjob for creating issues from support emails
 
-![project configuration sample](doc/send-mail-to-supportclient.jpg "Per project configuration sample")
+![project configuration sample](doc/project-settings.jpg "Per project configuration sample")
 
 ## Cronjob
 
