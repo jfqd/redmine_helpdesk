@@ -1,0 +1,4 @@
+tr:
+  label_support_checkbox: "Bu yanıtı destek isteyen müşteriye e-posta ile gönder"
+  email_was_send_to_supportclient: "Bu yanıt destek talebi isteyen müşteriye de gönderildi."
+
