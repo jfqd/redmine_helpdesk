@@ -73,6 +73,8 @@ The latest version of this plugin is only compatible with Redmine 2.4.x.
 
 ## Contribution
 
+* [box789](https://github.com/box789) - Russian translation
+* [seqizz](https://github.com/seqizz) - Turkish translation
 * [benstwa](https://github.com/benstwa) - 'send' should be 'sent'
 * [davidef](https://github.com/davidef) - Add setting for handling sent to owner default value
 * [Craig Gowing](https://github.com/craiggowing) - Redmine 2.4 compatibility
