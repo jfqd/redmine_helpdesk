@@ -1,3 +1,7 @@
+0.0.9
+---
+* Fixed non-working helpdesk-send-to-owner-default checkbox
+
 0.0.8
 ---
 * Add setting for handling send to owner default value by davidef
