@@ -1,5 +1,1 @@
-<% if send_to_owner_default == "1" %>
-<%= check_box_tag 'send_to_owner', "true", true %> <%=h t('label_support_checkbox') %> (<%=h email %>)
-<% else %>
-<%= check_box_tag 'send_to_owner', "true" %> <%=h t('label_support_checkbox') %> (<%=h email %>)
-<% end %>
+<%= check_box_tag('send_to_owner', "true", (send_to_owner_default == "1")) %> <%=h t('label_support_checkbox') %> (<%=h email %>)
