@@ -1,3 +1,7 @@
+0.0.10
+---
+* Fixed bug trying to send an email with empty notes
+
 0.0.9
 ---
 * Fixed non-working helpdesk-send-to-owner-default checkbox

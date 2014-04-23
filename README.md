@@ -75,6 +75,7 @@ The latest version of this plugin is only compatible with Redmine 2.4.x.
 
 ## Contribution
 
+* [nifuki](https://github.com/nifuki) - Fixed bug trying to send an email with empty notes
 * [nifuki](https://github.com/nifuki) - Fixed non-working helpdesk-send-to-owner-default checkbox
 * [box789](https://github.com/box789) - Russian translation
 * [seqizz](https://github.com/seqizz) - Turkish translation
