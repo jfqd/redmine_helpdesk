@@ -22,7 +22,7 @@ module RedmineHelpdesk
         end
         # sending email notifications to the supportclient
         # only if the send_to_owner checkbox was checked
-        if send_to_owner == true
+        if send_to_owner == true && notes.length != 0
           issue = journalized.reload
           owner_email = issue.custom_value_for( CustomField.find_by_name('owner-email') ).value
           HelpdeskMailer.email_to_supportclient(issue, owner_email, self, notes).deliver unless owner_email.blank?
