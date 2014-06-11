@@ -1,3 +1,7 @@
+0.0.11
+---
+* Make sure that the notes length is always calculated
+
 0.0.10
 ---
 * Fixed bug trying to send an email with empty notes
