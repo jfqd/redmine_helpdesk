@@ -27,7 +27,7 @@ class HelpdeskHooks < Redmine::Hook::Listener
   
   # add a history note on the journal
   def view_issues_history_journal_bottom(context={})
-    return if context[:journal].notes.length == 0
+    return if (context[:journal].notes || []).length == 0
     return unless context[:journal].send_to_owner == true
     i = Issue.find(context[:journal].journalized_id)
     c = CustomField.find_by_name('owner-email')
