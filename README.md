@@ -75,6 +75,7 @@ The latest version of this plugin is only compatible with Redmine 2.4.x.
 
 ## Contribution
 
+* [ssidelnikov](https://github.com/ssidelnikov) - Make sure that the notes length is always calculated
 * [nifuki](https://github.com/nifuki) - Fixed bug trying to send an email with empty notes
 * [nifuki](https://github.com/nifuki) - Fixed non-working helpdesk-send-to-owner-default checkbox
 * [box789](https://github.com/box789) - Russian translation
