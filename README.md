@@ -28,14 +28,14 @@ To install the plugin clone the repo from github and migrate the database:
 ```
 cd /path/to/redmine/
 git clone git://github.com/jfqd/redmine_helpdesk.git plugins/redmine_helpdesk
-rake db:migrate_plugins RAILS_ENV=production
+rake redmine:plugins:migrate RAILS_ENV=production
 ```
 
 To uninstall the plugin migrate the database back and remove the plugin:
 
 ```
 cd /path/to/redmine/
-rake db:migrate:plugin NAME=redmine_helpdesk VERSION=0 RAILS_ENV=production
+rake redmine:plugins:migrate NAME=redmine_helpdesk VERSION=0 RAILS_ENV=production
 rm -rf plugins/redmine_helpdesk
 ```
 
