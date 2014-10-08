@@ -11,4 +11,7 @@ Redmine::Plugin.register :redmine_helpdesk do
   description 'Redmine helpdesk plugin for netz98.de'
   version '0.0.11'
   requires_redmine :version_or_higher => '2.4.0'
+  project_module :issue_tracking do
+    permission :treat_user_as_supportclient, {}
+  end
 end
