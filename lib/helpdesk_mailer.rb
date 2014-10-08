@@ -20,6 +20,7 @@ class HelpdeskMailer < ActionMailer::Base
                     'Issue-Author' => issue.author.login
     redmine_headers 'Issue-Assignee' => issue.assigned_to.login if issue.assigned_to
     message_id issue
+    references issue
     subject = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] (#{issue.status.name}) #{issue.subject}"
     # Set 'from' email-address to 'helpdesk-sender-email' if available.
     # Falls back to regular redmine behaviour if 'sender' is empty.
@@ -44,6 +45,12 @@ class HelpdeskMailer < ActionMailer::Base
           end
         end
       end
+    end
+    if @message_id_object
+      headers[:message_id] = "<#{self.class.message_id_for(@message_id_object)}>"
+    end
+    if @references_objects
+      headers[:references] = @references_objects.collect {|o| "<#{self.class.references_for(o)}>"}.join(' ')
     end
     # create mail object to deliver
     mail = if text.present?
@@ -87,6 +94,21 @@ class HelpdeskMailer < ActionMailer::Base
 
   private
 
+  # Returns a Message-Id for the given object
+  def self.message_id_for(object)
+    Mailer.class_eval do
+      token_for(object, true)
+    end
+  end
+
+  # Returns a uniq token for a given object referenced by all notifications
+  # related to this object
+  def self.references_for(object)
+    Mailer.class_eval do
+      token_for(object, false)
+    end
+  end
+
   # Appends a Redmine header field (name is prepended with 'X-Redmine-')
   def redmine_headers(h)
     h.each { |k,v| headers["X-Redmine-#{k}"] = v.to_s }
@@ -95,5 +117,10 @@ class HelpdeskMailer < ActionMailer::Base
   def message_id(object)
     @message_id_object = object
   end
-  
+
+  def references(object)
+    @references_objects ||= []
+    @references_objects << object
+  end
+
 end

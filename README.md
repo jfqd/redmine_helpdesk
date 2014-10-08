@@ -84,6 +84,7 @@ The latest version of this plugin is only compatible with Redmine 2.4.x.
 * [davidef](https://github.com/davidef) - Add setting for handling sent to owner default value
 * [Craig Gowing](https://github.com/craiggowing) - Redmine 2.4 compatibility
 * [Barbazul](https://github.com/barbazul) - Added reply-to header
+* [Orchitech Solutions](https://github.com/orchitech) - Added issue matching based on standard MIME header references
 
 ## License
 
