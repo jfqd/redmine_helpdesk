@@ -1,3 +1,9 @@
+0.0.12
+---
+* Add support for non-anonymous supportclients
+* Add issue matching based on standard MIME header references
+* Test compatibility with Redmine 2.5.3
+
 0.0.11
 ---
 * Make sure that the notes length is always calculated
