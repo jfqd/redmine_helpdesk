@@ -15,8 +15,10 @@ module RedmineHelpdesk
       # an email request
       def dispatch_to_default_with_helpdesk
         issue = receive_issue
-        # add owner-email only if the email is comming from an AnonymousUser
-        if issue.author.class == AnonymousUser
+        roles = issue.author.roles_for_project(issue.project)
+        # add owner-email only if the author has assigned some role with
+        # permission treat_user_as_supportclient enabled
+        if roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
           sender_email = @email.from.first
           custom_field = CustomField.find_by_name('owner-email')
           custom_value = CustomValue.find(

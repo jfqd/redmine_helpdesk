@@ -50,6 +50,8 @@ To use the helpdesk functionality you need to
 * add an email-footer into the custom_field 'helpdesk-email-footer' in the project configuration
 * add a sender email address into the custom_field 'helpdesk-sender-email' in the project configuration (optional)
 * make sure 'Issue added' and 'Issue updated' in the general redmine settings for email notifications are checked
+* add the permission 'Treat as supportclient' to all roles you want to be treated as supportclient (the permission is automatically added to the 'Anonymous' role)
+* disable standard notifications for non-anonymous supportclients to prevent their spamming (optional)
 * add a cronjob for creating issues from support emails
 
 ![project configuration sample](doc/project-settings.jpg "Per project configuration sample")
@@ -85,6 +87,7 @@ The latest version of this plugin is only compatible with Redmine 2.4.x.
 * [Craig Gowing](https://github.com/craiggowing) - Redmine 2.4 compatibility
 * [Barbazul](https://github.com/barbazul) - Added reply-to header
 * [Orchitech Solutions](https://github.com/orchitech) - Added issue matching based on standard MIME header references
+* [Orchitech Solutions](https://github.com/orchitech) - Added support for non-anonymous supportclients (sponsored by ISIC Global Office)
 
 ## License
 
