@@ -88,6 +88,7 @@ The latest version of this plugin is only compatible with Redmine 2.4.x. and 2.5
 * [Barbazul](https://github.com/barbazul) - Added reply-to header
 * [Orchitech Solutions](https://github.com/orchitech) - Added issue matching based on standard MIME header references
 * [Orchitech Solutions](https://github.com/orchitech) - Added support for non-anonymous supportclients (sponsored by ISIC Global Office)
+* [Orchitech Solutions](https://github.com/orchitech) - Added support for tracking email details (sponsored by ISIC Global Office)
 
 ## License
 
