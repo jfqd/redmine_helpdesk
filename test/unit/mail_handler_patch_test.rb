@@ -30,7 +30,7 @@ class MailHandlerPatchTest < ActiveSupport::TestCase
   end
 
   def test_helpdesk_dispatch_not_supportclient
-    HelpdeskMailer.any_instance.expects(:email_to_supportclient).never
+    Mailer.any_instance.expects(:email_to_supportclient).never
     issue = submit_email('ticket_by_user_1.eml',
                          :issue => {:project => 'helpdesk_project_1'},
                          :unknown_user => 'accept',
@@ -48,7 +48,7 @@ class MailHandlerPatchTest < ActiveSupport::TestCase
 
   def test_helpdesk_dispatch_anonymous_as_supportclient
     assert_no_difference 'User.count' do
-      HelpdeskMailer.any_instance.expects(:email_to_supportclient).with(kind_of(Issue), "john.doe@somenet.foo").once
+      Mailer.any_instance.expects(:email_to_supportclient).with(kind_of(Issue), "john.doe@somenet.foo").once
       issue = submit_email('ticket_by_unknown_user.eml',
                        :issue => {:project => 'helpdesk_project_1'},
                        :unknown_user => 'accept',
@@ -66,7 +66,7 @@ class MailHandlerPatchTest < ActiveSupport::TestCase
   end
 
   def test_helpdesk_dispatch_supportclient
-    HelpdeskMailer.any_instance.expects(:email_to_supportclient).with(kind_of(Issue), User.find(2).mail)
+    Mailer.any_instance.expects(:email_to_supportclient).with(kind_of(Issue), User.find(2).mail)
     issue = submit_email('ticket_by_user_2.eml',
                          :issue => {:project => 'helpdesk_project_2'},
                          :unknown_user => 'accept',

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class HelpdeskMailerTest < ActionMailer::TestCase
+class MailerPatchTest < ActionMailer::TestCase
   include Redmine::I18n
 
   self.use_transactional_fixtures = true
@@ -30,15 +30,9 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     Setting.clear_cache
   end
 
-  def test_default_url_options
-    default_url_object = HelpdeskMailer.default_url_options
-    assert_equal "mydomain.foo", default_url_object[:host]
-    assert_equal "http", default_url_object[:protocol]
-  end
-
   def test_email_headers
     issue = Issue.find(1)
-    email = HelpdeskMailer.
+    email = Mailer.
         email_to_supportclient(issue, "owner@example.com").
         deliver
     assert !ActionMailer::Base.deliveries.empty?
@@ -48,9 +42,9 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     assert_equal issue.author.login, email.header['X-Redmine-Issue-Author'].to_s
     assert_equal issue.assigned_to.login, email.header['X-Redmine-Issue-Assignee'].to_s
 
-    #assert_equal 'OOF', mail.header['X-Auto-Response-Suppress'].to_s
-    #assert_equal 'auto-generated', mail.header['Auto-Submitted'].to_s
-    #assert_equal '<redmine.example.net>', mail.header['List-Id'].to_s
+    #assert_equal 'OOF', email.header['X-Auto-Response-Suppress'].to_s
+    #assert_equal 'auto-generated', email.header['Auto-Submitted'].to_s
+    #assert_equal '<redmine.example.net>', email.header['List-Id'].to_s
   end
 
   def test_email_default_sender
@@ -62,7 +56,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     )
     custom_value.destroy
 
-    email = HelpdeskMailer.
+    email = Mailer.
         email_to_supportclient(issue, "owner@example.com").
         deliver
     assert !ActionMailer::Base.deliveries.empty?
@@ -71,7 +65,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
 
   def test_email_helpdesk_sender
     issue = Issue.find(1)
-    email = HelpdeskMailer.
+    email = Mailer.
         email_to_supportclient(issue, "owner@example.com").
         deliver
     assert !ActionMailer::Base.deliveries.empty?
@@ -88,7 +82,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     custom_value.value = "Redmine helpdesk <reply@example.com>"
     custom_value.save
 
-    email = HelpdeskMailer.
+    email = Mailer.
         email_to_supportclient(issue, "owner@example.com").
         deliver
     assert !ActionMailer::Base.deliveries.empty?
@@ -97,7 +91,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
 
   def test_first_reply
     issue = Issue.find(1)
-    email = HelpdeskMailer.
+    email = Mailer.
         email_to_supportclient(issue, "owner@example.com").
         deliver
     assert !ActionMailer::Base.deliveries.empty?
@@ -110,7 +104,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
 
   def test_edit
     issue = Issue.find(1)
-    email = HelpdeskMailer.
+    email = Mailer.
         email_to_supportclient(
             issue,
             "owner@example.com",
@@ -134,7 +128,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     )
     custom_value.destroy
 
-    email = HelpdeskMailer.
+    email = Mailer.
         email_to_supportclient(
             issue,
             "owner@example.com",
@@ -148,7 +142,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
 
   def test_subject
     issue = Issue.find(1)
-    email = HelpdeskMailer.
+    email = Mailer.
         email_to_supportclient(issue, "owner_email").
         deliver
     assert !ActionMailer::Base.deliveries.empty?
@@ -160,7 +154,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
   def test_attachments_added
     Attachment.storage_path = File.dirname(__FILE__) + '/../fixtures/files'
     issue = Issue.find(1)
-    email = HelpdeskMailer.
+    email = Mailer.
         email_to_supportclient(
             issue,
             "owner@example.com",
