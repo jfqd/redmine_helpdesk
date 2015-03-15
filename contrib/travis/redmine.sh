@@ -39,12 +39,11 @@ function install_redmine() {
   log_title "INSTALL DATABASE FILE"
   if [ "$DATABASE_ADAPTER" == "mysql" ] ; then
     echo "Type : mysql"
-    cp "redmine/plugins/${PLUGIN_NAME}/contrib/travis/database_mysql.yml" "redmine/config/database.yml"
+    cp "redmine/plugins/${PLUGIN_NAME}/contrib/travis/db_confs/database_mysql.yml" "redmine/config/database.yml"
   else
     echo "Type : postgres"
-    cp "redmine/plugins/${PLUGIN_NAME}/contrib/travis/database_postgres.yml" "redmine/config/database.yml"
+    cp "redmine/plugins/${PLUGIN_NAME}/contrib/travis/db_confs/database_postgres.yml" "redmine/config/database.yml"
   fi
-
   log_ok
 }
 

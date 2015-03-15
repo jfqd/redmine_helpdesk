@@ -5,19 +5,18 @@ class MailHandlerPatchTest < ActiveSupport::TestCase
 
   self.use_transactional_fixtures = true
 
-  ActiveRecord::Fixtures.create_fixtures(File.dirname(__FILE__) + '/../fixtures/',
-                          [ :projects, :projects_trackers,
-                            :issues, :issue_statuses, :trackers,
-                            :journals, :journal_details,
-                            :attachments,
-                            :members, :member_roles,
-                            :roles,
-                            :users,
-                            :enumerations,
-                            :custom_fields,
-                            :custom_values,
-                            :custom_fields_projects,
-                            :custom_fields_trackers ])
+  fixtures :projects, :projects_trackers,
+           :issues, :issue_statuses, :trackers,
+           :journals, :journal_details,
+           :attachments,
+           :members, :member_roles,
+           :roles,
+           :users,
+           :enumerations,
+           :custom_fields,
+           :custom_values,
+           :custom_fields_projects,
+           :custom_fields_trackers
 
   FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures/mail_handler'
 

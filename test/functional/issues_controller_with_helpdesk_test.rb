@@ -3,19 +3,19 @@ require File.dirname(__FILE__) + '/../test_helper'
 class IssuesControllerWithHelpdeskTest < ActionController::TestCase
   include Redmine::I18n
 
-  ActiveRecord::Fixtures.create_fixtures(File.dirname(__FILE__) + '/../fixtures/',
-                          [ :projects, :projects_trackers,
-                            :issues, :issue_statuses, :trackers,
-                            :journals, :journal_details,
-                            :attachments,
-                            :members, :member_roles,
-                            :roles,
-                            :users,
-                            :enabled_modules,
-                            :custom_fields,
-                            :custom_values,
-                            :custom_fields_projects,
-                            :custom_fields_trackers ])
+  fixtures :projects, :projects_trackers,
+           :issues, :issue_statuses, :trackers,
+           :journals, :journal_details,
+           :attachments,
+           :members, :member_roles,
+           :roles,
+           :users,
+           :enabled_modules,
+           :enumerations,
+           :custom_fields,
+           :custom_values,
+           :custom_fields_projects,
+           :custom_fields_trackers
 
   def setup
     User.current = nil
