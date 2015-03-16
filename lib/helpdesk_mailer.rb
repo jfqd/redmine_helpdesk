@@ -56,24 +56,16 @@ class HelpdeskMailer < ActionMailer::Base
       headers[:references] = @references_objects.collect {|o| "<#{self.class.references_for(o)}>"}.join(' ')
     end
     # create mail object to deliver
-    mail = if text.present?
+    mail = if text.present? || reply.present?
       # sending out the journal note to the support client
+      # or the first reply message
+      t = text.present? ? text : reply
       mail(
         :from     => sender.present? && sender || Setting.mail_from,
         :reply_to => sender.present? && sender || Setting.mail_from,
         :to       => recipient,
         :subject  => subject,
         :body     => "#{text}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
-        :date     => Time.zone.now
-      )
-    elsif reply.present?
-      # sending out the first reply message
-      mail(
-        :from     => sender.present? && sender || Setting.mail_from,
-        :reply_to => sender.present? && sender || Setting.mail_from,
-        :to       => recipient,
-        :subject  => subject,
-        :body     => "#{reply}".gsub("##issue-id##", issue.id.to_s),
         :date     => Time.zone.now
       )
     else
