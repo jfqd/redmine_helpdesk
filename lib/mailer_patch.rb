@@ -15,22 +15,8 @@ module RedmineHelpdesk
       # footer text is available.
       def issue_edit_with_helpdesk(journal, to_users=[], cc_users=[])
         m = issue_edit_without_helpdesk(journal, to_users, cc_users)
-        issue = journal.journalized
 
-        other_recipients = []
-        # add owner-email to the recipients (list)
-        begin
-          if journal.send_to_owner == true
-            f = CustomField.find_by_name('helpdesk-email-footer')
-            p = issue.project
-            owner_email = issue.custom_value_for( CustomField.find_by_name('owner-email') ).value
-            if !owner_email.blank? && !f.nil? && !p.nil? && p.custom_value_for(f).try(:value).blank?
-              other_recipients << owner_email
-            end
-          end
-        rescue Exception => e
-          mylogger.error "Error while adding owner-email to recipients of email notification: \"#{e.message}\"."
-        end
+        other_recipients = helpdesk_other_recipients(journal)
 
         if other_recipients.any?
           @users = @users + other_recipients
@@ -55,20 +41,9 @@ module RedmineHelpdesk
         references issue
 
         # add any attachements
-        if journal.present? && text.present?
-          journal.details.each do |d|
-            if d.property == 'attachment'
-              a = Attachment.find(d.prop_key)
-              begin
-                attachments[a.filename] = File.read(a.diskfile)
-              rescue
-                # ignore rescue
-              end
-            end
-          end
-        end
-        # create mail object to deliver
+        helpdesk_add_attachments(journal) if text.present?
 
+        # create mail object to deliver
         @issue = issue
         @journal = journal
         @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue)
@@ -80,15 +55,34 @@ module RedmineHelpdesk
 
       private
 
+      def helpdesk_other_recipients(journal)
+        other_recipients = []
+        begin
+          if journal.send_to_owner == true
+            issue = journal.journalized
+            p = issue.project
+            owner_email = helpdesk_customvalue(issue, 'owner-email')
+            if !owner_email.blank? && !helpdesk_customvalue(p, 'helpdesk-email-footer').blank?
+              other_recipients << owner_email
+            end
+          end
+        rescue Exception => e
+          mylogger.error "Error while adding owner-email to recipients of email notification: \"#{e.message}\"."
+        end
+        other_recipients
+      end
+
       def helpdesk_headers(issue, recipient, text)
+        p = issue.project
         from = helpdesk_from(issue)
-        reply = helpdesk_reply(issue)
+        reply = helpdesk_customvalue(p, 'helpdesk-first-reply')
+        footer = helpdesk_customvalue(p, 'helpdesk-email-footer')
         if text.present?
           # sending out the journal note to the support client
-          body = "#{text}\n\n#{helpdesk_footer(issue)}"
+          body = "#{text}\n\n#{footer}"
         elsif reply.present?
           # sending out the first reply message
-          body = "#{reply}\n\n#{helpdesk_footer(issue)}"
+          body = "#{reply}\n\n#{footer}"
         end
 
         h = {
@@ -115,23 +109,28 @@ module RedmineHelpdesk
       def helpdesk_from(issue)
         # Set 'from' email-address to 'helpdesk-sender-email' if available.
         # Falls back to regular redmine behaviour if 'sender' is empty.
-        p = issue.project
-        s = CustomField.find_by_name('helpdesk-sender-email')
-        sender = p.custom_value_for(s).try(:value) if p.present? && s.present?
-
+        sender = helpdesk_customvalue(issue.project, 'helpdesk-sender-email')
         sender.present? && sender || Setting.mail_from
       end
 
-      def helpdesk_reply(issue)
-        p = issue.project
-        r = CustomField.find_by_name('helpdesk-first-reply')
-        p.nil? || r.nil? ? '' : p.custom_value_for(r).try(:value)
+      def helpdesk_customvalue(o, name)
+        v = CustomField.find_by_name(name)
+        o.nil? || v.nil? ? '' : o.custom_value_for(v).try(:value)
       end
 
-      def helpdesk_footer(issue)
-        p = issue.project
-        f = CustomField.find_by_name('helpdesk-email-footer')
-        p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
+      def helpdesk_add_attachments(journal)
+        if journal.present?
+          journal.details.each do |d|
+            if d.property == 'attachment'
+              a = Attachment.find(d.prop_key)
+              begin
+                attachments[a.filename] = File.read(a.diskfile)
+              rescue
+                # ignore rescue
+              end
+            end
+          end
+        end
       end
 
       def __mail__(headers)
