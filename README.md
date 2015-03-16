@@ -77,6 +77,7 @@ The latest version of this plugin is only compatible with Redmine 2.4.x. and 2.5
 
 ## Contribution
 
+* [vilppuvuorinen](https://github.com/vilppuvuorinen) - Unit and functional tests with travis and code climate support
 * [ssidelnikov](https://github.com/ssidelnikov) - Make sure that the notes length is always calculated
 * [nifuki](https://github.com/nifuki) - Fixed bug trying to send an email with empty notes
 * [nifuki](https://github.com/nifuki) - Fixed non-working helpdesk-send-to-owner-default checkbox
@@ -95,4 +96,4 @@ This plugin is licensed under the MIT license. See LICENSE-file for details.
 
 ## Copyright
 
-Copyright (c) 2012-2014 Stefan Husch, qutic development. The development has been fully sponsored by netz98.de
+Copyright (c) 2012-2015 Stefan Husch, qutic development. The start of development has been sponsored by netz98.de
