@@ -28,7 +28,7 @@ env:
 addons:
   code_climate:
     repo_token:
-      secure: Q7PftEozPV/pAMGulYDeRNSjGAsoty1JNpTtT1It/a0p7LhVbk5IgKPw8Kb0V+D8qNYPhn1RlWLA6JCYsZXmZFJwGB8CAh8fHdnSZkR+VWZvtzQOnJHupQqQCHc7fRldzVveoPebYvrd2OcbQ6LDvqpa0mEhqUjk3JqKFO8Jrq0=
+      secure: "SAyz/KNRQQC1T2oGNUxbDceBcoaL/IxvEmeKEIR3iivj3RMJi2Nm8v5B2Su9MhQBegi2mH70ypgkTPmGh69tSONf1sqkkCAxsZnIqihl1Ai+dwM2KlBLGw/k+IG9/xD1+hgQiO06OKZMPO+Kj9X28mMqJ75YVKGE4alr1mfo2NM="
 before_install:
   - REPO_WD=$(pwd)
   - export GITHUB_USER=$(basename $(dirname `pwd`))
