@@ -46,6 +46,12 @@ class HelpdeskMailer < ActionMailer::Base
         end
       end
     end
+    # footer now may contain ##author## template
+    author = ''
+    if journal.present?
+      author = journal.user.name
+    end
+    footer = footer.gsub('%%author%%', author)
     if @message_id_object
       headers[:message_id] = "<#{self.class.message_id_for(@message_id_object)}>"
     end
