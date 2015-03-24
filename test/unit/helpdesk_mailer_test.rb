@@ -104,7 +104,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     assert_match /^redmine\.issue-1\.\d+\.[a-f0-9]+@example\.net/, email.message_id
     assert_match /redmine\.issue-1\.\d+@example\.net/, email.references
 
-    assert_equal "first reply\n\nemail footer",
+    assert_equal "first reply",
         email.body.to_s
   end
 

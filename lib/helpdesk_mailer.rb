@@ -12,7 +12,7 @@ class HelpdeskMailer < ActionMailer::Base
   def self.default_url_options
     { :host => Setting.host_name, :protocol => Setting.protocol }
   end
-  
+
   # Sending email notifications to the supportclient
   def email_to_supportclient(issue, recipient, journal=nil, text='')
     redmine_headers 'Project' => issue.project.identifier,
@@ -59,13 +59,13 @@ class HelpdeskMailer < ActionMailer::Base
     mail = if text.present? || reply.present?
       # sending out the journal note to the support client
       # or the first reply message
-      t = text.present? ? text : reply
+      t = text.present? ? "#{text}\n\n#{footer}" : reply
       mail(
         :from     => sender.present? && sender || Setting.mail_from,
         :reply_to => sender.present? && sender || Setting.mail_from,
         :to       => recipient,
         :subject  => subject,
-        :body     => "#{text}\n\n#{footer}".gsub("##issue-id##", issue.id.to_s),
+        :body     => t.gsub("##issue-id##", issue.id.to_s),
         :date     => Time.zone.now
       )
     else
