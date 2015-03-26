@@ -3,19 +3,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 class IssuesControllerWithHelpdeskTest < ActionController::TestCase
   include Redmine::I18n
 
-  fixtures :projects, :projects_trackers,
-           :issues, :issue_statuses, :trackers,
-           :journals, :journal_details,
-           :attachments,
-           :members, :member_roles,
-           :roles,
-           :users,
-           :enabled_modules,
-           :enumerations,
-           :custom_fields,
-           :custom_values,
-           :custom_fields_projects,
-           :custom_fields_trackers
+  fixtures :all
 
   def setup
     User.current = nil
@@ -33,10 +21,9 @@ class IssuesControllerWithHelpdeskTest < ActionController::TestCase
   test "send_to_owner not renderer without owner-email" do
     issue = Issue.find(1)
     owner_field = CustomField.find_by_name('owner-email')
-    owner_value = CustomValue.find(
-      :first,
-      :conditions => ["customized_id = ? AND custom_field_id = ?", issue.id, owner_field.id]
-    )
+    owner_value = CustomValue.where(
+      "customized_id = ? AND custom_field_id = ?", issue.id, owner_field.id).
+      first
     owner_value.value = ""
     owner_value.save!
 
@@ -49,10 +36,9 @@ class IssuesControllerWithHelpdeskTest < ActionController::TestCase
   test "send_to_owner checked if send-to-owner-default is set to yes" do
     issue = Issue.find(1)
     default_field = CustomField.find_by_name('helpdesk-send-to-owner-default')
-    default_value = CustomValue.find(
-      :first,
-      :conditions => ["customized_id = ? AND custom_field_id = ?", issue.project.id, default_field.id]
-    )
+    default_value = CustomValue.where(
+      "customized_id = ? AND custom_field_id = ?", issue.project.id, default_field.id).
+      first
     default_value.value = "1"
     default_value.save!
 
@@ -66,10 +52,9 @@ class IssuesControllerWithHelpdeskTest < ActionController::TestCase
   test "send_to_owner checked if send-to-owner-default is set to no" do
     issue = Issue.find(1)
     default_field = CustomField.find_by_name('helpdesk-send-to-owner-default')
-    default_value = CustomValue.find(
-      :first,
-      :conditions => ["customized_id = ? AND custom_field_id = ?", issue.project.id, default_field.id]
-    )
+    default_value = CustomValue.where(
+      "customized_id = ? AND custom_field_id = ?", issue.project.id, default_field.id).
+      first
     default_value.value = "2"
     default_value.save!
 

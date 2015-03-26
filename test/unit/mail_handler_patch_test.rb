@@ -5,20 +5,7 @@ class MailHandlerPatchTest < ActiveSupport::TestCase
 
   self.use_transactional_fixtures = true
 
-  fixtures :projects, :projects_trackers,
-           :issues, :issue_statuses, :trackers,
-           :journals, :journal_details,
-           :attachments,
-           :members, :member_roles,
-           :roles,
-           :users,
-           :enumerations,
-           :custom_fields,
-           :custom_values,
-           :custom_fields_projects,
-           :custom_fields_trackers
-
-  FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures/mail_handler'
+  fixtures :all
 
   def setup
     ActionMailer::Base.deliveries.clear
@@ -38,10 +25,9 @@ class MailHandlerPatchTest < ActiveSupport::TestCase
     assert_issue_created issue
 
     owner_field = CustomField.find_by_name('owner-email')
-    owner_value = CustomValue.find(
-      :first,
-      :conditions => ["customized_id = ? AND custom_field_id = ?", issue.id, owner_field.id]
-    )
+    owner_value = CustomValue.where(
+      "customized_id = ? AND custom_field_id = ?", issue.id, owner_field.id).
+      first
     assert owner_value.value.blank?
     assert User.find(1).login, issue.author.login
   end
@@ -56,10 +42,9 @@ class MailHandlerPatchTest < ActiveSupport::TestCase
       assert_issue_created issue
 
       owner_field = CustomField.find_by_name('owner-email')
-      owner_value = CustomValue.find(
-          :first,
-          :conditions => ["customized_id = ? AND custom_field_id = ?", issue.id, owner_field.id]
-      )
+      owner_value = CustomValue.where(
+          "customized_id = ? AND custom_field_id = ?", issue.id, owner_field.id).
+          first
       assert_equal "john.doe@somenet.foo", owner_value.value
       assert issue.author.anonymous?
     end
@@ -74,10 +59,9 @@ class MailHandlerPatchTest < ActiveSupport::TestCase
     assert_issue_created issue
 
     owner_field = CustomField.find_by_name('owner-email')
-    owner_value = CustomValue.find(
-      :first,
-      :conditions => ["customized_id = ? AND custom_field_id = ?", issue.id, owner_field.id]
-    )
+    owner_value = CustomValue.where(
+      "customized_id = ? AND custom_field_id = ?", issue.id, owner_field.id).
+      first
     assert_equal User.find(2).mail, owner_value.value
     assert User.find(2).login, issue.author.login
   end
@@ -85,7 +69,7 @@ class MailHandlerPatchTest < ActiveSupport::TestCase
   # TODO: Attachments
 
   def submit_email(filename, options={})
-    raw = IO.read(File.join(FIXTURES_PATH, filename))
+    raw = IO.read(File.join(TestHelper.files_path, 'mail_handler', filename))
     yield raw if block_given?
     MailHandler.receive(raw, options)
   end

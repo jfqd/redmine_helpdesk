@@ -4,13 +4,13 @@ custom_values_001:
   custom_field_id: 2
   customized_id: 1
   id: 1
-  value: first reply
+  value: "first reply"
 custom_values_002:
   customized_type: Project
   custom_field_id: 3
   customized_id: 1
   id: 2
-  value: email footer
+  value: "email footer"
 custom_values_003:
   customized_type: Project
   custom_field_id: 4

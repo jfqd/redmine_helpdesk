@@ -5,17 +5,7 @@ class JournalPatchTest < ActiveSupport::TestCase
 
   self.use_transactional_fixtures = true
 
-  fixtures :projects, :projects_trackers,
-           :issues, :issue_statuses, :trackers,
-           :journals, :journal_details,
-           :attachments,
-           :members, :member_roles,
-           :roles,
-           :users,
-           :custom_fields,
-           :custom_values,
-           :custom_fields_projects,
-           :custom_fields_trackers
+  fixtures :all
 
   def setup
     User.current = User.find(1)
@@ -34,7 +24,6 @@ class JournalPatchTest < ActiveSupport::TestCase
     journal.send_to_owner = false
     journal.save!
 
-    journal = issue.init_journal(User.current, "notes")
     journal.send(:send_notification)
   end
 
@@ -58,10 +47,9 @@ class JournalPatchTest < ActiveSupport::TestCase
     issue = Issue.find(1)
     journal = issue.journals.first
     owner_field = CustomField.find_by_name('owner-email')
-    owner_value = CustomValue.find(
-      :first,
-      :conditions => ["customized_id = ? AND custom_field_id = ?", issue.id, owner_field.id]
-    )
+    owner_value = CustomValue.where(
+      "customized_id = ? AND custom_field_id = ?", issue.id, owner_field.id).
+      first
     owner_value.value = ""
     owner_value.save!
     journal.send_to_owner = true
