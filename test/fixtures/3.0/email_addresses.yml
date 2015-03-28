@@ -1,0 +1,15 @@
+---
+email_address_001:
+  id: 1
+  user_id: 1
+  address: rhill@somenet.foo
+  is_default: true
+  created_on: 2006-07-19 19:34:07 +02:00
+  updated_on: 2006-07-19 19:34:07 +02:00
+email_address_002:
+  id: 2
+  user_id: 2
+  address: dlopper@somenet.foo
+  is_default: true
+  created_on: 2006-07-19 19:34:07 +02:00
+  updated_on: 2006-07-19 19:34:07 +02:00

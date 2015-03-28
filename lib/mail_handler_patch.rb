@@ -2,12 +2,12 @@ module RedmineHelpdesk
   module MailHandlerPatch
     def self.included(base) # :nodoc:
       base.send(:include, InstanceMethods)
-      
+
       base.class_eval do
         alias_method_chain :dispatch_to_default, :helpdesk
       end
     end
-    
+
     module InstanceMethods
       private
       # Overrides the dispatch_to_default method to
@@ -21,10 +21,9 @@ module RedmineHelpdesk
         if roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
           sender_email = @email.from.first
           custom_field = CustomField.find_by_name('owner-email')
-          custom_value = CustomValue.find(
-            :first,
-            :conditions => ["customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id]
-          )
+          custom_value = CustomValue.where(
+            "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).
+            first
           custom_value.value = sender_email
           custom_value.save(:validate => false) # skip validation!
           # regular email sending to known users is done
@@ -36,12 +35,12 @@ module RedmineHelpdesk
         after_dispatch_to_default_hook issue
         return issue
       end
-      
+
       # let other plugins the chance to override this
       # method to hook into dispatch_to_default
       def after_dispatch_to_default_hook(issue)
       end
-      
+
       # Fix an issue with email.has_attachments?
       def add_attachments(obj)
          if !email.attachments.nil? && email.attachments.size > 0
@@ -54,7 +53,7 @@ module RedmineHelpdesk
           end
         end
       end
-      
+
     end # module InstanceMethods
   end # module MailHandlerPatch
 end # module RedmineHelpdesk

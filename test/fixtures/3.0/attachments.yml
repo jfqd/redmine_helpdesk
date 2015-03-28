@@ -1,0 +1,15 @@
+---
+attachments_001:
+  created_on: 2006-07-19 21:07:27 +02:00
+  container_type: Issue
+  container_id: 1
+  downloads: 0
+  disk_filename: 060719210727_source.rb
+  disk_directory: "2006/07"
+  digest: b91e08d0cf966d5c6ff411bd8c4cc3a2
+  id: 1
+  filesize: 153
+  filename: source.rb
+  author_id: 1
+  description: This is a Ruby source file
+  content_type: application/x-ruby
