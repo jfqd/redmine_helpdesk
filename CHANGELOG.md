@@ -1,3 +1,7 @@
+0.0.14
+---
+* Make plugin compatibility with Redmine 3.0.1 by Vilppu Vuorinen
+
 0.0.13
 ---
 * Unit and functional tests with travis and code climate support by Vilppu Vuorinen
