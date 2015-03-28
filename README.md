@@ -84,6 +84,7 @@ If you prefer to run Redmine with JRuby make sure to use Redmine versions prior 
 
 ## Contribution
 
+* [vilppuvuorinen](https://github.com/vilppuvuorinen) - 3.0.x compatibility
 * [vilppuvuorinen](https://github.com/vilppuvuorinen) - Unit and functional tests with travis and code climate support
 * [ssidelnikov](https://github.com/ssidelnikov) - Make sure that the notes length is always calculated
 * [nifuki](https://github.com/nifuki) - Fixed bug trying to send an email with empty notes
