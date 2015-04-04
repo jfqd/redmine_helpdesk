@@ -87,3 +87,27 @@ custom_fields_007:
   default_value: true
   editable: true
   position: 1
+custom_fields_008:
+  name: title
+  regexp: ""
+  is_for_all: false
+  type: UserCustomField
+  possible_values: ""
+  id: 8
+  is_required: false
+  field_format: string
+  default_value: ""
+  editable: true
+  position: 1
+custom_fields_009:
+  name: motto
+  regexp: ""
+  is_for_all: false
+  type: UserCustomField
+  possible_values: ""
+  id: 9
+  is_required: false
+  field_format: string
+  default_value: ""
+  editable: true
+  position: 2
