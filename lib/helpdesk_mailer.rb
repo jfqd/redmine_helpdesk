@@ -7,6 +7,7 @@ class HelpdeskMailer < ActionMailer::Base
   helper :application
 
   include Redmine::I18n
+  include MacroExpander
 
   # set the hostname for url_for helper
   def self.default_url_options
@@ -33,9 +34,6 @@ class HelpdeskMailer < ActionMailer::Base
     f = CustomField.find_by_name('helpdesk-email-footer')
     reply  = p.nil? || r.nil? ? '' : p.custom_value_for(r).try(:value)
     footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
-    if text.present?
-      footer = replace_footer_placeholders(footer, journal)
-    end
     # add any attachements
     if journal.present? && text.present?
       journal.details.each do |d|
@@ -65,7 +63,7 @@ class HelpdeskMailer < ActionMailer::Base
         :reply_to => sender.present? && sender || Setting.mail_from,
         :to       => recipient,
         :subject  => subject,
-        :body     => t.gsub("##issue-id##", issue.id.to_s),
+        :body     => expand_macros(t, issue, journal),
         :date     => Time.zone.now
       )
     else
@@ -117,22 +115,4 @@ class HelpdeskMailer < ActionMailer::Base
     @references_objects ||= []
     @references_objects << object
   end
-
-  def replace_footer_placeholders(footer, journal)
-    placeholders = [
-      ["%USER_FIRST_NAME%", "#{journal.user.firstname}"],
-      ["%USER_LAST_NAME%", "#{journal.user.lastname}"],
-      ["%USER_EMAIL%", "#{journal.user.mail}"],
-      ["%USER_LOGIN%", "#{journal.user.login}"],
-    ]
-    CustomField.where(:type => 'UserCustomField').each do |user_cf|
-      cf_name = user_cf.name.upcase.gsub(' ', '_')
-      user_cf_cv = journal.user.custom_field_values.select { |cv| cv.custom_field.id == user_cf.id }.first.value
-      placeholders << ["%USER_CF_#{cf_name}%", user_cf_cv.nil? ? '' : user_cf_cv]
-    end
-
-    placeholders.each { |placeholder| footer = footer.gsub(placeholder[0], placeholder[1]) }
-    return footer
-  end
-
 end
