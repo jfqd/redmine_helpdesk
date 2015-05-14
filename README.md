@@ -84,6 +84,7 @@ If you prefer to run Redmine with JRuby make sure to use Redmine versions prior 
 
 ## Contribution
 
+* [avoidik](https://github.com/avoidik) - Add missed Russian translation into roles and access manager
 * [WhereIsPedro](https://github.com/WhereIsPedro) - Polish translation
 * [vilppuvuorinen](https://github.com/vilppuvuorinen) - 3.0.x compatibility
 * [vilppuvuorinen](https://github.com/vilppuvuorinen) - Unit and functional tests with travis and code climate support
