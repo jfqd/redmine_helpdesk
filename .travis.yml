@@ -2,6 +2,7 @@ language: ruby
 rvm:
 - 2.0
 - 2.1
+- 2.2
 - jruby
 env:
   global:
@@ -27,6 +28,10 @@ matrix:
   - rvm: jruby
     env: REDMINE_VERSION=3.0.3 DATABASE_ADAPTER=mysql
   - rvm: jruby
+    env: REDMINE_VERSION=3.0.3 DATABASE_ADAPTER=postgresql
+  - rvm: - 2.2
+    env: REDMINE_VERSION=3.0.3 DATABASE_ADAPTER=mysql
+  - rvm: - 2.2
     env: REDMINE_VERSION=3.0.3 DATABASE_ADAPTER=postgresql
 addons:
   code_climate:
