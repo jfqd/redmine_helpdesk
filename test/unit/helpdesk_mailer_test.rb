@@ -139,8 +139,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
         email_to_supportclient(issue, "owner_email").
         deliver
     assert !ActionMailer::Base.deliveries.empty?
-    assert_equal "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] (#{issue.status.name}) #{issue.subject}",
-        email.subject.to_s
+    assert_equal "[#{issue.project.name} - ##{issue.id}] #{issue.subject}", email.subject.to_s
   end
 
   # Test with single attachment and verify against fixture file
