@@ -42,6 +42,12 @@ module RedmineHelpdesk
         s << issue.subject
         @issue = issue
         @users = to_users + cc_users + other_recipients
+        f = CustomField.find_by_name('helpdesk-reply-separator')
+        reply_separator = issue.project.custom_value_for(f).try(:value)
+        if !reply_separator.blank?
+          journal.notes = journal.notes.gsub(/#{reply_separator}.*/m, '')
+          journal.save
+        end
         @journal = journal
         @journal_details = journal.visible_details(@users.first)
         @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue, :anchor => "change-#{journal.id}")
