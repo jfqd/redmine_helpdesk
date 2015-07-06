@@ -29,10 +29,7 @@ matrix:
     env: REDMINE_VERSION=3.0.3 DATABASE_ADAPTER=mysql
   - rvm: jruby
     env: REDMINE_VERSION=3.0.3 DATABASE_ADAPTER=postgresql
-  - rvm: - 2.2
-    env: REDMINE_VERSION=3.0.3 DATABASE_ADAPTER=mysql
-  - rvm: - 2.2
-    env: REDMINE_VERSION=3.0.3 DATABASE_ADAPTER=postgresql
+  - rvm: 2.2
 addons:
   code_climate:
     repo_token:
