@@ -44,7 +44,7 @@ module RedmineHelpdesk
         @users = to_users + cc_users + other_recipients
         f = CustomField.find_by_name('helpdesk-reply-separator')
         reply_separator = issue.project.custom_value_for(f).try(:value)
-        if !reply_separator.blank?
+        if !reply_separator.blank? and !journal.notes.nil?
           journal.notes = journal.notes.gsub(/#{reply_separator}.*/m, '')
           journal.save
         end
