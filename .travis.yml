@@ -15,6 +15,8 @@ env:
   - POSTGRES_DATABASE=redmine
   - POSTGRES_USER=postgres
   matrix:
+  - REDMINE_VERSION=3.1.1 DATABASE_ADAPTER=mysql
+  - REDMINE_VERSION=3.1.1 DATABASE_ADAPTER=postgresql
   - REDMINE_VERSION=3.0.5 DATABASE_ADAPTER=mysql
   - REDMINE_VERSION=3.0.5 DATABASE_ADAPTER=postgresql
   - REDMINE_VERSION=2.6.5 DATABASE_ADAPTER=mysql
@@ -25,6 +27,14 @@ env:
   - REDMINE_VERSION=2.4.7 DATABASE_ADAPTER=postgresql
 matrix:
   allow_failures: # Incomplete ActiveRecord 4.2 support in jruby
+  - rvm: jruby
+    env: REDMINE_VERSION=3.1.1 DATABASE_ADAPTER=mysql
+  - rvm: jruby
+    env: REDMINE_VERSION=3.1.1 DATABASE_ADAPTER=postgresql
+  - rvm: - 2.2
+    env: REDMINE_VERSION=3.1.1 DATABASE_ADAPTER=mysql
+  - rvm: - 2.2
+    env: REDMINE_VERSION=3.1.1 DATABASE_ADAPTER=postgresql
   - rvm: jruby
     env: REDMINE_VERSION=3.0.5 DATABASE_ADAPTER=mysql
   - rvm: jruby
