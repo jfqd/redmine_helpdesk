@@ -18,7 +18,7 @@ module RedmineHelpdesk
         roles = issue.author.roles_for_project(issue.project)
         # add owner-email only if the author has assigned some role with
         # permission treat_user_as_supportclient enabled
-        if roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
+        if issue.author.type.eql?("AnonymousUser") || roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
           if !@email.reply_to.nil?
             sender_email = @email.reply_to.first
           else
