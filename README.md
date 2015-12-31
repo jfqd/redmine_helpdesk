@@ -59,6 +59,8 @@ To use the helpdesk functionality you need to
 
 ![project configuration sample](doc/project-settings.jpg "Per project configuration sample")
 
+**Only public projects could be used for the helpdesk functionality**. If you want to use it with private projects [issue #75](https://github.com/jfqd/redmine_helpdesk/issues/75#issuecomment-101950450) might be helpful to you.
+
 ## Cronjob
 
 Creating tickets from support emails through an IMAP-account is done by a cronjob. The following syntax is for ubuntu or debian linux:
@@ -69,7 +71,7 @@ Creating tickets from support emails through an IMAP-account is done by a cronjo
 
 Further information about receiving emails with redmine can be found at: [http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails](http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails#Fetching-emails-from-an-IMAP-server)
 
-Please note that forwarding emails with rdm-mailhandler.rb is currently not supported by the plugin.
+Please note that forwarding emails with **rdm-mailhandler.rb** is currently **not supported** by the plugin.
 
 ## Compatibility
 
@@ -80,7 +82,6 @@ If you prefer to run Redmine with JRuby make sure to use Redmine versions prior 
 * A version for Redmine 1.2.x. up to 1.4.7. is tagged with [v1.4](https://github.com/jfqd/redmine_helpdesk/tree/v1.4 "plugin version for Redmine 1.2.x up to 1.4.7") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v1.4.zip "download plugin for Redmine 1.2.x up to 1.4.7").
 * A version for Redmine 2.3.x is tagged with [v2.3](https://github.com/jfqd/redmine_helpdesk/tree/v2.3 "plugin version for Redmine 2.3.x") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v2.3.zip "download plugin for Redmine 2.3.x").
 * A version for Redmine 2.4.x and 2.5.x is tagged with [v2.5](https://github.com/jfqd/redmine_helpdesk/releases/tag/v2.5 "plugin version for Redmine 2.4.x and 2.5.x") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v2.5.zip "download plugin for Redmine 2.4.x and 2.5.x").
-
 
 ## Contribution
 
