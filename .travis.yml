@@ -52,22 +52,14 @@ addons:
     repo_token:
       secure: "SAyz/KNRQQC1T2oGNUxbDceBcoaL/IxvEmeKEIR3iivj3RMJi2Nm8v5B2Su9MhQBegi2mH70ypgkTPmGh69tSONf1sqkkCAxsZnIqihl1Ai+dwM2KlBLGw/k+IG9/xD1+hgQiO06OKZMPO+Kj9X28mMqJ75YVKGE4alr1mfo2NM="
 before_install:
-  - REPO_WD=$(pwd)
-  - export GITHUB_USER=$(basename $(dirname `pwd`))
-  - export GITHUB_PROJECT=$(basename `pwd`)
-  - cd ../..
-  - $REPO_WD/contrib/travis/install_redmine.sh
-  - cd redmine
-  - echo $(pwd)
-  - export BUNDLE_GEMFILE=$PWD/Gemfile
+  - rake helpdesk:redmine:install
+  - cd test/app
+  - export BUNDLE_GEMFILE=Gemfile
 before_script:
-  - echo $(pwd)
   - export RAILS_ENV=test
   - mysql -e 'create database redmine;'
   - psql -c 'create database redmine;' -U postgres
-  - bundle exec rake generate_secret_token
+  - export RAILS_ENV=test
   - bundle exec rake db:migrate
-  - bundle exec rake redmine:plugins:migrate
-  - bundle exec rake db:test:prepare
 script:
-  - bundle exec rake helpdesk:test
+  - bundle exec rake helpdesk:ci

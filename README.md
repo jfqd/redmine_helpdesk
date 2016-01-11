@@ -83,6 +83,36 @@ If you prefer to run Redmine with JRuby make sure to use Redmine versions prior 
 * A version for Redmine 2.3.x is tagged with [v2.3](https://github.com/jfqd/redmine_helpdesk/tree/v2.3 "plugin version for Redmine 2.3.x") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v2.3.zip "download plugin for Redmine 2.3.x").
 * A version for Redmine 2.4.x and 2.5.x is tagged with [v2.5](https://github.com/jfqd/redmine_helpdesk/releases/tag/v2.5 "plugin version for Redmine 2.4.x and 2.5.x") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v2.5.zip "download plugin for Redmine 2.4.x and 2.5.x").
 
+## Development
+
+### Testing
+
+Rake tasks for testing against Redmine are provided. Redmine is installed under `test/app` and tests are run against the local instance.
+
+```bash
+REDMINE_VERSION=3.2 DATABASE_ADAPTER=mysql rake helpdesk:redmine:install
+```
+
+Docker is used to provide local MySQL (`DATABASE_ADAPTER=mysql`) and PostgreSQL (`DATABASE_ADAPTER=postgresql_ext`) instances.
+
+```bash
+export DATABASE_ADAPTER=mysql
+rake helpdesk:prepare_local
+rake helpdesk:migrate
+```
+
+Test suite can be executed with:
+
+```bash
+DATABASE_ADAPTER=mysql rake helpdesk:ext_ci
+```
+
+The local database instance has to be stopped with a rake task:
+
+```bash
+rake helpdesk:localdb:stop
+```
+
 ## Contribution
 
 * [monaka](https://github.com/monaka) - Japanese translation
