@@ -35,7 +35,7 @@ class HelpdeskMailer < ActionMailer::Base
     h = CustomField.find_by_name('helpdesk-send-html-emails')
     reply  = p.nil? || r.nil? ? '' : p.custom_value_for(r).try(:value)
     footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
-    send_html_emails = p.nil? || h.nil? ? '' : p.custom_value_for(h).true?
+    send_html_emails = p.nil? || h.nil? || p.custom_value_for(h).nil? ? false : p.custom_value_for(h).true?
     # add any attachements
     if journal.present? && text.present?
       journal.details.each do |d|
