@@ -29,13 +29,17 @@ module RedmineHelpdesk
             first
           custom_value.value = sender_email
           custom_value.save(:validate => false) # skip validation!
-          address = Mail::Address.new(@email[:from].formatted.first)
           custom_field = CustomField.find_by_name('owner-name')
-          custom_value = CustomValue.where(
-            "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).
-            first
-          custom_value.value =  address.display_name
-          custom_value.save(:validate => false) # skip validation!
+          unless custom_field.nil?
+            custom_value = CustomValue.where(
+              "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).
+              first
+            unless custom_value.nil?
+              address = Mail::Address.new(@email[:from].formatted.first)
+              custom_value.value = address.display_name
+              custom_value.save(:validate => false) # skip validation!
+            end
+          end
           # regular email sending to known users is done
           # on the first issue.save. So we need to send
           # the notification email to the supportclient
