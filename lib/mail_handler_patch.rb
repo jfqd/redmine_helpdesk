@@ -21,7 +21,7 @@ module RedmineHelpdesk
         # permission treat_user_as_supportclient enabled
         if roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
           sender_email = @email.from.first
-          issue.description = email_details(@email) + issue.description
+          issue.description = email_details + issue.description
           issue.save
           custom_field = CustomField.find_by_name('owner-email')
           custom_value = CustomValue.where(
@@ -68,7 +68,7 @@ module RedmineHelpdesk
         end
       end
 
-      def email_details(email)
+      def email_details
         details = "From: " + @email[:from].formatted.first + "\n"
         details << "To: " + @email[:to].formatted.join(', ') + "\n"
         if !@email.cc.nil?
@@ -84,7 +84,7 @@ module RedmineHelpdesk
         receive_issue_reply_without_helpdesk(issue_id, from_journal=nil)
         issue = Issue.find_by_id(issue_id)
         last_journal = Journal.find(issue.last_journal_id)
-        last_journal.notes = email_details(@email) + last_journal.notes
+        last_journal.notes = email_details + last_journal.notes
         last_journal.save
       end
 
