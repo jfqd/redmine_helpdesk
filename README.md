@@ -63,10 +63,10 @@ To use the helpdesk functionality you need to
 
 ## Cronjob
 
-Creating tickets from support emails through an IMAP-account is done by a cronjob. The following syntax is for ubuntu or debian linux:
+Creating tickets from support emails through an IMAP-account is done by a cronjob. If you are not familiar with cron you first should read about the concept. The following syntax is for ubuntu or debian linux:
 
 ```
-*/5 * * * * redmine /usr/bin/rake -f /path/to/redmine/Rakefile --silent redmine:email:receive_imap RAILS_ENV="production" host=mail.example.com port=993 username=username password=password ssl=true project=project_identifier folder=INBOX move_on_success=processed move_on_failure=failed no_permission_check=1 unknown_user=accept 1 > /dev/null
+*/5 * * * * redmineuser /path/to/your/rake -f /path/to/redmine/Rakefile --silent redmine:email:receive_imap RAILS_ENV="production" host=mail.example.com port=993 username=username password=password ssl=true project=project_identifier folder=INBOX move_on_success=processed move_on_failure=failed no_permission_check=1 unknown_user=accept 1 > /dev/null
 ```
 
 Further information about receiving emails with redmine can be found at: [http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails](http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails#Fetching-emails-from-an-IMAP-server)
