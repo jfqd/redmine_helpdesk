@@ -34,6 +34,9 @@ class HelpdeskMailer < ActionMailer::Base
     f = CustomField.find_by_name('helpdesk-email-footer')
     reply  = p.nil? || r.nil? ? '' : p.custom_value_for(r).try(:value)
     footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
+    # add carbon copy
+    carbon_copy = issue.custom_value_for( CustomField.find_by_name('copy-to') ).value
+
     # add any attachements
     if journal.present? && text.present?
       journal.details.each do |d|
@@ -64,7 +67,8 @@ class HelpdeskMailer < ActionMailer::Base
         :to       => recipient,
         :subject  => subject,
         :body     => expand_macros(t, issue, journal),
-        :date     => Time.zone.now
+        :date     => Time.zone.now,
+        :cc       => carbon_copy
       )
     else
       # fallback to a regular notifications email with redmine view
@@ -78,7 +82,8 @@ class HelpdeskMailer < ActionMailer::Base
         :subject  => subject,
         :date     => Time.zone.now,
         :template_path => 'mailer',
-        :template_name => 'issue_edit'
+        :template_name => 'issue_edit',
+        :cc            => carbon_copy
       )
     end
     # return mail object to deliver it
