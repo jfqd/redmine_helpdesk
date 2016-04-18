@@ -15,13 +15,14 @@ class HelpdeskMailer < ActionMailer::Base
   end
 
   # Sending email notifications to the supportclient
-  def email_to_supportclient(issue, recipient, journal=nil, text='')
+  def email_to_supportclient(issue, recipient, journal=nil, text='', cc=nil)
     redmine_headers 'Project' => issue.project.identifier,
                     'Issue-Id' => issue.id,
                     'Issue-Author' => issue.author.login
     redmine_headers 'Issue-Assignee' => issue.assigned_to.login if issue.assigned_to
     message_id issue
     references issue
+
     subject = "[#{issue.project.name} - ##{issue.id}] #{issue.subject}"
     # Set 'from' email-address to 'helpdesk-sender-email' if available.
     # Falls back to regular redmine behaviour if 'sender' is empty.
@@ -35,8 +36,7 @@ class HelpdeskMailer < ActionMailer::Base
     reply  = p.nil? || r.nil? ? '' : p.custom_value_for(r).try(:value)
     footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
     # add carbon copy
-    carbon_copy = issue.custom_value_for( CustomField.find_by_name('copy-to') ).value
-
+    carbon_copy = cc.present? ? cc : issue.custom_value_for( CustomField.find_by_name('copy-to') ).value
     # add any attachements
     if journal.present? && text.present?
       journal.details.each do |d|

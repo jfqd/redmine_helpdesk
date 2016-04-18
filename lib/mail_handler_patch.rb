@@ -30,6 +30,8 @@ module RedmineHelpdesk
               "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).first
             custom_value.value = carbon_copy
             custom_value.save(:validate => false)
+          else
+            carbon_copy = nil
           end
           email_details << "Date: " + @email[:date].to_s + "\n"
           email_details = "<pre>\n" + Mail::Encodings.unquote_and_convert_to(email_details, 'utf-8') + "</pre>"
@@ -47,7 +49,7 @@ module RedmineHelpdesk
           # the notification email to the supportclient
           # on our own.
           
-          HelpdeskMailer.email_to_supportclient(issue, sender_email).deliver
+          HelpdeskMailer.email_to_supportclient(issue, sender_email, '', nil, carbon_copy).deliver
         end
         after_dispatch_to_default_hook issue
         return issue
