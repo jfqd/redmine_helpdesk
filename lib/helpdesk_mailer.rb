@@ -24,13 +24,6 @@ class HelpdeskMailer < ActionMailer::Base
     text = params[:text]
     carbon_copy = params[:carbon_copy]    
 
-    my_log = Logger.new('log/my_log.txt')
-    my_log.level = Logger::INFO
-    my_log.info Time.zone.now
-    my_log.info "We will rock you! see copy to >"
-    my_log.info carbon_copy
-    my_log.info issue
-
     redmine_headers 'Project' => issue.project.identifier,
                     'Issue-Id' => issue.id,
                     'Issue-Author' => issue.author.login
@@ -52,7 +45,6 @@ class HelpdeskMailer < ActionMailer::Base
     footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
     # add carbon copy
     if carbon_copy.nil?
-      my_log.info "First block"
       ct = CustomField.find_by_name('copy-to')
       carbon_copy = ct.nil? ? '' : issue.custom_value_for(ct).try(:value)
     end
@@ -77,8 +69,6 @@ class HelpdeskMailer < ActionMailer::Base
     end
     # create mail object to deliver
     mail = if text.present? || reply.present?
-      my_log.info "Block A"
-      my_log.info "Recipient #{recipient}, CC #{carbon_copy}, From #{sender.present? && sender || Setting.mail_from}"
       # sending out the journal note to the support client
       # or the first reply message
       t = text.present? ? "#{text}\n\n#{footer}" : reply
@@ -92,7 +82,6 @@ class HelpdeskMailer < ActionMailer::Base
         :cc       => carbon_copy
       )
     else
-      my_log.info "Block B"
       # fallback to a regular notifications email with redmine view
       @issue = issue
       @journal = journal
@@ -109,7 +98,6 @@ class HelpdeskMailer < ActionMailer::Base
       )
     end
     # return mail object to deliver it
-    my_log.info "End of function #{mail.nil?}"
     return mail
   end
 
