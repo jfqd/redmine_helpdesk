@@ -49,7 +49,8 @@ module RedmineHelpdesk
           # the notification email to the supportclient
           # on our own.
           
-          HelpdeskMailer.email_to_supportclient(issue, sender_email, '', nil, carbon_copy).deliver
+          HelpdeskMailer.email_to_supportclient(issue, {:recepient => sender_email,
+              :carbon_copy => carbon_copy} ).deliver
         end
         after_dispatch_to_default_hook issue
         return issue
