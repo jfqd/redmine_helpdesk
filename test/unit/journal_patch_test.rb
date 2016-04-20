@@ -66,7 +66,11 @@ class JournalPatchTest < ActiveSupport::TestCase
     journal.send_to_owner = true
     journal.save!
 
-    HelpdeskMailer.any_instance.expects(:email_to_supportclient).with(issue, "owner@example.com", journal, journal.notes).once
+    HelpdeskMailer.any_instance.expects(:email_to_supportclient).with(issue, 
+        {:recipient => "owner@example.com", 
+         :journal   => journal, 
+         :text      => journal.notes
+        }).once
     journal.send(:send_notification)
   end
 end
