@@ -111,3 +111,16 @@ custom_fields_009:
   default_value: ""
   editable: true
   position: 2
+custom_fields_010:
+  name: copy-to
+  regexp: ""
+  type: IssueCustomField
+  possible_values: ""
+  id: 10
+  is_required: false
+  field_format: string
+  default_value: ""
+  editable: true
+  visible: true
+  position: 1
+

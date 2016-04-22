@@ -54,9 +54,9 @@ class MailHandlerPatchTest < ActiveSupport::TestCase
   def test_helpdesk_dispatch_anonymous_as_supportclient_with_cc
     assert_no_difference 'User.count' do
       HelpdeskMailer.any_instance.expects(:email_to_supportclient).with(
-        kind_of(Issue), {:recipient =>"john.doe@somenet.foo", 
-         :carbon_copy => "ada@test.lindsaar.net, My Group: mikel@test.lindsaar.net, bob@test.lindsaar.net"}
-        ).once
+        kind_of(Issue),  {:recipient =>"john.doe@somenet.foo", 
+                          :carbon_copy => "Ada <ada@test.lindsaar.net>, mikel@test.lindsaar.net, Bob <bob@test.lindsaar.net>"}
+      ).once
       issue = submit_email('ticket_by_unknown_user_with_cc.eml',
                        :issue => {:project => 'helpdesk_project_1'},
                        :unknown_user => 'accept',
@@ -73,8 +73,8 @@ class MailHandlerPatchTest < ActiveSupport::TestCase
           first
       assert_equal "john.doe@somenet.foo", owner_value.value
       assert issue.author.anonymous?
-      assert_equal "ada@test.lindsaar.net, My Group: mikel@test.lindsaar.net, bob@test.lindsaar.net",
-          copy_to_field.value
+      assert_equal "Ada <ada@test.lindsaar.net>, mikel@test.lindsaar.net, Bob <bob@test.lindsaar.net>",
+          copy_to_value.value
     end
   end
 
