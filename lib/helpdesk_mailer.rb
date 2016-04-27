@@ -3,7 +3,6 @@
 # uses this method-name too in their mailer. This is the reason
 # why we need our own Mailer class.
 #
-require 'yaml'
 class HelpdeskMailer < ActionMailer::Base
   helper :application
 
@@ -44,9 +43,13 @@ class HelpdeskMailer < ActionMailer::Base
     reply  = p.nil? || r.nil? ? '' : p.custom_value_for(r).try(:value)
     footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
     # add carbon copy
-    if carbon_copy.nil?
-      ct = CustomField.find_by_name('copy-to')
-      carbon_copy = ct.nil? ? '' : issue.custom_value_for(ct).try(:value)
+    ct = CustomField.find_by_name('copy-to')
+    if !ct.nil?
+      if carbon_copy.nil?
+        carbon_copy = issue.custom_value_for(ct).try(:value)
+      end
+    else
+      carbon_copy = nil
     end
     # add any attachements
     if journal.present? && text.present?
