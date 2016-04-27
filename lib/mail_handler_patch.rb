@@ -22,10 +22,10 @@ module RedmineHelpdesk
           sender_email = @email.from.first
           email_details = "From: " + @email[:from].formatted.first + "\n"
           email_details << "To: " + @email[:to].formatted.join(', ') + "\n"
-          if !@email.cc.nil?
+          custom_field = CustomField.find_by_name('copy-to')
+          if !@email.cc.nil? && !custom_field.nil?
             carbon_copy = @email[:cc].formatted.join(', ')
             email_details << "Cc: " + carbon_copy + "\n"
-            custom_field = CustomField.find_by_name('copy-to')
 	    custom_value = CustomValue.where(
               "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).first
             custom_value.value = carbon_copy
