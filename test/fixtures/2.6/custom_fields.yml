@@ -123,4 +123,13 @@ custom_fields_010:
   editable: true
   visible: true
   position: 1
-
+custom_fields_011:
+  name: cc-handling
+  visible: false
+  type: ProjectCustomField
+  id: 11
+  is_required: false
+  field_format: bool
+  default_value: false
+  editable: true
+  position: 1

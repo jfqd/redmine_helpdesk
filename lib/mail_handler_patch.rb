@@ -22,10 +22,15 @@ module RedmineHelpdesk
           sender_email = @email.from.first
           email_details = "From: " + @email[:from].formatted.first + "\n"
           email_details << "To: " + @email[:to].formatted.join(', ') + "\n"
-          custom_field = CustomField.find_by_name('copy-to')
-          if !@email.cc.nil? && !custom_field.nil?
+
+          custom_field = CustomField.find_by_name('cc-handling')
+          custom_value = CustomValue.where(
+              "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id).first
+
+          if (!@email.cc.nil?) && (custom_value.value == '1')
             carbon_copy = @email[:cc].formatted.join(', ')
             email_details << "Cc: " + carbon_copy + "\n"
+            custom_field = CustomField.find_by_name('copy-to')           
 	    custom_value = CustomValue.where(
               "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).first
             custom_value.value = carbon_copy
@@ -33,6 +38,7 @@ module RedmineHelpdesk
           else
             carbon_copy = nil
           end
+
           email_details << "Date: " + @email[:date].to_s + "\n"
           email_details = "<pre>\n" + Mail::Encodings.unquote_and_convert_to(email_details, 'utf-8') + "</pre>"
           issue.description = email_details + issue.description

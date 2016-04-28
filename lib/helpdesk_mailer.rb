@@ -44,12 +44,8 @@ class HelpdeskMailer < ActionMailer::Base
     footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
     # add carbon copy
     ct = CustomField.find_by_name('copy-to')
-    if !ct.nil?
-      if carbon_copy.nil?
-        carbon_copy = issue.custom_value_for(ct).try(:value)
-      end
-    else
-      carbon_copy = nil
+    if carbon_copy.nil?
+      carbon_copy = issue.custom_value_for(ct).try(:value)
     end
     # add any attachements
     if journal.present? && text.present?
