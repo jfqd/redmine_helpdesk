@@ -29,7 +29,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
   def test_email_headers
     issue = Issue.find(1)
     email = HelpdeskMailer.
-        email_to_supportclient(issue, "owner@example.com").
+        email_to_supportclient(issue, {:recipient => "owner@example.com"}).
         deliver
     assert !ActionMailer::Base.deliveries.empty?
     assert_not_nil email
@@ -52,7 +52,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     custom_value.destroy
 
     email = HelpdeskMailer.
-        email_to_supportclient(issue, "owner@example.com").
+        email_to_supportclient(issue, {:recipient => "owner@example.com"}).
         deliver
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal Setting.mail_from, email.header['From'].to_s
@@ -61,7 +61,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
   def test_email_helpdesk_sender
     issue = Issue.find(1)
     email = HelpdeskMailer.
-        email_to_supportclient(issue, "owner@example.com").
+        email_to_supportclient(issue, {:recipient => "owner@example.com"}).
         deliver
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal "reply@example.com", email.header['From'].to_s
@@ -77,8 +77,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     custom_value.save
 
     email = HelpdeskMailer.
-        email_to_supportclient(issue, "owner@example.com").
-        deliver
+        email_to_supportclient(issue, {:recipient => "owner@example.com"}).deliver
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal "Redmine helpdesk <reply@example.com>", email.header['From'].to_s
   end
@@ -86,7 +85,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
   def test_first_reply
     issue = Issue.find(1)
     email = HelpdeskMailer.
-        email_to_supportclient(issue, "owner@example.com").
+        email_to_supportclient(issue, {:recipient => "owner@example.com"}).
         deliver
     assert !ActionMailer::Base.deliveries.empty?
     assert_match /^redmine\.issue-1\.\d+\.[a-f0-9]+@example\.net/, email.message_id
@@ -101,9 +100,10 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     email = HelpdeskMailer.
         email_to_supportclient(
             issue,
-            "owner@example.com",
-            Journal.find(1),
-            'text').
+            {:recipient => "owner@example.com",
+             :journal   => Journal.find(1),
+             :text     => 'text'
+            }).
         deliver
     assert !ActionMailer::Base.deliveries.empty?
     assert_match /^redmine\.issue-1\.\d+\.[a-f0-9]+@example\.net/, email.message_id
@@ -124,9 +124,10 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     email = HelpdeskMailer.
         email_to_supportclient(
             issue,
-            "owner@example.com",
-            Journal.find(1),
-            'text').
+            {:recipient => "owner@example.com",
+             :journal   => Journal.find(1),
+             :text      => 'text'
+            }).
         deliver
     assert !ActionMailer::Base.deliveries.empty?
     assert_match /^redmine\.issue-2\.\d+\.[a-f0-9]+@example\.net/, email.message_id
@@ -136,7 +137,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
   def test_subject
     issue = Issue.find(1)
     email = HelpdeskMailer.
-        email_to_supportclient(issue, "owner_email").
+        email_to_supportclient(issue, {:recipient => "owner_email"}).
         deliver
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal "[#{issue.project.name} - ##{issue.id}] #{issue.subject}", email.subject.to_s
@@ -149,10 +150,10 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     email = HelpdeskMailer.
         email_to_supportclient(
             issue,
-            "owner@example.com",
-            Journal.find(3),
-            'text').
-        deliver
+            {:recipient => "owner@example.com",
+             :journal   => Journal.find(3),
+             :text      => 'text'
+            }).deliver
     assert !ActionMailer::Base.deliveries.empty?
     mail = ActionMailer::Base.deliveries.last
     assert_not_nil mail

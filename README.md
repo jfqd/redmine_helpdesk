@@ -13,8 +13,9 @@ Lightweight helpdesk plugin for redmine. Adds the email sender-address of an ano
 * The email-footer can be customized by using the following placeholders: ##user-name##, ##user-firstname##, ##user-lastname##, ##user-mail##, ##user-login## for all user custom fields
 * The sender email-address can be adjusted (optional, per project)
 * Internal communication is not send to the supportclient
-* The supportclient will get an email notification if the support checkbox on the journal is checked
+* The supportclient will get an email notification if the support checkbox on the journal is checked (default value is optional)
 * Journal attachments will be delivered too
+* Cc header is handled if the cc-handling checkbox is checked. (optional, per project)
 
 ## Screenshot
 
@@ -133,6 +134,7 @@ rake helpdesk:localdb:stop
 * [Orchitech Solutions](https://github.com/orchitech) - Added support for non-anonymous supportclients (sponsored by ISIC Global Office)
 * [Orchitech Solutions](https://github.com/orchitech) - Added support for customizable email footers (sponsored by ISIC Global Office)
 * [Orchitech Solutions](https://github.com/orchitech) - Added support for tracking email details (sponsored by ISIC Global Office)
+* [shackijj] (https://github.com/shackijj) - Added Cc header handling.
 
 ## License
 

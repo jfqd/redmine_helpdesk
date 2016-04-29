@@ -26,3 +26,12 @@ projects_trackers_008:
 projects_trackers_009:
   project_id: 3
   tracker_id: 3
+projects_trackers_010:
+  project_id: 4
+  tracker_id: 1
+projects_trackers_011:
+  project_id: 4
+  tracker_id: 2
+projects_trackers_012:
+  project_id: 4
+  tracker_id: 3
