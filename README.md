@@ -116,6 +116,7 @@ rake helpdesk:localdb:stop
 
 ## Contribution
 
+* [ismaelgc](https://github.com/ismaelgc) - Spanish translation
 * [monaka](https://github.com/monaka) - Japanese translation
 * [avoidik](https://github.com/avoidik) - Add missed Russian translation into roles and access manager
 * [WhereIsPedro](https://github.com/WhereIsPedro) - Polish translation
@@ -142,4 +143,4 @@ This plugin is licensed under the MIT license. See LICENSE-file for details.
 
 ## Copyright
 
-Copyright (c) 2012-2015 Stefan Husch, qutic development. The start of development has been sponsored by netz98.de
+Copyright (c) 2012-2016 Stefan Husch, qutic development. The start of development has been sponsored by netz98.de
