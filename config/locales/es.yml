@@ -1,0 +1,3 @@
+es:
+  label_support_checkbox: "Enviar correo al usuario de soporte"
+  email_was_send_to_supportclient: "Esta respuesta ha sido enviada al usuario de soporte."
