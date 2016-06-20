@@ -1,6 +1,7 @@
 0.0.15
 ---
 * Added support for tracking email details by martincizek from orchitech
+* Fix for working with private Projects - Fix For jfqd#75
 
 0.0.14
 ---
