@@ -84,6 +84,8 @@ If you prefer to run Redmine with JRuby make sure to use Redmine versions prior 
 * A version for Redmine 2.3.x is tagged with [v2.3](https://github.com/jfqd/redmine_helpdesk/tree/v2.3 "plugin version for Redmine 2.3.x") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v2.3.zip "download plugin for Redmine 2.3.x").
 * A version for Redmine 2.4.x and 2.5.x is tagged with [v2.5](https://github.com/jfqd/redmine_helpdesk/releases/tag/v2.5 "plugin version for Redmine 2.4.x and 2.5.x") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v2.5.zip "download plugin for Redmine 2.4.x and 2.5.x").
 
+The latest version of this plugin is compatible with ruby 2.1.6 but not ruby 2.2.2.
+
 ## Development
 
 ### Testing
