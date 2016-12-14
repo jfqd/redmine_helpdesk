@@ -10,7 +10,23 @@ Lightweight helpdesk plugin for redmine. Adds the email sender-address of an ano
 * Support for sending an email notification to the (anonymous user) supportclient on ticket creation
 * A standard first reply message can be send to the supportclient on ticket creation (optional, per project)
 * The email-footer for the email notification to the supportclient can be adjusted (optional, per project)
-* The email-footer can be customized by using the following placeholders: ##user-name##, ##user-firstname##, ##user-lastname##, ##user-mail##, ##user-login## for all user custom fields
+* The email-footer can be customized by using the following placeholders: 
+  - Issue parameters
+    - ##issue-id##
+    - ##issue-subject##
+    - ##issue-tracker##
+    - ##issue-status##
+  - Project parameters
+    - ##project-name##
+  - User parameters
+    - ##user-name## 
+    - ##user-firstname##
+    - ##user-lastname##
+    - ##user-mail##
+    - ##user-login##
+    - all user custom fields: ##user-cf-[user's custom field name]##, e.g. ##user-cf-position##
+  - Base parameters
+    - ##time-now##
 * The sender email-address can be adjusted (optional, per project)
 * Internal communication is not send to the supportclient
 * The supportclient will get an email notification if the support checkbox on the journal is checked (default value is optional)
