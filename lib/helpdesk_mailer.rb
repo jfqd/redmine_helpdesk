@@ -80,8 +80,8 @@ class HelpdeskMailer < ActionMailer::Base
 
       # sending out the journal note to the support client
       # or the first reply message
-      t = text.present? ? expand_macros(text, issue, journal) : reply
-      t = "#{t}\n\n#{footer}"
+      t = text.present? ? text : reply
+      t = expand_macros("#{t}\n\n#{footer}", issue, journal)
 
       @text = t.gsub(/\n/,"<br/>")
       mail(
