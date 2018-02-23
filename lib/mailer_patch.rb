@@ -3,8 +3,6 @@ module RedmineHelpdesk
     def self.included(base) # :nodoc:
       base.send(:include, InstanceMethods)
       
-      base.class_eval do
-        alias_method :issue_edit,  :helpdesk
       end
     end
 
