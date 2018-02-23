@@ -1,3 +1,8 @@
+0.0.16
+---
+* removed depracated alias_method_chain
+* added support for active_support 5.1
+
 0.0.15
 ---
 * Added support for tracking email details by martincizek from orchitech
