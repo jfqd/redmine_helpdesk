@@ -2,8 +2,6 @@ module RedmineHelpdesk
   module JournalPatch
     def self.included(base) # :nodoc:
       base.send(:include, InstanceMethods)
-      
-      end
     end
 
     module InstanceMethods
