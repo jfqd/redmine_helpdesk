@@ -18,7 +18,7 @@ module RedmineHelpdesk
         roles = issue.author.roles_for_project(issue.project)
         # add owner-email only if the author has assigned some role with
         # permission treat_user_as_supportclient enabled
-        if roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
+        if issue.author.type.eql?('AnonymousUser') || roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
           sender_email = @email.from.first
           email_details = "From: " + @email[:from].formatted.first + "\n"
           email_details << "To: " + @email[:to].formatted.join(', ') + "\n"
@@ -30,9 +30,8 @@ module RedmineHelpdesk
           if (!@email.cc.nil?) && (custom_value.value == '1')
             carbon_copy = @email[:cc].formatted.join(', ')
             email_details << "Cc: " + carbon_copy + "\n"
-            custom_field = CustomField.find_by_name('copy-to')           
-	    custom_value = CustomValue.where(
-              "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).first
+            custom_field = CustomField.find_by_name('copy-to')
+            custom_value = CustomValue.where("customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).first
             custom_value.value = carbon_copy
             custom_value.save(:validate => false)
           else
@@ -49,12 +48,12 @@ module RedmineHelpdesk
             first
           custom_value.value = sender_email
           custom_value.save(:validate => false) # skip validation!
-          
+
           # regular email sending to known users is done
           # on the first issue.save. So we need to send
           # the notification email to the supportclient
           # on our own.
-          
+
           HelpdeskMailer.email_to_supportclient(issue, {:recipient => sender_email,
               :carbon_copy => carbon_copy} ).deliver
         end

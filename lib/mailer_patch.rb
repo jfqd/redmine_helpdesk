@@ -2,7 +2,7 @@ module RedmineHelpdesk
   module MailerPatch
     def self.included(base) # :nodoc:
       base.send(:include, InstanceMethods)
-      
+
       base.class_eval do
         alias_method_chain :issue_edit,  :helpdesk
       end
@@ -22,7 +22,7 @@ module RedmineHelpdesk
         message_id journal
         references issue
         @author = journal.user
-        
+
         other_recipients = []
         # add owner-email to the recipients
         begin
@@ -51,7 +51,6 @@ module RedmineHelpdesk
           :subject => s
         )
       end
-      
     end # module InstanceMethods
   end # module MailerPatch
 end # module RedmineHelpdesk
