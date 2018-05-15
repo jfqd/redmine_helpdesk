@@ -47,7 +47,6 @@ module RedmineHelpdesk
           custom_value = CustomValue.where(
             "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).
             first
-          Rails.logger.error "custom_value.value: #{custom_value.value.inspect}"
           if custom_value.value.to_s.strip.empty?
             custom_value.value = sender_email
             custom_value.save(:validate => false) # skip validation!
