@@ -18,7 +18,7 @@ module RedmineHelpdesk
         roles = issue.author.roles_for_project(issue.project)
         # add owner-email only if the author has assigned some role with
         # permission treat_user_as_supportclient enabled
-        if roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
+        if issue.author.type.eql?("AnonymousUser") || roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
           sender_email = @email.from.first
           email_details = "From: " + @email[:from].formatted.first + "\n"
           email_details << "To: " + @email[:to].formatted.join(', ') + "\n"
@@ -47,8 +47,11 @@ module RedmineHelpdesk
           custom_value = CustomValue.where(
             "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).
             first
-          custom_value.value = sender_email
-          custom_value.save(:validate => false) # skip validation!
+          Rails.logger.error "custom_value.value: #{custom_value.value.inspect}"
+          if custom_value.value.to_s.strip.empty?
+            custom_value.value = sender_email
+            custom_value.save(:validate => false) # skip validation!
+          end
           
           # regular email sending to known users is done
           # on the first issue.save. So we need to send
