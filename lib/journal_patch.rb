@@ -4,7 +4,8 @@ module RedmineHelpdesk
       base.send(:include, InstanceMethods)
       
       base.class_eval do
-        alias_method_chain :send_notification,  :helpdesk
+        alias_method :send_notification_without_helpdesk, :send_notification
+        alias_method :send_notification, :send_notification_with_helpdesk
       end
     end
 
