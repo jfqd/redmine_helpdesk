@@ -1,4 +1,4 @@
-class CreateCustomOwnerEmailField < ActiveRecord::Migration
+class CreateCustomOwnerEmailField < ActiveRecord::Migration[5.1]
   def self.up
     # fix PG:DuplicateColumn errors
     # https://github.com/jfqd/redmine_helpdesk/issues/66
