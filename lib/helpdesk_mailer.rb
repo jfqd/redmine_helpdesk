@@ -83,7 +83,6 @@ class HelpdeskMailer < ActionMailer::Base
       
       text_on_date = "Am"
       text_has_written = "schrieb"
-      old_posts_array = []
 
         # --- functions ---
         def readableName(author, email)
@@ -99,19 +98,6 @@ class HelpdeskMailer < ActionMailer::Base
           return date[0...-4]
         end
 
-        # --- queries ---
-        Journal.where(:journalized_id => issue.id).where(:journalized_type => "Issue").order("created_on DESC").each do |old_post|
-
-        journal_author = User.find(old_post.user_id)        
-        recipient_name = readableName(journal_author, recipient);
-
-        # --- message 
-        complete_post = "<br><hr><br>#{text_on_date} #{readableDate(old_post.created_on)} #{text_has_written} #{recipient_name}:<br><br> #{old_post.notes}<br><br>"
-
-        old_posts_array << complete_post
-
-      end
- 
       # --- out of the loop: first post by the customer ---
 
       original_author = User.find(issue.author_id)
@@ -120,11 +106,8 @@ class HelpdeskMailer < ActionMailer::Base
 
       first_post = "<br><hr><br><b>#{text_on_date} #{readableDate(issue.created_on)} #{text_has_written} #{original_name}:<br> #{original_text}</b><br>"
       
-      old_posts_array << first_post 
        
-      # prevents the last interaction to show up.
-      old_posts_array = old_posts_array.drop(1)
-      old_posts = first_post #old_posts_array.join('')
+      old_posts = first_post
 
       t = text.present? ? "#{text}\n\n#{footer}\n\n#{old_posts}" : reply
 
