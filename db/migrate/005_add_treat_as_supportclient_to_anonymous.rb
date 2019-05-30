@@ -4,7 +4,7 @@ class AddTreatAsSupportclientToAnonymous < ActiveRecord::Migration[5.1]
   end
 
   def self.down
-    Role.find(:all).each do |r|
+    Role.all.each do |r|
       r.remove_permission!(:treat_user_as_supportclient)
     end
   end

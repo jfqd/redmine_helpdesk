@@ -2,6 +2,11 @@ module RedmineHelpdesk
   module MailHandlerPatch
     def self.included(base) # :nodoc:
       base.send(:include, InstanceMethods)
+
+      base.class_eval do
+        alias_method :dispatch_to_default_without_helpdesk, :dispatch_to_default
+        alias_method :dispatch_to_default, :dispatch_to_default_with_helpdesk
+      end
     end
 
     module InstanceMethods
@@ -14,7 +19,7 @@ module RedmineHelpdesk
         roles = issue.author.roles_for_project(issue.project)
         # add owner-email only if the author has assigned some role with
         # permission treat_user_as_supportclient enabled
-        if roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
+        if issue.author.type.eql?("AnonymousUser") || roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
           sender_email = @email.from.first
           email_details = "From: " + @email[:from].formatted.first + "\n"
           email_details << "To: " + @email[:to].formatted.join(', ') + "\n"
