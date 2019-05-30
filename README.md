@@ -31,7 +31,7 @@ To install the plugin clone the repo from github and migrate the database:
 
 ```
 cd /path/to/redmine/
-git clone git://github.com/jfqd/redmine_helpdesk.git plugins/redmine_helpdesk
+git clone git://github.com/batmunkey/redmine_helpdesk.git plugins/redmine_helpdesk
 rake redmine:plugins:migrate RAILS_ENV=production
 ```
 

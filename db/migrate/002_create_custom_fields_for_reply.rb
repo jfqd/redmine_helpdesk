@@ -1,4 +1,4 @@
-class CreateCustomFieldsForReply < ActiveRecord::Migration
+class CreateCustomFieldsForReply < ActiveRecord::Migration[5.1]
   def self.up
     c = CustomField.new(
       :name => 'helpdesk-first-reply',

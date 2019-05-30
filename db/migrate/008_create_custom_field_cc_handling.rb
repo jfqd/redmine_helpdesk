@@ -1,4 +1,4 @@
-class CreateCustomFieldCcHandling < ActiveRecord::Migration
+class CreateCustomFieldCcHandling < ActiveRecord::Migration[5.1]
   def self.up
     c = CustomField.new(
       :name => 'cc-handling',

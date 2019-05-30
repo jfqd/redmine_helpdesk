@@ -1,4 +1,4 @@
-class CreateCustomCopyToField < ActiveRecord::Migration
+class CreateCustomCopyToField < ActiveRecord::Migration[5.1]
   def self.up
     c = CustomField.new(
       :name => 'copy-to',

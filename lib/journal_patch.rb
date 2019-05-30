@@ -2,10 +2,6 @@ module RedmineHelpdesk
   module JournalPatch
     def self.included(base) # :nodoc:
       base.send(:include, InstanceMethods)
-      
-      base.class_eval do
-        alias_method_chain :send_notification,  :helpdesk
-      end
     end
 
     module InstanceMethods
