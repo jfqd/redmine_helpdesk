@@ -33,7 +33,6 @@ before_install:
   - rake helpdesk:redmine:install
   - cd test/app
   - export BUNDLE_GEMFILE=Gemfile
-  - rm -rf /home/travis/build/jfqd/redmine_helpdesk/test/app/plugins/redmine_helpdesk/Gemfile.lock
 before_script:
   - echo $(pwd)
   - sudo service mysql start
