@@ -32,6 +32,7 @@ before_install:
   - export BUNDLE_GEMFILE=Gemfile
 before_script:
   - echo $(pwd)
+  - sudo service mysql start
   - echo $(ps -Af | grep mysqld)
   - export RAILS_ENV=test
   - mysql -e 'create database redmine;'
