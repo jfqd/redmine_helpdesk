@@ -4,7 +4,8 @@ module RedmineHelpdesk
       base.send(:include, InstanceMethods)
 
       base.class_eval do
-        alias_method_chain :dispatch_to_default, :helpdesk
+        alias_method :dispatch_to_default_without_helpdesk, :dispatch_to_default
+        alias_method :dispatch_to_default, :dispatch_to_default_with_helpdesk
       end
     end
 
