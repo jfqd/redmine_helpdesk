@@ -31,10 +31,14 @@ before_install:
   - cd test/app
   - export BUNDLE_GEMFILE=Gemfile
 before_script:
+  - echo $(pwd)
   - export RAILS_ENV=test
   - mysql -e 'create database redmine;'
   - psql -c 'create database redmine;' -U postgres
+  - bundle exec rake generate_secret_token
   - export RAILS_ENV=test
   - bundle exec rake db:migrate
+  - bundle exec rake redmine:plugins:migrate
+  - bundle exec rake db:test:prepare
 script:
   - bundle exec rake helpdesk:ci
