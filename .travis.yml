@@ -3,6 +3,9 @@ rvm:
 - 2.5
 - 2.6
 - jruby
+services:
+  - mysql
+  - postgresql
 env:
   global:
   - REDMINE_LANG=en
