@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 class MacroExpanderTest < ActionMailer::TestCase
   include Redmine::I18n
 
-  self.use_transactional_fixtures = true
+  self.use_transactional_tests = true
 
   fixtures :all
 
