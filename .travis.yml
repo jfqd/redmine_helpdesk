@@ -32,6 +32,7 @@ before_install:
   - export BUNDLE_GEMFILE=Gemfile
 before_script:
   - echo $(pwd)
+  - echo $(ps -Af | grep mysqld)
   - export RAILS_ENV=test
   - mysql -e 'create database redmine;'
   - psql -c 'create database redmine;' -U postgres
