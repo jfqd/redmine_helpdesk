@@ -28,9 +28,9 @@ module RedmineHelpdesk
           owner_email = issue.custom_value_for( CustomField.find_by_name('owner-email') ).value
           HelpdeskMailer.email_to_supportclient(
             issue, {
-              :recipient => owner_email,
-              :journal => self,
-              :text => notes
+              recipient: owner_email,
+              journal:   self,
+              text:      notes
             }
           ).deliver unless owner_email.blank?
         end
