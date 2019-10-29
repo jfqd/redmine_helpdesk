@@ -33,6 +33,7 @@ before_install:
   - rake helpdesk:redmine:install
   - cd test/app
   - export BUNDLE_GEMFILE=Gemfile
+  - rm -rf /home/travis/build/jfqd/redmine_helpdesk/test/app/plugins/redmine_helpdesk/Gemfile.lock
 before_script:
   - echo $(pwd)
   - sudo service mysql start
@@ -41,7 +42,6 @@ before_script:
   - mysql -e 'create database redmine;'
   - psql -c 'create database redmine;' -U postgres
   - bundle exec rake generate_secret_token
-  - bundle update
   - export RAILS_ENV=test
   - bundle exec rake db:migrate
 script:
