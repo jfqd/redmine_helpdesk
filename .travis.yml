@@ -41,6 +41,7 @@ before_script:
   - mysql -e 'create database redmine;'
   - psql -c 'create database redmine;' -U postgres
   - bundle exec rake generate_secret_token
+  - bundle update
   - export RAILS_ENV=test
   - bundle exec rake db:migrate
 script:
