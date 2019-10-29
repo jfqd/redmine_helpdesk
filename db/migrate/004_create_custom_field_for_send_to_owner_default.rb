@@ -1,4 +1,4 @@
-class CreateCustomFieldForSendToOwnerDefault < ActiveRecord::Migration
+class CreateCustomFieldForSendToOwnerDefault < ActiveRecord::Migration[5.2]
   def self.up
     c = CustomField.new(
       :name => 'helpdesk-send-to-owner-default',

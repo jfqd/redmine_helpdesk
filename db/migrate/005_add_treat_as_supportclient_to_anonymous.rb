@@ -1,4 +1,4 @@
-class AddTreatAsSupportclientToAnonymous < ActiveRecord::Migration
+class AddTreatAsSupportclientToAnonymous < ActiveRecord::Migration[5.2]
   def self.up
     Role.find(2).add_permission!(:treat_user_as_supportclient)
   end

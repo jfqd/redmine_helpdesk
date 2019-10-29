@@ -1,4 +1,4 @@
-class AppendFooterToFirstReply < ActiveRecord::Migration
+class AppendFooterToFirstReply < ActiveRecord::Migration[5.2]
 
   # Appends helpdesk-email-footer to helpdesk-first-reply to ensure backward
   # compatibility for updaters. See https://github.com/jfqd/redmine_helpdesk/issues/52
