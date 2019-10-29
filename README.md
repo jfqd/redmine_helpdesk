@@ -10,11 +10,12 @@ Lightweight helpdesk plugin for redmine. Adds the email sender-address of an ano
 * Support for sending an email notification to the (anonymous user) supportclient on ticket creation
 * A standard first reply message can be send to the supportclient on ticket creation (optional, per project)
 * The email-footer for the email notification to the supportclient can be adjusted (optional, per project)
-* The email-footer can be customized by using the following placeholders: %USER_FIRST_NAME%, %USER_LAST_NAME%, %USER_EMAIL%, %USER_LOGIN%, %USER_CF_...% for all user custom fields
+* The email-footer can be customized by using the following placeholders: ##user-name##, ##user-firstname##, ##user-lastname##, ##user-mail##, ##user-login## for all user custom fields
 * The sender email-address can be adjusted (optional, per project)
 * Internal communication is not send to the supportclient
-* The supportclient will get an email notification if the support checkbox on the journal is checked
+* The supportclient will get an email notification if the support checkbox on the journal is checked (default value is optional)
 * Journal attachments will be delivered too
+* Cc header is handled if the cc-handling checkbox is checked. (optional, per project)
 
 ## Screenshot
 
@@ -59,21 +60,23 @@ To use the helpdesk functionality you need to
 
 ![project configuration sample](doc/project-settings.jpg "Per project configuration sample")
 
+**Only public projects could be used for the helpdesk functionality**. If you want to use it with private projects [issue #75](https://github.com/jfqd/redmine_helpdesk/issues/75#issuecomment-101950450) might be helpful to you.
+
 ## Cronjob
 
-Creating tickets from support emails through an IMAP-account is done by a cronjob. The following syntax is for ubuntu or debian linux:
+Creating tickets from support emails through an IMAP-account is done by a cronjob. If you are not familiar with cron you first should read about the concept. The following syntax is for ubuntu or debian linux:
 
 ```
-*/5 * * * * redmine /usr/bin/rake -f /path/to/redmine/Rakefile --silent redmine:email:receive_imap RAILS_ENV="production" host=mail.example.com port=993 username=username password=password ssl=true project=project_identifier folder=INBOX move_on_success=processed move_on_failure=failed no_permission_check=1 unknown_user=accept 1 > /dev/null
+*/5 * * * * redmineuser /path/to/your/rake -f /path/to/redmine/Rakefile --silent redmine:email:receive_imap RAILS_ENV="production" host=mail.example.com port=993 username=username password=password ssl=true project=project_identifier folder=INBOX move_on_success=processed move_on_failure=failed no_permission_check=1 unknown_user=accept 1 > /dev/null
 ```
 
 Further information about receiving emails with redmine can be found at: [http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails](http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails#Fetching-emails-from-an-IMAP-server)
 
-Please note that forwarding emails with rdm-mailhandler.rb is currently not supported by the plugin.
+Please note that forwarding emails with **rdm-mailhandler.rb** is currently **not supported** by the plugin.
 
 ## Compatibility
 
-The latest version of this plugin is only compatible with Redmine 2.4.x., 2.5.x, 2.6.x, 3.0.x.
+The latest version of this plugin is only compatible with Redmine 2.4.x, 2.5.x, 2.6.x, 3.0.x, 3.1.x.
 
 If you prefer to run Redmine with JRuby make sure to use Redmine versions prior to 3.0.x!
 
@@ -81,9 +84,40 @@ If you prefer to run Redmine with JRuby make sure to use Redmine versions prior 
 * A version for Redmine 2.3.x is tagged with [v2.3](https://github.com/jfqd/redmine_helpdesk/tree/v2.3 "plugin version for Redmine 2.3.x") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v2.3.zip "download plugin for Redmine 2.3.x").
 * A version for Redmine 2.4.x and 2.5.x is tagged with [v2.5](https://github.com/jfqd/redmine_helpdesk/releases/tag/v2.5 "plugin version for Redmine 2.4.x and 2.5.x") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v2.5.zip "download plugin for Redmine 2.4.x and 2.5.x").
 
+## Development
+
+### Testing
+
+Rake tasks for testing against Redmine are provided. Redmine is installed under `test/app` and tests are run against the local instance.
+
+```bash
+REDMINE_VERSION=3.2 DATABASE_ADAPTER=mysql rake helpdesk:redmine:install
+```
+
+Docker is used to provide local MySQL (`DATABASE_ADAPTER=mysql`) and PostgreSQL (`DATABASE_ADAPTER=postgresql_ext`) instances.
+
+```bash
+export DATABASE_ADAPTER=mysql
+rake helpdesk:prepare_local
+rake helpdesk:migrate
+```
+
+Test suite can be executed with:
+
+```bash
+DATABASE_ADAPTER=mysql rake helpdesk:ext_ci
+```
+
+The local database instance has to be stopped with a rake task:
+
+```bash
+rake helpdesk:localdb:stop
+```
 
 ## Contribution
 
+* [ismaelgc](https://github.com/ismaelgc) - Spanish translation
+* [monaka](https://github.com/monaka) - Japanese translation
 * [avoidik](https://github.com/avoidik) - Add missed Russian translation into roles and access manager
 * [WhereIsPedro](https://github.com/WhereIsPedro) - Polish translation
 * [vilppuvuorinen](https://github.com/vilppuvuorinen) - 3.0.x compatibility
@@ -101,6 +135,7 @@ If you prefer to run Redmine with JRuby make sure to use Redmine versions prior 
 * [Orchitech Solutions](https://github.com/orchitech) - Added support for non-anonymous supportclients (sponsored by ISIC Global Office)
 * [Orchitech Solutions](https://github.com/orchitech) - Added support for customizable email footers (sponsored by ISIC Global Office)
 * [Orchitech Solutions](https://github.com/orchitech) - Added support for tracking email details (sponsored by ISIC Global Office)
+* [shackijj] (https://github.com/shackijj) - Added Cc header handling.
 
 ## License
 
@@ -108,4 +143,4 @@ This plugin is licensed under the MIT license. See LICENSE-file for details.
 
 ## Copyright
 
-Copyright (c) 2012-2015 Stefan Husch, qutic development. The start of development has been sponsored by netz98.de
+Copyright (c) 2012-2016 Stefan Husch, qutic development. The start of development has been sponsored by netz98.de

@@ -23,3 +23,15 @@ enabled_modules_006:
   name: files
   project_id: 2
   id: 6
+enabled_modules_007:
+  name: issue_tracking
+  project_id: 4
+  id: 7
+enabled_modules_008:
+  name: time_tracking
+  project_id: 4
+  id: 8
+enabled_modules_009:
+  name: files
+  project_id: 4
+  id: 9

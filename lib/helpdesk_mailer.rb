@@ -15,13 +15,21 @@ class HelpdeskMailer < ActionMailer::Base
   end
 
   # Sending email notifications to the supportclient
-  def email_to_supportclient(issue, recipient, journal=nil, text='')
+  def email_to_supportclient(issue, params)
+    # issue, recipient, journal=nil, text='', copy_to=nil    
+
+    recipient = params[:recipient]
+    journal = params[:journal]
+    text = params[:text]
+    carbon_copy = params[:carbon_copy]    
+
     redmine_headers 'Project' => issue.project.identifier,
                     'Issue-Id' => issue.id,
                     'Issue-Author' => issue.author.login
     redmine_headers 'Issue-Assignee' => issue.assigned_to.login if issue.assigned_to
     message_id issue
     references issue
+
     subject = "[#{issue.project.name} - ##{issue.id}] #{issue.subject}"
     # Set 'from' email-address to 'helpdesk-sender-email' if available.
     # Falls back to regular redmine behaviour if 'sender' is empty.
@@ -34,6 +42,11 @@ class HelpdeskMailer < ActionMailer::Base
     f = CustomField.find_by_name('helpdesk-email-footer')
     reply  = p.nil? || r.nil? ? '' : p.custom_value_for(r).try(:value)
     footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
+    # add carbon copy
+    ct = CustomField.find_by_name('copy-to')
+    if carbon_copy.nil?
+      carbon_copy = issue.custom_value_for(ct).try(:value)
+    end
     # add any attachements
     if journal.present? && text.present?
       journal.details.each do |d|
@@ -64,7 +77,8 @@ class HelpdeskMailer < ActionMailer::Base
         :to       => recipient,
         :subject  => subject,
         :body     => expand_macros(t, issue, journal),
-        :date     => Time.zone.now
+        :date     => Time.zone.now,
+        :cc       => carbon_copy
       )
     else
       # fallback to a regular notifications email with redmine view
@@ -78,7 +92,8 @@ class HelpdeskMailer < ActionMailer::Base
         :subject  => subject,
         :date     => Time.zone.now,
         :template_path => 'mailer',
-        :template_name => 'issue_edit'
+        :template_name => 'issue_edit',
+        :cc            => carbon_copy
       )
     end
     # return mail object to deliver it
