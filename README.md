@@ -138,7 +138,7 @@ rake helpdesk:localdb:stop
 * [Orchitech Solutions](https://github.com/orchitech) - Added support for non-anonymous supportclients (sponsored by ISIC Global Office)
 * [Orchitech Solutions](https://github.com/orchitech) - Added support for customizable email footers (sponsored by ISIC Global Office)
 * [Orchitech Solutions](https://github.com/orchitech) - Added support for tracking email details (sponsored by ISIC Global Office)
-* [shackijj] (https://github.com/shackijj) - Added Cc header handling.
+* [shackijj](https://github.com/shackijj) - Added Cc header handling.
 
 ## License
 
