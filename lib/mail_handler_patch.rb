@@ -51,7 +51,7 @@ module RedmineHelpdesk
           custom_value = CustomValue.where(
             "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
           ).first
-          issue.status = IssueStatus.default if issue.closed? && custom_value == true
+          issue.status = IssueStatus.default if issue.closed? && custom_value.value == '1'
 
           email_details << "Date: " + @email[:date].to_s + "\n"
           email_details = "<pre>\n" + Mail::Encodings.unquote_and_convert_to(email_details, 'utf-8') + "</pre>"
