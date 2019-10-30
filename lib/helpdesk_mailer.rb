@@ -102,6 +102,26 @@ class HelpdeskMailer < ActionMailer::Base
 
   private
 
+  # Appends a Redmine header field (name is prepended with 'X-Redmine-')
+  def redmine_headers(h)
+    h.each { |k,v| headers["X-Redmine-#{k}"] = v.to_s }
+  end
+
+  def self.token_for(object, rand=true)
+    timestamp = object.send(object.respond_to?(:created_on) ? :created_on : :updated_on)
+    hash = [
+      "redmine",
+      "#{object.class.name.demodulize.underscore}-#{object.id}",
+      timestamp.strftime("%Y%m%d%H%M%S")
+    ]
+    if rand
+      hash << Redmine::Utils.random_hex(8)
+    end
+    host = Setting.mail_from.to_s.strip.gsub(%r{^.*@|>}, '')
+    host = "#{::Socket.gethostname}.redmine" if host.empty?
+    "#{hash.join('.')}@#{host}"
+  end
+
   # Returns a Message-Id for the given object
   def self.message_id_for(object)
     Mailer.class_eval do
@@ -115,11 +135,6 @@ class HelpdeskMailer < ActionMailer::Base
     Mailer.class_eval do
       token_for(object, false)
     end
-  end
-
-  # Appends a Redmine header field (name is prepended with 'X-Redmine-')
-  def redmine_headers(h)
-    h.each { |k,v| headers["X-Redmine-#{k}"] = v.to_s }
   end
 
   def message_id(object)
