@@ -53,7 +53,7 @@ class HelpdeskMailer < ActionMailer::Base
         if d.property == 'attachment'
           a = Attachment.find(d.prop_key)
           begin
-            attachments[a.filename] = File.read(a.diskfile)
+            attachments[a.filename] = File.binread(a.diskfile)
           rescue
             # ignore rescue
           end
