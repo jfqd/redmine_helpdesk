@@ -116,7 +116,7 @@ module RedmineHelpdesk
             end
           end
         end
-        # return to regular message
+        # return to regular method
         receive_issue_reply_without_helpdesk(issue_id, from_journal=nil)
       end
 
