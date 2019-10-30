@@ -157,6 +157,7 @@ rake helpdesk:localdb:stop
 * [shackijj](https://github.com/shackijj) - Added Cc header handling
 * [archonwang](https://github.com/archonwang) - Add Simplified Chinese
 * [Niremizov](https://github.com/Niremizov) - Set owner email only if it wasn't set before
+* [ghost](https://github.com/ghost) - Fix attachements truncated in email sent to supportclient
 
 ## License
 
