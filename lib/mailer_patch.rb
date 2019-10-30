@@ -14,7 +14,7 @@ module RedmineHelpdesk
       # be called on existing tickets. We will add the
       # owner-email to the recipients only if no email-
       # footer text is available.
-      def issue_edit_with_helpdesk(journal, to_users=[], cc_users=[])
+      def issue_edit_with_helpdesk(user, journal, to_users=[], cc_users=[])
         issue = journal.journalized
         redmine_headers 'Project' => issue.project.identifier,
                         'Issue-Id' => issue.id,
