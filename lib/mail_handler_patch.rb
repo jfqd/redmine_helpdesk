@@ -46,6 +46,13 @@ module RedmineHelpdesk
             carbon_copy = nil
           end
 
+          # should we reopen closed issues by email?
+          custom_field = CustomField.find_by_name('reopen-closed-issues-by-email')
+          custom_value = CustomValue.where(
+            "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
+          ).first
+          issue.status = IssueStatus.default if issue.closed? && custom_value == true
+
           email_details << "Date: " + @email[:date].to_s + "\n"
           email_details = "<pre>\n" + Mail::Encodings.unquote_and_convert_to(email_details, 'utf-8') + "</pre>"
           issue.description = email_details + issue.description
