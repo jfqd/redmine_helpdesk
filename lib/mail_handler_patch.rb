@@ -65,8 +65,8 @@ module RedmineHelpdesk
           if custom_value.value.to_s.strip.empty?
             custom_value.value = sender_email
             custom_value.save(:validate => false) # skip validation!
-	  else
-	    # Email owner field was already set by some preprocess hooks.
+          else
+            # Email owner field was already set by some preprocess hooks.
             # So now we need to send message to another recepient.
             sender_email = custom_value.value.to_s.strip
           end
