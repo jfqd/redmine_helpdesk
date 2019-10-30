@@ -1,7 +1,7 @@
 class AddTreatAsSupportclientToAnonymous < ActiveRecord::Migration[5.2]
   def self.up
-    anon = User.where(type: 'AnonymousUser').first
-    Role.where(builtin: anon.id).add_permission!(:treat_user_as_supportclient)
+    anon_id = User.where(type: 'AnonymousUser').first.try(:id) || User.where('lastname LIKE ?', 'Anonymous').first.try(:id) || 4
+    Role.where(builtin: anon_id).add_permission!(:treat_user_as_supportclient)
   end
 
   def self.down
