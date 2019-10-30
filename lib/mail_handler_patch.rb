@@ -24,16 +24,18 @@ module RedmineHelpdesk
           email_details = "From: " + @email[:from].formatted.first + "\n"
           email_details << "To: " + @email[:to].formatted.join(', ') + "\n"
 
+          # any cc handling needed?
           custom_field = CustomField.find_by_name('cc-handling')
           custom_value = CustomValue.where(
-              "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id).first
-
+            "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
+          ).first
           if (!@email.cc.nil?) && (custom_value.value == '1')
             carbon_copy = @email[:cc].formatted.join(', ')
             email_details << "Cc: " + carbon_copy + "\n"
             custom_field = CustomField.find_by_name('copy-to')
             custom_value = CustomValue.where(
-              "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).first
+              "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id
+            ).first
             custom_value.value = carbon_copy
             custom_value.save(:validate => false)
           else
@@ -46,8 +48,8 @@ module RedmineHelpdesk
           issue.save
           custom_field = CustomField.find_by_name('owner-email')
           custom_value = CustomValue.where(
-            "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).
-            first
+            "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id
+          ).first
           custom_value.value = sender_email
           custom_value.save(:validate => false) # skip validation!
           
@@ -55,9 +57,12 @@ module RedmineHelpdesk
           # on the first issue.save. So we need to send
           # the notification email to the supportclient
           # on our own.
-          
-          HelpdeskMailer.email_to_supportclient(issue, {:recipient => sender_email,
-              :carbon_copy => carbon_copy} ).deliver
+          HelpdeskMailer.email_to_supportclient(
+            issue, {
+              :recipient => sender_email,
+              :carbon_copy => carbon_copy
+            }
+          ).deliver
         end
         after_dispatch_to_default_hook issue
         return issue
