@@ -16,12 +16,12 @@ class HelpdeskMailer < ActionMailer::Base
 
   # Sending email notifications to the supportclient
   def email_to_supportclient(issue, params)
-    # issue, recipient, journal=nil, text='', copy_to=nil    
+    # issue, recipient, journal=nil, text='', copy_to=nil
 
     recipient = params[:recipient]
     journal = params[:journal]
     text = params[:text]
-    carbon_copy = params[:carbon_copy]    
+    carbon_copy = params[:carbon_copy]
 
     redmine_headers 'Project' => issue.project.identifier,
                     'Issue-Id' => issue.id,

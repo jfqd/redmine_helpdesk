@@ -31,8 +31,8 @@ module RedmineHelpdesk
           if (!@email.cc.nil?) && (custom_value.value == '1')
             carbon_copy = @email[:cc].formatted.join(', ')
             email_details << "Cc: " + carbon_copy + "\n"
-            custom_field = CustomField.find_by_name('copy-to')           
-	    custom_value = CustomValue.where(
+            custom_field = CustomField.find_by_name('copy-to')
+            custom_value = CustomValue.where(
               "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id).first
             custom_value.value = carbon_copy
             custom_value.save(:validate => false)
