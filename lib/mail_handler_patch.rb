@@ -6,6 +6,9 @@ module RedmineHelpdesk
       base.class_eval do
         alias_method :dispatch_to_default_without_helpdesk, :dispatch_to_default
         alias_method :dispatch_to_default, :dispatch_to_default_with_helpdesk
+
+        alias_method :receive_issue_reply_without_helpdesk, :receive_issue_reply
+        alias_method :receive_issue_reply, :receive_issue_reply_with_helpdesk
       end
     end
 
@@ -44,16 +47,6 @@ module RedmineHelpdesk
             custom_value.save(:validate => false)
           else
             carbon_copy = nil
-          end
-
-          # should we reopen closed issues by email?
-          custom_field = CustomField.find_by_name('reopen-closed-issues-by-email')
-          custom_value = CustomValue.where(
-            "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
-          ).first
-          if issue.closed? && custom_value.value.present?
-            status_id = IssueStatus.where("name = ?", custom_value.value).first.try(:id)
-            issue.status_id = status_id unless status_id.nil?
           end
 
           email_details << "Date: " + @email[:date].to_s + "\n"
@@ -105,6 +98,26 @@ module RedmineHelpdesk
                                :content_type => attachment.mime_type)
           end
         end
+      end
+
+      # reopening an closed issues by email
+      def receive_issue_reply_with_helpdesk(issue_id, from_journal=nil)
+        issue = Issue.find(issue_id)
+        if issue.present?
+          custom_field = CustomField.find_by_name('reopen-closed-issues-by-email')
+          custom_value = CustomValue.where(
+            "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
+          ).first
+          if issue.closed? && custom_value.value.present?
+            status_id = IssueStatus.where("name = ?", custom_value.value).first.try(:id)
+            unless status_id.nil?
+              issue.status_id = status_id
+              issue.save
+            end
+          end
+        end
+        # return to regular message
+        receive_issue_reply_without_helpdesk(issue_id, from_journal=nil)
       end
 
     end # module InstanceMethods
