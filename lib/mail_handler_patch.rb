@@ -117,7 +117,7 @@ module RedmineHelpdesk
           end
         end
         # return to regular method
-        receive_issue_reply_without_helpdesk(issue_id, from_journal=nil)
+        receive_issue_reply_without_helpdesk(issue_id, from_journal)
       end
 
     end # module InstanceMethods
