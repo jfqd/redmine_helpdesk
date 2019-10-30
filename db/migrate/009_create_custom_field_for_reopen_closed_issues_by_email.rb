@@ -4,7 +4,7 @@ class CreateCustomFieldForReopenClosedIssuesByEmail < ActiveRecord::Migration[5.
       :name => 'reopen-closed-issues-by-email',
       :editable => true,
       :visible => true,
-      :field_format => 'bool')
+      :field_format => 'string')
     c.type = 'ProjectCustomField' # cannot be set by mass assignement!
     c.save
   end
