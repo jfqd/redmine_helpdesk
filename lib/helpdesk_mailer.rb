@@ -124,17 +124,13 @@ class HelpdeskMailer < ActionMailer::Base
 
   # Returns a Message-Id for the given object
   def self.message_id_for(object)
-    Mailer.class_eval do
-      token_for(object, true)
-    end
+    token_for(object, true)
   end
 
   # Returns a uniq token for a given object referenced by all notifications
   # related to this object
   def self.references_for(object)
-    Mailer.class_eval do
-      token_for(object, false)
-    end
+    token_for(object, false)
   end
 
   def message_id(object)
