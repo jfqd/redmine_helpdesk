@@ -1,7 +1,7 @@
 class CreateCustomFieldForReopenClosedIssuesByEmail < ActiveRecord::Migration[5.2]
   def self.up
     c = CustomField.new(
-      :name => 'reopen-closed-issues-by-email',
+      :name => 'reopen-issues-with',
       :editable => true,
       :visible => true,
       :field_format => 'string')
@@ -10,6 +10,6 @@ class CreateCustomFieldForReopenClosedIssuesByEmail < ActiveRecord::Migration[5.
   end
 
   def self.down
-    CustomField.find_by_name('reopen-closed-issues-by-email').delete
+    CustomField.find_by_name('reopen-issues-with').delete
   end
 end
