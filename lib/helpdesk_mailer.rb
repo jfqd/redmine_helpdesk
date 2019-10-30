@@ -3,6 +3,7 @@
 # uses this method-name too in their mailer. This is the reason
 # why we need our own Mailer class.
 #
+
 class HelpdeskMailer < ActionMailer::Base
   helper :application
 
@@ -53,33 +54,49 @@ class HelpdeskMailer < ActionMailer::Base
         if d.property == 'attachment'
           a = Attachment.find(d.prop_key)
           begin
-            attachments[a.filename] = File.read(a.diskfile)
+            if ['image/png', 'image/jpg', 'image/gif', 'image/jpeg'].include? a.content_type
+              attachments.inline[a.filename] = File.read(a.diskfile)
+              image_url = attachments.inline[a.filename].url
+              text = text.gsub("!#{a.filename}!", "<img src='#{image_url}' />")
+            else
+              attachments[a.filename] = File.read(a.diskfile)
+            end
           rescue
             # ignore rescue
           end
         end
       end
     end
+
     if @message_id_object
       headers[:message_id] = "<#{self.class.message_id_for(@message_id_object)}>"
     end
     if @references_objects
       headers[:references] = @references_objects.collect {|o| "<#{self.class.references_for(o)}>"}.join(' ')
     end
+
     # create mail object to deliver
     mail = if text.present? || reply.present?
+
       # sending out the journal note to the support client
       # or the first reply message
-      t = text.present? ? "#{text}\n\n#{footer}" : reply
+      t = text.present? ? text : reply
+      t = expand_macros("#{t}\n\n#{footer}", issue, journal)
+
+      @text = t.gsub(/\n/,"<br/>")
       mail(
         :from     => sender.present? && sender || Setting.mail_from,
         :reply_to => sender.present? && sender || Setting.mail_from,
         :to       => recipient,
         :subject  => subject,
-        :body     => expand_macros(t, issue, journal),
+        :template_path => 'helpdesk',
+        :template_name => 'note_edit',
+        # :body     => expand_macros(t, issue, journal),
+        #:body     => text,
         :date     => Time.zone.now,
         :cc       => carbon_copy
       )
+
     else
       # fallback to a regular notifications email with redmine view
       @issue = issue

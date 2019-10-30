@@ -19,6 +19,7 @@ module MacroExpander
         expand_project
       end
       expand_user unless @journal.nil?
+      expand_optional_user
       expand_base
 
       @string
@@ -46,6 +47,14 @@ module MacroExpander
       @string.gsub!("##user-mail##", u.mail)
       @string.gsub!("##user-login##", u.login)
       expand_user_cf(u)
+    end
+
+    def expand_optional_user
+      if @journal.nil?
+        @string.gsub!("##user-name-optional##", "")
+      else
+        @string.gsub!("##user-name-optional##", @journal.user.name)
+      end
     end
 
     def expand_user_cf(user)
