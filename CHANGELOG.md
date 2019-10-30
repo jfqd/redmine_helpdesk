@@ -1,6 +1,7 @@
 0.0.16
 ---
 * Make plugin compatibility with Redmine 4.0.x
+* Add option to reopen closed issues by email
 
 0.0.15
 ---
