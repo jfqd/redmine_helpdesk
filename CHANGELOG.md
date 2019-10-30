@@ -1,3 +1,7 @@
+0.0.16
+---
+* Make plugin compatibility with Redmine 4.0.x
+
 0.0.15
 ---
 * Added support for tracking email details by martincizek from orchitech

@@ -16,7 +16,11 @@ module RedmineHelpdesk
       # an email request
       def dispatch_to_default_with_helpdesk
         issue = receive_issue
-        roles = issue.author.roles_for_project(issue.project)
+        roles = if issue.author.class == AnonymousUser
+          Role.where(builtin: issue.author.id)
+        else
+          issue.author.roles_for_project(issue.project)
+        end
         # add owner-email only if the author has assigned some role with
         # permission treat_user_as_supportclient enabled
         if roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
