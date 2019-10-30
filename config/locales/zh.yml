@@ -1,0 +1,4 @@
+zh:
+  label_support_checkbox: "发送反馈Email至客户"
+  email_was_send_to_supportclient: "反馈邮件已发送至客户。"
+  permission_treat_user_as_supportclient: "将用户作为客户"  
