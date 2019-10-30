@@ -102,7 +102,7 @@ module RedmineHelpdesk
 
       # reopening an closed issues by email
       def receive_issue_reply_with_helpdesk(issue_id, from_journal=nil)
-        issue = Issue.find(issue_id)
+        issue = Issue.find_by_id(issue_id)
         if issue.present?
           custom_field = CustomField.find_by_name('reopen-closed-issues-by-email')
           custom_value = CustomValue.where(
