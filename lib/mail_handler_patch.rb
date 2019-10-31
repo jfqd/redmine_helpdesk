@@ -6,7 +6,7 @@ module RedmineHelpdesk
       base.class_eval do
         alias_method :dispatch_to_default_without_helpdesk, :dispatch_to_default
         alias_method :dispatch_to_default, :dispatch_to_default_with_helpdesk
-
+        # needed for reopening a closed issue
         alias_method :receive_issue_reply_without_helpdesk, :receive_issue_reply
         alias_method :receive_issue_reply, :receive_issue_reply_with_helpdesk
       end
