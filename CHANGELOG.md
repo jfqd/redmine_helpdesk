@@ -1,5 +1,6 @@
 0.0.17
 ---
+* Fix issue by sending redmine journals with redmine_helpdsk
 * Store email-details before each note by martincizek from orchitech
 * Make option to reopen closed issues by email work
 * Added support for reply separator by sandratatarevicova from orchitech
