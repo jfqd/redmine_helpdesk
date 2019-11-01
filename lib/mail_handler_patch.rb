@@ -28,36 +28,22 @@ module RedmineHelpdesk
         # permission treat_user_as_supportclient enabled
         if issue.author.type.eql?("AnonymousUser") || roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
           sender_email = @email.from.first
-          email_details = "From: " + @email[:from].formatted.first + "\n"
-          email_details << "To: " + @email[:to].formatted.join(', ') + "\n"
 
           # any cc handling needed?
-          custom_field = CustomField.find_by_name('cc-handling')
-          custom_value = CustomValue.where(
-            "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
-          ).first
+          custom_value = custom_field_value(issue,'cc-handling')
           if (!@email.cc.nil?) && (custom_value.value == '1')
             carbon_copy = @email[:cc].formatted.join(', ')
-            email_details << "Cc: " + carbon_copy + "\n"
-            custom_field = CustomField.find_by_name('copy-to')
-            custom_value = CustomValue.where(
-              "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id
-            ).first
+            custom_value = custom_field_value(issue,'copy-to')
             custom_value.value = carbon_copy
             custom_value.save(:validate => false)
           else
             carbon_copy = nil
           end
 
-          email_details << "Date: " + @email[:date].to_s + "\n"
-          email_details = "<pre>\n" + Mail::Encodings.unquote_and_convert_to(email_details, 'utf-8') + "</pre>"
           issue.description = email_details + issue.description
           issue.save
-          custom_field = CustomField.find_by_name('owner-email')
-          custom_value = CustomValue.where(
-            "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id
-          ).first
 
+          custom_value = custom_field_value(issue,'owner-email')
           if custom_value.value.to_s.strip.empty?
             custom_value.value = sender_email
             custom_value.save(:validate => false) # skip validation!
@@ -100,24 +86,45 @@ module RedmineHelpdesk
         end
       end
 
-      # reopening an closed issues by email
+      # 
       def receive_issue_reply_with_helpdesk(issue_id, from_journal=nil)
         issue = Issue.find_by_id(issue_id)
-        if issue.present?
-          custom_field = CustomField.find_by_name('reopen-issues-with')
-          custom_value = CustomValue.where(
-            "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
-          ).first
-          if issue.closed? && custom_value.value.present?
-            status_id = IssueStatus.where("name = ?", custom_value.value).first.try(:id)
-            unless status_id.nil?
-              issue.status_id = status_id
-              issue.save
-            end
+        return unless issue
+
+        # reopening a closed issues by email
+        custom_value = custom_field_value(issue,'reopen-issues-with')
+        if issue.closed? && custom_value.value.present?
+          status_id = IssueStatus.where("name = ?", custom_value.value).first.try(:id)
+          unless status_id.nil?
+            issue.status_id = status_id
+            issue.save
           end
         end
-        # return to regular method
+
+        # call original method
         receive_issue_reply_without_helpdesk(issue_id, from_journal)
+
+        # store email-details before each note
+        last_journal = Journal.find(issue.last_journal_id)
+        last_journal.notes = email_details + last_journal.notes
+        last_journal.save
+
+        return last_journal
+      end
+      
+      def custom_field_value(issue,name)
+        custom_field = CustomField.find_by_name(name)
+        CustomValue.where(
+          "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
+        ).first
+      end
+
+      def email_details
+        details =  "From: " + @email[:from].formatted.first + "\n"
+        details << "To:   " + @email[:to].formatted.join(', ') + "\n"
+        details << "Cc:   " + @email[:cc].formatted.join(', ') + "\n" if !@email.cc.nil?
+        details << "Date: " + @email[:date].to_s + "\n"
+        "<pre>\n" + Mail::Encodings.unquote_and_convert_to(details, 'utf-8') + "</pre>"
       end
 
     end # module InstanceMethods
