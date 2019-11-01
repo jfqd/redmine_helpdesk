@@ -71,12 +71,21 @@ class HelpdeskMailer < ActionMailer::Base
       # sending out the journal note to the support client
       # or the first reply message
       t = text.present? ? "#{text}\n\n#{footer}" : reply
+      body = expand_macros(t, issue, journal)
+
+      # precess reply-separator
+      f = CustomField.find_by_name('helpdesk-reply-separator')
+      reply_separator = issue.project.custom_value_for(f).try(:value)
+      if !reply_separator.blank?
+        body = reply_separator + "\n\n" + body
+      end
+
       mail(
         :from     => sender.present? && sender || Setting.mail_from,
         :reply_to => sender.present? && sender || Setting.mail_from,
         :to       => recipient,
         :subject  => subject,
-        :body     => expand_macros(t, issue, journal),
+        :body     => body,
         :date     => Time.zone.now,
         :cc       => carbon_copy
       )

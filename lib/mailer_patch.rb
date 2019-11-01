@@ -24,6 +24,14 @@ module RedmineHelpdesk
         references issue
         @author = journal.user
 
+        # process reply-separator
+        f = CustomField.find_by_name('helpdesk-reply-separator')
+        reply_separator = issue.project.custom_value_for(f).try(:value)
+        if !reply_separator.blank? and !journal.notes.nil?
+          journal.notes = journal.notes.gsub(/#{reply_separator}.*/m, '')
+          journal.save(:validate => false)
+        end
+
         # add owner-email to the recipients
         alternative_user = nil
         begin
@@ -52,7 +60,7 @@ module RedmineHelpdesk
           end
         rescue Exception => e
           mylogger.error "Error while adding cc-users to recipients of email notification: \"#{e.message}\"."
-        end 
+        end
 
         s = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] "
         s << "(#{issue.status.name}) " if journal.new_value_for('status_id')
