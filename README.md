@@ -158,6 +158,7 @@ rake helpdesk:localdb:stop
 * [archonwang](https://github.com/archonwang) - Add Simplified Chinese
 * [Niremizov](https://github.com/Niremizov) - Set owner email only if it wasn't set before
 * [ghost](https://github.com/ghost) - Fix attachements truncated in email sent to supportclient
+* [Orchitech Solutions](https://github.com/orchitech) - Added support for reply separator (sponsored by ISIC Global Office)
 
 ## License
 
