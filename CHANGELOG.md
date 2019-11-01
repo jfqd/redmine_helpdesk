@@ -1,3 +1,9 @@
+0.0.17
+---
+* Store email-details before each note by martincizek from orchitech
+* Make option to reopen closed issues by email work
+* Added support for reply separator by sandratatarevicova from orchitech
+
 0.0.16
 ---
 * Make plugin compatibility with Redmine 4.0.x
