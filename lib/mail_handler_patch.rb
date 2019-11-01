@@ -86,7 +86,7 @@ module RedmineHelpdesk
         end
       end
 
-      # 
+      # Overrides the receive_issue_reply method
       def receive_issue_reply_with_helpdesk(issue_id, from_journal=nil)
         issue = Issue.find_by_id(issue_id)
         return unless issue

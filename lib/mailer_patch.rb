@@ -14,7 +14,7 @@ module RedmineHelpdesk
       # be called on existing tickets. We will add the
       # owner-email to the recipients only if no email-
       # footer text is available.
-      def issue_edit_with_helpdesk(user, journal, to_users=[], cc_users=[])
+      def issue_edit_with_helpdesk(user, journal)
         issue = journal.journalized
         redmine_headers 'Project' => issue.project.identifier,
                         'Issue-Id' => issue.id,
@@ -23,32 +23,49 @@ module RedmineHelpdesk
         message_id journal
         references issue
         @author = journal.user
-        
-        other_recipients = []
+
         # add owner-email to the recipients
+        alternative_user = nil
         begin
           if journal.send_to_owner == true
             f = CustomField.find_by_name('helpdesk-email-footer')
             p = issue.project
             owner_email = issue.custom_value_for( CustomField.find_by_name('owner-email') ).value
             if !owner_email.blank? && !f.nil? && !p.nil? && p.custom_value_for(f).try(:value).blank?
-              other_recipients << owner_email
+              alternative_user = owner_email
             end
           end
         rescue Exception => e
           mylogger.error "Error while adding owner-email to recipients of email notification: \"#{e.message}\"."
         end
+
+        # any cc handling needed?
+        cc_users = nil
+        begin
+          # any cc handling needed?
+          if alternative_user.present?
+            custom_field = CustomField.find_by_name('cc-handling')
+            custom_value = CustomValue.where(
+              "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
+            ).first
+            cc_users = custom_value.value.split(',').map(&:strip) if custom_value.value.present?
+          end
+        rescue Exception => e
+          mylogger.error "Error while adding cc-users to recipients of email notification: \"#{e.message}\"."
+        end 
+
         s = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] "
         s << "(#{issue.status.name}) " if journal.new_value_for('status_id')
         s << issue.subject
+        u = (alternative_user.present? ? alternative_user : user)
         @issue = issue
-        @users = to_users + cc_users + other_recipients
+        @user = u
         @journal = journal
-        @journal_details = journal.visible_details(@users.first)
+        @journal_details = journal.visible_details
         @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue, :anchor => "change-#{journal.id}")
         mail(
-          :to => to_users.map(&:mail),
-          :cc => cc_users.map(&:mail),
+          :to => u,
+          :cc => cc_users,
           :subject => s
         )
       end
