@@ -1,4 +1,4 @@
-class CreateCustomFieldForReplySeparator < ActiveRecord::Migration
+class CreateCustomFieldForReplySeparator < ActiveRecord::Migration[5.2]
   def self.up
     begin
       c = CustomField.new(
