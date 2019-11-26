@@ -31,9 +31,10 @@ module RedmineHelpdesk
 
           # any cc handling needed?
           custom_value = custom_field_value(issue,'cc-handling')
+          test_obj = custom_value
           if (!@email.cc.nil?) && (custom_value.value == '1')
             carbon_copy = @email[:cc].formatted.join(', ')
-            custom_value = custom_field_value(issue,'copy-to')
+            custom_value = custom_field_value(issue,'copy-to',false)
             custom_value.value = carbon_copy
             custom_value.save(:validate => false)
           else
@@ -43,8 +44,8 @@ module RedmineHelpdesk
           issue.description = email_details + issue.description
           issue.save
 
-          custom_value = custom_field_value(issue,'owner-email')
-          if custom_value.value.to_s.strip.empty?
+          custom_value = custom_field_value(issue,'owner-email',false)
+          if custom_value.value&.to_s.strip.empty?
             custom_value.value = sender_email
             custom_value.save(:validate => false) # skip validation!
           else
@@ -74,17 +75,17 @@ module RedmineHelpdesk
       end
 
       # Fix an issue with email.has_attachments?
-      def add_attachments(obj)
-         if !email.attachments.nil? && email.attachments.size > 0
-           email.attachments.each do |attachment|
-             obj.attachments << Attachment.create(:container => obj,
-                               :file => attachment.decoded,
-                               :filename => attachment.filename,
-                               :author => user,
-                               :content_type => attachment.mime_type)
-          end
-        end
-      end
+      # def add_attachments(obj)
+      #    if !email.attachments.nil? && email.attachments.size > 0
+      #      email.attachments.each do |attachment|
+      #        obj.attachments << Attachment.create(:container => obj,
+      #                          :file => attachment.decoded,
+      #                          :filename => attachment.filename,
+      #                          :author => user,
+      #                          :content_type => attachment.mime_type)
+      #     end
+      #   end
+      # end
 
       # Overrides the receive_issue_reply method
       def receive_issue_reply_with_helpdesk(issue_id, from_journal=nil)
@@ -112,10 +113,17 @@ module RedmineHelpdesk
         return last_journal
       end
       
-      def custom_field_value(issue,name)
+      # differentiate between project field and issue field
+      def custom_field_value(issue,name,isproject_field = true)
         custom_field = CustomField.find_by_name(name)
+
+        searchid = issue.project.id
+        if !isproject_field
+          searchid = issue.id
+        end
+
         CustomValue.where(
-          "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
+          "customized_id = ? AND custom_field_id = ?", searchid, custom_field.id
         ).first
       end
 
