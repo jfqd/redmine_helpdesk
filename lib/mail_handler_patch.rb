@@ -30,7 +30,7 @@ module RedmineHelpdesk
           sender_email = @email.from.first
 
           # any cc handling needed?
-          custom_value = custom_field_value(issue,'cc-handling')
+          custom_value = custom_field_value(issue.project,'cc-handling')
           if (!@email.cc.nil?) && (custom_value.value == '1')
             carbon_copy = @email[:cc].formatted.join(', ')
             custom_value = custom_field_value(issue,'copy-to')
@@ -115,7 +115,7 @@ module RedmineHelpdesk
       def custom_field_value(issue,name)
         custom_field = CustomField.find_by_name(name)
         CustomValue.where(
-          "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
+          "customized_id = ? AND custom_field_id = ?", issue.id, custom_field.id
         ).first
       end
 
