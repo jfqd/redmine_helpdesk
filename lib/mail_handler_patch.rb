@@ -31,7 +31,6 @@ module RedmineHelpdesk
 
           # any cc handling needed?
           custom_value = custom_field_value(issue,'cc-handling')
-          test_obj = custom_value
           if (!@email.cc.nil?) && (custom_value.value == '1')
             carbon_copy = @email[:cc].formatted.join(', ')
             custom_value = custom_field_value(issue,'copy-to',false)
