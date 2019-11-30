@@ -5,6 +5,10 @@ require 'journal_patch'
 require 'mail_handler_patch'
 require 'mailer_patch'
 
+unless MailHandler.include?(RedmineHelpdesk::MailHandlerPatch)
+  MailHandler.send(:include, RedmineHelpdesk::MailHandlerPatch)
+end
+
 Redmine::Plugin.register :redmine_helpdesk do
   name 'Redmine helpdesk plugin'
   author 'Stefan Husch'

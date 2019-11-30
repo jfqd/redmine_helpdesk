@@ -73,19 +73,6 @@ module RedmineHelpdesk
       def after_dispatch_to_default_hook(issue)
       end
 
-      # Fix an issue with email.has_attachments?
-      # def add_attachments(obj)
-      #    if !email.attachments.nil? && email.attachments.size > 0
-      #      email.attachments.each do |attachment|
-      #        obj.attachments << Attachment.create(:container => obj,
-      #                          :file => attachment.decoded,
-      #                          :filename => attachment.filename,
-      #                          :author => user,
-      #                          :content_type => attachment.mime_type)
-      #     end
-      #   end
-      # end
-
       # Overrides the receive_issue_reply method
       def receive_issue_reply_with_helpdesk(issue_id, from_journal=nil)
         issue = Issue.find_by_id(issue_id)
@@ -137,6 +124,3 @@ module RedmineHelpdesk
     end # module InstanceMethods
   end # module MailHandlerPatch
 end # module RedmineHelpdesk
-
-# Add module to MailHandler class
-MailHandler.send(:include, RedmineHelpdesk::MailHandlerPatch)
