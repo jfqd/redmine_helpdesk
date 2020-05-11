@@ -1,3 +1,7 @@
+0.0.18
+---
+* Incorrect issue and project ids usage
+
 0.0.17
 ---
 * Fix issue by sending redmine journals with redmine_helpdsk
