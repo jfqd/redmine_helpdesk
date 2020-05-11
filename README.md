@@ -38,7 +38,7 @@ Lightweight helpdesk plugin for redmine. Adds the email sender-address of an ano
 
 ## Getting the plugin
 
-A copy of the plugin can be downloaded from GitHub: http://github.com/jfqd/redmine_helpdesk
+A copy of the plugin can be downloaded from [GitHub](https://github.com/jfqd/redmine_helpdesk)
 
 ## Installation
 
@@ -59,7 +59,7 @@ rake redmine:plugins:migrate NAME=redmine_helpdesk VERSION=0 RAILS_ENV=productio
 rm -rf plugins/redmine_helpdesk
 ```
 
-Further information about plugin installation can be found at: http://www.redmine.org/wiki/redmine/Plugins
+Further information about plugin installation can be found at: https://www.redmine.org/wiki/redmine/Plugins
 
 ## Usage
 
@@ -84,7 +84,7 @@ Creating tickets from support emails through an IMAP-account is done by a cronjo
 */5 * * * * redmineuser /path/to/your/rake -f /path/to/redmine/Rakefile --silent redmine:email:receive_imap RAILS_ENV="production" host=mail.example.com port=993 username=username password=password ssl=true project=project_identifier folder=INBOX move_on_success=processed move_on_failure=failed no_permission_check=1 unknown_user=accept 1 > /dev/null
 ```
 
-Further information about receiving emails with redmine can be found at: [http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails](http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails#Fetching-emails-from-an-IMAP-server)
+Further information about receiving emails with redmine can be found at: [https://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails](https://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails#Fetching-emails-from-an-IMAP-server)
 
 Please note that forwarding emails with **rdm-mailhandler.rb** is currently **not supported** by the plugin.
 
