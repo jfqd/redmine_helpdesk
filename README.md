@@ -133,6 +133,7 @@ rake helpdesk:localdb:stop
 
 ## Contribution
 
+* [ANemcov](https://github.com/ANemcov) - incorrect issue and project ids usage
 * [ismaelgc](https://github.com/ismaelgc) - Spanish translation
 * [monaka](https://github.com/monaka) - Japanese translation
 * [avoidik](https://github.com/avoidik) - Add missed Russian translation into roles and access manager
