@@ -78,8 +78,6 @@ To use the helpdesk functionality you need to
 
 ![project configuration sample](doc/project-settings.jpg "Per project configuration sample")
 
-**Only public projects could be used for the helpdesk functionality**. If you want to use it with private projects [issue #75](https://github.com/jfqd/redmine_helpdesk/issues/75#issuecomment-101950450) might be helpful to you.
-
 ## Cronjob
 
 Creating tickets from support emails through an IMAP-account is done by a cronjob. If you are not familiar with cron you first should read about the concept. The following syntax is for ubuntu or debian linux:
@@ -166,4 +164,4 @@ This plugin is licensed under the MIT license. See LICENSE-file for details.
 
 ## Copyright
 
-Copyright (c) 2012-2019 Stefan Husch, qutic development GmbH. The start of development has been sponsored by netz98.de
+Copyright (c) 2012-2020 Stefan Husch, qutic development GmbH. The start of development has been sponsored by netz98.de
