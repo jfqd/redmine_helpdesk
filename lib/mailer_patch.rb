@@ -18,7 +18,8 @@ module RedmineHelpdesk
         issue = journal.journalized
         redmine_headers 'Project' => issue.project.identifier,
                         'Issue-Id' => issue.id,
-                        'Issue-Author' => issue.author.login
+                        'Issue-Author' => issue.author.login,
+                        'Issue-Tracker' => issue.tracker
         redmine_headers 'Issue-Assignee' => issue.assigned_to.login if issue.assigned_to
         message_id journal
         references issue

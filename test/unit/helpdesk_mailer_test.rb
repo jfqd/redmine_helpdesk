@@ -37,6 +37,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     assert_equal issue.id, email.header['X-Redmine-Issue-Id'].to_s.to_i
     assert_equal issue.author.login, email.header['X-Redmine-Issue-Author'].to_s
     assert_equal issue.assigned_to.login, email.header['X-Redmine-Issue-Assignee'].to_s
+    assert_equal issue.tracker, email.header['X-Redmine-Issue-Tracker'].to_s
 
     #assert_equal 'OOF', mail.header['X-Auto-Response-Suppress'].to_s
     #assert_equal 'auto-generated', mail.header['Auto-Submitted'].to_s
