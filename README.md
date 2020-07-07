@@ -131,6 +131,7 @@ rake helpdesk:localdb:stop
 
 ## Contribution
 
+* [promasu](https://github.com/promasu) - Add X-Redmine-Issue-Tracker header to mailerpatch
 * [ANemcov](https://github.com/ANemcov) - incorrect issue and project ids usage
 * [ismaelgc](https://github.com/ismaelgc) - Spanish translation
 * [monaka](https://github.com/monaka) - Japanese translation
