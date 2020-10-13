@@ -121,7 +121,7 @@ module RedmineHelpdesk
 
       def email_details
         details =  "From: " + @email[:from].formatted.first + "\n"
-        details << "To:   " + @email[:to].formatted.join(', ') + "\n"
+        details << "To:   " + @email[:to].formatted.join(', ') + "\n" if !@email.to.nil?
         details << "Cc:   " + @email[:cc].formatted.join(', ') + "\n" if !@email.cc.nil?
         details << "Date: " + @email[:date].to_s + "\n"
         "<pre>\n" + Mail::Encodings.unquote_and_convert_to(details, 'utf-8') + "</pre>\n\n"
