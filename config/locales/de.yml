@@ -1,3 +1,4 @@
 de:
   label_support_checkbox: "E-Mail an Support-Anfragenden senden"
   email_was_send_to_supportclient: "Diese Antwort wurde an den Support-Anfragenden gesendet."
+  permission_treat_user_as_supportclient: "Nutzer als Support-Anfragenden behandeln"
