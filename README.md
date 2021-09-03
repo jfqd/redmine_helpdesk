@@ -131,6 +131,8 @@ rake helpdesk:localdb:stop
 
 ## Contribution
 
+* [mgeerdsen](https://github.com/mgeerdsen) - Fix reopening closed issue error
+* [mgeerdsen](https://github.com/mgeerdsen) - Improve de locale
 * [lmorillas](https://github.com/lmorillas) - Fix Error when message hasn't "To:" header
 * [promasu](https://github.com/promasu) - Add X-Redmine-Issue-Tracker header to mailerpatch
 * [ANemcov](https://github.com/ANemcov) - incorrect issue and project ids usage
