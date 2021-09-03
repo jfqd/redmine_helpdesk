@@ -167,4 +167,4 @@ This plugin is licensed under the MIT license. See LICENSE-file for details.
 
 ## Copyright
 
-Copyright (c) 2012-2020 Stefan Husch, qutic development GmbH. The start of development has been sponsored by netz98.de
+Copyright (c) 2012-2021 qutic development GmbH
