@@ -92,9 +92,9 @@ module RedmineHelpdesk
         return unless issue
 
         # reopening a closed issues by email
-        custom_value = CustomField.find_by_name('reopen-issues-with')
-        if issue.closed? && custom_value.present?
-          status_id = IssueStatus.where("name = ?", custom_value).try(:first).try(:id)
+        custom_value = custom_field_value(issue.project,'reopen-issues-with')
+        if issue.closed? && custom_value.present? && custom_value.value.present?
+          status_id = IssueStatus.where("name = ?", custom_value.value).try(:first).try(:id)
           unless status_id.nil?
             issue.status_id = status_id
             issue.save
