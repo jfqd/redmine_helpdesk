@@ -45,7 +45,7 @@ module RedmineHelpdesk
             end
           end
         rescue Exception => e
-          mylogger.error "Error while adding owner-email to recipients of email notification: \"#{e.message}\"."
+          Rails.logger.error "Error while adding owner-email to recipients of email notification: \"#{e.message}\"."
         end
 
         # any cc handling needed?
@@ -60,12 +60,12 @@ module RedmineHelpdesk
             cc_users = custom_value.value.split(',').map(&:strip) if custom_value.value.present?
           end
         rescue Exception => e
-          mylogger.error "Error while adding cc-users to recipients of email notification: \"#{e.message}\"."
+          Rails.logger.error "Error while adding cc-users to recipients of email notification: \"#{e.message}\"."
         end
 
         s = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] "
-        s << "(#{issue.status.name}) " if journal.new_value_for('status_id')
-        s << issue.subject
+        s += "(#{issue.status.name}) " if journal.new_value_for('status_id') && Setting.show_status_changes_in_mail_subject?
+        s += issue.subject
         u = (alternative_user.present? ? alternative_user : user)
         @issue = issue
         @user = u
