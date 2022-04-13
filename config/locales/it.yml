@@ -1,0 +1,3 @@
+it:
+  label_support_checkbox: "Invia email al cliente"
+  email_was_send_to_supportclient: "Questa risposta è stata inviata al cliente."
