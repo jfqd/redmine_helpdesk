@@ -1,4 +1,4 @@
-module RedmineHelpdeskMailHandlerPatch
+module RedmineHelpdeskMailerPatch
   def self.included(base) # :nodoc:
     base.send(:include, InstanceMethods)
 
@@ -79,7 +79,7 @@ module RedmineHelpdeskMailHandlerPatch
     end
 
   end # module InstanceMethods
-end # module RedmineHelpdeskMailHandlerPatch
+end # module RedmineHelpdeskMailerPatch
 
 # Add module to Mailer class
-Mailer.send(:include, RedmineHelpdeskMailHandlerPatch)
+Mailer.send(:include, RedmineHelpdeskMailerPatch)
