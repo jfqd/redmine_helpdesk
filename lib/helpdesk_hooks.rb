@@ -1,5 +1,5 @@
 class HelpdeskHooks < Redmine::Hook::Listener
-  
+
   # render partial for 'Send mail to supportclient'
   def view_issues_edit_notes_bottom(context={})
     i = Issue.find(context[:issue].id)
@@ -9,8 +9,11 @@ class HelpdeskHooks < Redmine::Hook::Listener
     p = i.project
     s = CustomField.find_by_name('helpdesk-send-to-owner-default')
     send_to_owner_default = p.custom_value_for(s).try(:value) if p.present? && s.present?
-    action_view = ActionView::Base.new(File.dirname(__FILE__) + '/../app/views/')
-    action_view.render(
+
+    lookup_context = ActionView::LookupContext.new(File.dirname(__FILE__) + '/../app/views/')
+    context = ActionView::Base.with_empty_template_cache.new(lookup_context, {}, nil)
+    renderer = ActionView::Renderer.new(lookup_context)
+    renderer.render(context,
       :partial => "issue_edit",
       :locals => {
         :email => owner_email,
@@ -33,8 +36,13 @@ class HelpdeskHooks < Redmine::Hook::Listener
     c = CustomField.find_by_name('owner-email')
     owner_email = i.custom_value_for(c).try(:value)
     return if owner_email.blank?
-    action_view = ActionView::Base.new(File.dirname(__FILE__) + '/../app/views/')
-    action_view.render(:partial => "issue_history", :locals => {:email => owner_email})
+    lookup_context = ActionView::LookupContext.new(File.dirname(__FILE__) + '/../app/views/')
+    context = ActionView::Base.with_empty_template_cache.new(lookup_context, {}, nil)
+    renderer = ActionView::Renderer.new(lookup_context)
+    renderer.render(context,
+                    :partial => "issue_history",
+                    :locals => {:email => owner_email}
+    )
   end
   
 end

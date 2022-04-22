@@ -39,6 +39,7 @@ module RedmineHelpdeskMailHandlerPatch
           carbon_copy = nil
         end
 
+        issue.reload
         issue.description = email_details + issue.description
         issue.save
 
