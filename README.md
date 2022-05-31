@@ -161,6 +161,7 @@ rake helpdesk:localdb:stop
 * [Niremizov](https://github.com/Niremizov) - Set owner email only if it wasn't set before
 * [ghost](https://github.com/ghost) - Fix attachements truncated in email sent to supportclient
 * [Orchitech Solutions](https://github.com/orchitech) - Added support for reply separator (sponsored by ISIC Global Office)
+* [Andeo AG](https://www.andeo.ch) - Redmine 5.0 compatibility
 
 ## License
 
