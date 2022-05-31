@@ -97,6 +97,7 @@ module RedmineHelpdeskMailHandlerPatch
         status_id = IssueStatus.where("name = ?", custom_value.value).try(:first).try(:id)
         unless status_id.nil?
           issue.status_id = status_id
+          issue.assigned_to = nil
           issue.save
         end
       end
