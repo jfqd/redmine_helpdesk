@@ -1,10 +1,29 @@
+0.0.19
+---
+* Italian translation
+* Fix logger and use new setting
+* Do not send on private-notes
+* Fix reopening closed issue error
+* Improve de locale
+* Fix typo in email_was_send_to_supportclient
+* Sets To header optional
+* Remove Gemfile.lock
+* Find and process value of custom field directly
+* Add X-Redmine-Issue-Tracker header to mailerpatch
+
 0.0.18
 ---
+
+* Remove batches as nobody has the time to fix the tests
+* Remove untrue stuff from readme
+* Update mail_handler_patch.rb
+* Fix migration
 * Incorrect issue and project ids usage
+* Add space after the pre
 
 0.0.17
 ---
-* Fix issue by sending redmine journals with redmine_helpdsk
+* Fix issue by sending redmine journals with redmine_helpdesk
 * Store email-details before each note by martincizek from orchitech
 * Make option to reopen closed issues by email work
 * Added support for reply separator by sandratatarevicova from orchitech
