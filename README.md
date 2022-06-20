@@ -130,8 +130,9 @@ The local database instance has to be stopped with a rake task:
 rake helpdesk:localdb:stop
 ```
 
-## Contribution
+## Contributions
 
+* [gianpaol0](https://github.com/gianpaol0) - italian translation
 * [mgeerdsen](https://github.com/mgeerdsen) - Fix reopening closed issue error
 * [mgeerdsen](https://github.com/mgeerdsen) - Improve de locale
 * [lmorillas](https://github.com/lmorillas) - Fix Error when message hasn't "To:" header
@@ -168,4 +169,4 @@ This plugin is licensed under the MIT license. See LICENSE-file for details.
 
 ## Copyright
 
-Copyright (c) 2012-2021 qutic development GmbH
+Copyright (c) 2012-2022 qutic development GmbH
