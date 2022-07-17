@@ -14,6 +14,7 @@ class HelpdeskHooks < Redmine::Hook::Listener
       :partial => "issue_edit",
       :locals => {
         :email => owner_email,
+        :email_visible => c.visible_by?(p),
         :send_to_owner_default => (send_to_owner_default.present? && send_to_owner_default || false)
       }
     )
