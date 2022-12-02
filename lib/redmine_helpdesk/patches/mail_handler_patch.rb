@@ -20,6 +20,7 @@ module RedmineHelpdesk
         # an email request
         def dispatch_to_default_with_helpdesk
           issue = receive_issue
+          issue.reload
           roles = if issue.author.class == AnonymousUser
             Role.where(builtin: issue.author.id)
           else
