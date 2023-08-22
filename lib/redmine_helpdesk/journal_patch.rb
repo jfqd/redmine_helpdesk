@@ -24,7 +24,7 @@ module RedmineHelpdesk
         # do not send on private-notes
         if private_notes == true && send_to_owner == true 
           self.send_to_owner = false
-          self.save(:validate => false)
+          self.save( validate: false )
         end
         # sending email notifications to the supportclient
         # only if the send_to_owner checkbox was checked
@@ -46,4 +46,4 @@ module RedmineHelpdesk
 end # module RedmineHelpdesk
 
 # Add module to Journal class
-Journal.send(:include, RedmineHelpdesk::JournalPatch)
+Journal.send(:include, ::RedmineHelpdesk::JournalPatch)

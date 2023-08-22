@@ -1,3 +1,7 @@
+0.0.20
+---
+* Make plugin compatibility with Redmine 5.0.x
+
 0.0.19
 ---
 * Italian translation
@@ -13,7 +17,6 @@
 
 0.0.18
 ---
-
 * Remove batches as nobody has the time to fix the tests
 * Remove untrue stuff from readme
 * Update mail_handler_patch.rb

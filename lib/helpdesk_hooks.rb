@@ -9,12 +9,15 @@ class HelpdeskHooks < Redmine::Hook::Listener
     p = i.project
     s = CustomField.find_by_name('helpdesk-send-to-owner-default')
     send_to_owner_default = p.custom_value_for(s).try(:value) if p.present? && s.present?
-    action_view = ActionView::Base.new(File.dirname(__FILE__) + '/../app/views/')
-    action_view.render(
-      :partial => "issue_edit",
-      :locals => {
-        :email => owner_email,
-        :send_to_owner_default => (send_to_owner_default.present? && send_to_owner_default || false)
+    lookup   = ActionView::LookupContext.new(File.dirname(__FILE__) + '/../app/views/')
+    context  = ActionView::Base.with_empty_template_cache.new(lookup, {}, nil)
+    renderer = ActionView::Renderer.new(lookup)
+    renderer.render(
+      context,
+      partial: "issue_edit",
+      locals: {
+        email: owner_email,
+        send_to_owner_default: (send_to_owner_default.present? && send_to_owner_default || false)
       }
     )
   end
@@ -33,8 +36,16 @@ class HelpdeskHooks < Redmine::Hook::Listener
     c = CustomField.find_by_name('owner-email')
     owner_email = i.custom_value_for(c).try(:value)
     return if owner_email.blank?
-    action_view = ActionView::Base.new(File.dirname(__FILE__) + '/../app/views/')
-    action_view.render(:partial => "issue_history", :locals => {:email => owner_email})
+    lookup   = ActionView::LookupContext.new(File.dirname(__FILE__) + '/../app/views/')
+    context  = ActionView::Base.with_empty_template_cache.new(lookup, {}, nil)
+    renderer = ActionView::Renderer.new(lookup)
+    renderer.render(
+      context,
+      partial: "issue_history",
+      locals: {
+        email: owner_email
+      }
+    )
   end
   
 end

@@ -84,4 +84,4 @@ module RedmineHelpdesk
 end # module RedmineHelpdesk
 
 # Add module to Mailer class
-Mailer.send(:include, RedmineHelpdesk::MailerPatch)
+Mailer.send(:include, ::RedmineHelpdesk::MailerPatch)

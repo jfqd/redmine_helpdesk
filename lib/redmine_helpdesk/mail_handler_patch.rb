@@ -19,6 +19,7 @@ module RedmineHelpdesk
       # an email request
       def dispatch_to_default_with_helpdesk
         issue = receive_issue
+        issue.reload # prevent ActiveRecord::StaleObjectError
         roles = if issue.author.class == AnonymousUser
           Role.where(builtin: issue.author.id)
         else
@@ -28,25 +29,25 @@ module RedmineHelpdesk
         # permission treat_user_as_supportclient enabled
         if issue.author.type.eql?("AnonymousUser") || roles.any? {|role| role.allowed_to?(:treat_user_as_supportclient) }
           sender_email = @email.from.first
-
+          
           # any cc handling needed?
           custom_value = custom_field_value(issue.project,'cc-handling')
           if (!@email.cc.nil?) && (custom_value.value == '1')
             carbon_copy = @email[:cc].formatted.join(', ')
             custom_value = custom_field_value(issue,'copy-to')
             custom_value.value = carbon_copy
-            custom_value.save(:validate => false)
+            custom_value.save( validate: false ) # skip validation!
           else
             carbon_copy = nil
           end
-
+          
           issue.description = email_details + issue.description
-          issue.save
-
+          issue.save( validate: false ) # skip validation!
+          
           custom_value = custom_field_value(issue,'owner-email')
           if custom_value.value.to_s.strip.empty?
             custom_value.value = sender_email
-            custom_value.save(:validate => false) # skip validation!
+            custom_value.save( validate: false ) # skip validation!
           else
             # Email owner field was already set by some preprocess hooks.
             # So now we need to send message to another recepient.
@@ -59,8 +60,8 @@ module RedmineHelpdesk
           # on our own.
           HelpdeskMailer.email_to_supportclient(
             issue, {
-              :recipient => sender_email,
-              :carbon_copy => carbon_copy
+              recipient:   sender_email,
+              carbon_copy: carbon_copy
             }
           ).deliver
         end
@@ -77,11 +78,13 @@ module RedmineHelpdesk
       def add_attachments(obj)
          if !email.attachments.nil? && email.attachments.size > 0
            email.attachments.each do |attachment|
-             obj.attachments << Attachment.create(:container => obj,
-                               :file => attachment.decoded,
-                               :filename => attachment.filename,
-                               :author => user,
-                               :content_type => attachment.mime_type)
+             obj.attachments << Attachment.create(
+               container:    obj,
+               file:         attachment.decoded,
+               filename:     attachment.filename,
+               author:       user,
+               content_type: attachment.mime_type
+             )
           end
         end
       end
@@ -132,4 +135,4 @@ module RedmineHelpdesk
 end # module RedmineHelpdesk
 
 # Add module to MailHandler class
-MailHandler.send(:include, RedmineHelpdesk::MailHandlerPatch)
+MailHandler.send(:include, ::RedmineHelpdesk::MailHandlerPatch)
