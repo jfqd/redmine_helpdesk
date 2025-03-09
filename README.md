@@ -90,7 +90,7 @@ Please note that forwarding emails with **rdm-mailhandler.rb** is currently **no
 
 ## Compatibility
 
-The latest version of this plugin is only compatible with Redmine 5.0.x.
+The latest version of this plugin is only compatible with Redmine 5.0, 5.1 and 6.0.
 
 * A version for Redmine 4.2.x is tagged with [v4.2](https://github.com/jfqd/redmine_helpdesk/releases/tag/v4.2 "plugin version for Redmine 4.2.x") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v4.2.zip "download plugin for Redmine 4.2.x").
 * A version for Redmine 4.0.x is tagged with [v4.0](https://github.com/jfqd/redmine_helpdesk/releases/tag/v4.0 "plugin version for Redmine 4.0.x") and available for [download on github](https://github.com/jfqd/redmine_helpdesk/archive/v4.0.zip "download plugin for Redmine 4.0.x").
