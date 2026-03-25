@@ -1,3 +1,8 @@
+0.0.21
+---
+* Make plugin compatibility with Redmine 6.1.x
+* Fix Email-Notifications
+
 0.0.20
 ---
 * Make plugin compatibility with Redmine 5.0.x
