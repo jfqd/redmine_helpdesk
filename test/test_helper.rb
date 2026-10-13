@@ -18,7 +18,9 @@ class TestHelper
     File.dirname(__FILE__) + '/fixtures/'
   end
   def self.fixture_path
-    if Redmine::VERSION::MAJOR >= 3
+    if Redmine::VERSION::MAJOR >= 5
+      File.dirname(__FILE__) + '/fixtures/5.0'
+    elsif Redmine::VERSION::MAJOR >= 3
       File.dirname(__FILE__) + '/fixtures/3.0'
     else
       File.dirname(__FILE__) + '/fixtures/2.6'

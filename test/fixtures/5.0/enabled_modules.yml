@@ -1,0 +1,37 @@
+---
+enabled_modules_001:
+  name: issue_tracking
+  project_id: 1
+  id: 1
+enabled_modules_002:
+  name: time_tracking
+  project_id: 1
+  id: 2
+enabled_modules_003:
+  name: files
+  project_id: 1
+  id: 3
+enabled_modules_004:
+  name: issue_tracking
+  project_id: 2
+  id: 4
+enabled_modules_005:
+  name: time_tracking
+  project_id: 2
+  id: 5
+enabled_modules_006:
+  name: files
+  project_id: 2
+  id: 6
+enabled_modules_007:
+  name: issue_tracking
+  project_id: 4
+  id: 7
+enabled_modules_008:
+  name: time_tracking
+  project_id: 4
+  id: 8
+enabled_modules_009:
+  name: files
+  project_id: 4
+  id: 9

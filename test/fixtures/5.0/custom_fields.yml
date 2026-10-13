@@ -1,0 +1,135 @@
+---
+custom_fields_001:
+  name: owner-email
+  regexp: ""
+  type: IssueCustomField
+  possible_values: ""
+  id: 1
+  is_required: false
+  field_format: string
+  default_value: ""
+  editable: true
+  visible: true
+  position: 1
+custom_fields_002:
+  name: helpdesk-first-reply
+  min_length: 1
+  regexp: ""
+  visible: false
+  type: ProjectCustomField
+  max_length: 100
+  possible_values: ""
+  id: 2
+  is_required: false
+  field_format: text
+  default_value: ""
+  editable: true
+  position: 1
+custom_fields_003:
+  name: helpdesk-email-footer
+  min_length: 1
+  regexp: ""
+  visible: false
+  type: ProjectCustomField
+  max_length: 100
+  possible_values: ""
+  id: 3
+  is_required: false
+  field_format: text
+  default_value: ""
+  editable: true
+  position: 1
+custom_fields_004:
+  name: helpdesk-sender-email
+  regexp: ""
+  type: ProjectCustomField
+  possible_values: ""
+  id: 4
+  is_required: false
+  field_format: string
+  default_value: false
+  editable: true
+  visible: true
+  position: 1
+custom_fields_005:
+  name: helpdesk-send-to-owner-default
+  regexp: ""
+  type: ProjectCustomField
+  possible_values: ""
+  id: 5
+  is_required: false
+  field_format: bool
+  default_value: false
+  editable: true
+  visible: false
+  position: 1
+custom_fields_006:
+  name: helpdesk-subject
+  min_length: 1
+  regexp: ""
+  visible: false
+  type: ProjectCustomField
+  max_length: 100
+  possible_values: ""
+  id: 6
+  is_required: false
+  field_format: text
+  default_value: ""
+  editable: true
+  position: 1
+custom_fields_007:
+  name: helpdesk-send-first-reply
+  visible: false
+  type: ProjectCustomField
+  id: 7
+  is_required: false
+  field_format: boolean
+  default_value: true
+  editable: true
+  position: 1
+custom_fields_008:
+  name: title
+  regexp: ""
+  is_for_all: false
+  type: UserCustomField
+  possible_values: ""
+  id: 8
+  is_required: false
+  field_format: string
+  default_value: ""
+  editable: true
+  position: 1
+custom_fields_009:
+  name: motto
+  regexp: ""
+  is_for_all: false
+  type: UserCustomField
+  possible_values: ""
+  id: 9
+  is_required: false
+  field_format: string
+  default_value: ""
+  editable: true
+  position: 2
+custom_fields_010:
+  name: copy-to
+  regexp: ""
+  type: IssueCustomField
+  possible_values: ""
+  id: 10
+  is_required: false
+  field_format: string
+  default_value: ""
+  editable: true
+  visible: true
+  position: 1
+custom_fields_011:
+  name: cc-handling
+  visible: false
+  type: ProjectCustomField
+  id: 11
+  is_required: false
+  field_format: bool
+  default_value: false
+  editable: true
+  position: 1

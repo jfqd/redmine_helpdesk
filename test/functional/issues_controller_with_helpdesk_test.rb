@@ -13,7 +13,7 @@ class IssuesControllerWithHelpdeskTest < ActionController::TestCase
   def test_render_send_to_owner_checkbox
     issue = Issue.find(1)
     @request.session[:user_id] = 1
-    get :edit, :id => 1
+    get :edit, params: { :id => 1 }
     assert_response :success
     assert_select "#send_to_owner", 1
   end
@@ -28,7 +28,7 @@ class IssuesControllerWithHelpdeskTest < ActionController::TestCase
     owner_value.save!
 
     @request.session[:user_id] = 1
-    get :edit, :id => 1
+    get :edit, params: { :id => 1 }
     assert_response :success
     assert_select "#send_to_owner", 0
   end
@@ -43,7 +43,7 @@ class IssuesControllerWithHelpdeskTest < ActionController::TestCase
     default_value.save!
 
     @request.session[:user_id] = 1
-    get :edit, :id => 1
+    get :edit, params: { :id => 1 }
     assert_response :success
     assert_select "#send_to_owner", 1
     assert_equal "checked", css_select("#send_to_owner").first["checked"]
@@ -59,7 +59,7 @@ class IssuesControllerWithHelpdeskTest < ActionController::TestCase
     default_value.save!
 
     @request.session[:user_id] = 1
-    get :edit, :id => 1
+    get :edit, params: { :id => 1 }
     assert_response :success
     assert_select "#send_to_owner", 1
     assert_not_equal "checked", css_select("#send_to_owner").first["checked"]
@@ -72,7 +72,7 @@ class IssuesControllerWithHelpdeskTest < ActionController::TestCase
     journal.save
 
     @request.session[:user_id] = 1
-    get :show, :id => 1
+    get :show, params: { :id => 1 }
     assert_response :success
 
     assert_select "#history>i", 1
@@ -86,7 +86,7 @@ class IssuesControllerWithHelpdeskTest < ActionController::TestCase
     journal.save
 
     @request.session[:user_id] = 1
-    get :show, :id => 1
+    get :show, params: { :id => 1 }
     assert_response :success
 
     assert_select "#history>i", 0
@@ -97,10 +97,12 @@ class IssuesControllerWithHelpdeskTest < ActionController::TestCase
     ActionMailer::Base.deliveries.clear
     @request.session[:user_id] = 1
     assert_difference('Journal.count') do
-      put :update, :id => 1,
-                   :issue => {:assigned_to_id => 1,
+      put :update, params: {
+                     :id => 1,
+                     :issue => {:assigned_to_id => 1,
                               :notes => 'Assigned'},
-                   :send_to_owner => "true"
+                     :send_to_owner => "true"
+      }
     end
     assert_redirected_to :action => 'show', :id => '1'
 
@@ -115,10 +117,11 @@ class IssuesControllerWithHelpdeskTest < ActionController::TestCase
     ActionMailer::Base.deliveries.clear
     @request.session[:user_id] = 1
     assert_difference('Journal.count') do
-      put :update, :id => 1,
+      put :update, params: { :id => 1,
                    :issue => {:assigned_to_id => 1,
                               :notes => 'Assigned'},
                    :send_to_owner => "false"
+      }
     end
     assert_redirected_to :action => 'show', :id => '1'
 

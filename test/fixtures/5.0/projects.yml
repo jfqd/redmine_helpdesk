@@ -1,0 +1,50 @@
+---
+projects_001:
+  created_on: 2015-03-05 19:13:59 +02:00
+  name: Helpdesk Project 1
+  updated_on: 2015-03-05 22:53:01 +02:00
+  id: 1
+  description: First helpdesk project
+  homepage: ""
+  is_public: true
+  identifier: helpdesk_project_1
+  parent_id:
+  lft: 1
+  rgt: 2
+projects_002:
+  created_on: 2015-03-05 19:14:19 +02:00
+  name: Helpdesk Project 2
+  updated_on: 2015-03-05 19:14:19 +02:00
+  id: 2
+  description: Second helpdesk project
+  homepage: ""
+  is_public: false
+  identifier: helpdesk_project_2
+  parent_id:
+  lft: 3
+  rgt: 4
+projects_003:
+  created_on: 2015-03-05 19:15:21 +02:00
+  name: Irrelevant Project
+  updated_on: 2015-03-05 19:18:12 +02:00
+  id: 3
+  description: Project that has no helpdesk features
+  homepage: ""
+  is_public: true
+  identifier: irrelevant_project
+  parent_id:
+  lft: 5
+  rgt: 6
+projects_004:
+  created_on: 2015-03-05 19:14:19 +02:00
+  name: Helpdesk Project 4
+  updated_on: 2015-03-05 19:14:19 +02:00
+  id: 4
+  description: Disabled copy-to helpdesk project
+  homepage: ""
+  is_public: true
+  identifier: helpdesk_project_4
+  parent_id:
+  lft: 6
+  rgt: 7
+

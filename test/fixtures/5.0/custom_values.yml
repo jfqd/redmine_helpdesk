@@ -1,0 +1,97 @@
+---
+custom_values_001:
+  customized_type: Project
+  custom_field_id: 2
+  customized_id: 1
+  id: 1
+  value: "first reply"
+custom_values_002:
+  customized_type: Project
+  custom_field_id: 3
+  customized_id: 1
+  id: 2
+  value: "email footer"
+custom_values_003:
+  customized_type: Project
+  custom_field_id: 4
+  customized_id: 1
+  id: 3
+  value: reply@example.com
+custom_values_004:
+  customized_type: Project
+  custom_field_id: 5
+  customized_id: 1
+  id: 4
+  value: 0
+custom_values_005:
+  customized_type: Project
+  custom_field_id: 11
+  customized_id: 1
+  id: 5
+  value: 1
+custom_values_006:
+  customized_type: Project
+  custom_field_id: 2
+  customized_id: 2
+  id: 6
+  value: first reply
+custom_values_007:
+  customized_type: Project
+  custom_field_id: 3
+  customized_id: 2
+  id: 7
+  value: email footer
+custom_values_008:
+  customized_type: Project
+  custom_field_id: 4
+  customized_id: 2
+  id: 8
+  value: reply@example.com
+custom_values_009:
+  customized_type: Project
+  custom_field_id: 5
+  customized_id: 2
+  id: 9
+  value: 0
+custom_values_010:
+  customized_type: Project
+  custom_field_id: 11
+  customized_id: 2
+  id: 10
+  value: 1
+custom_values_011:
+  customized_type: Issue
+  custom_field_id: 1
+  customized_id: 1
+  id: 11
+  value: owner@example.com
+custom_values_012:
+  customized_type: Project
+  custom_field_id: 2
+  customized_id: 4
+  id: 12
+  value: first reply
+custom_values_013:
+  customized_type: Project
+  custom_field_id: 3
+  customized_id: 4
+  id: 13
+  value: email footer
+custom_values_014:
+  customized_type: Project
+  custom_field_id: 4
+  customized_id: 4
+  id: 14
+  value: reply@example.com
+custom_values_015:
+  customized_type: Project
+  custom_field_id: 5
+  customized_id: 4
+  id: 15
+  value: 0
+custom_values_016:
+  customized_type: Project
+  custom_field_id: 11
+  customized_id: 4
+  id: 16
+  value: 0
