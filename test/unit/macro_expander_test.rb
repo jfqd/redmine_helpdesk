@@ -35,7 +35,7 @@ class MacroExpanderTest < ActionMailer::TestCase
                 :recipient => "owner@example.com",
                 :journal   => Journal.find(1),
                 :text      => 'text'
-            }).deliver
+            }).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
     assert "text\n\n#{issue.id}, #{issue.subject}, #{issue.tracker}, #{issue.status}", email.body.to_s
   end
@@ -55,7 +55,7 @@ class MacroExpanderTest < ActionMailer::TestCase
                 :recipient => "owner@example.com",
                 :journal   => Journal.find(1),
                 :text      =>'text'
-            }).deliver
+            }).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
     assert "text\n\n#{issue.project.name}", email.body.to_s
   end
@@ -75,7 +75,7 @@ class MacroExpanderTest < ActionMailer::TestCase
                 :recipient => "owner@example.com",
                 :journal   => Journal.find(1),
                 :text      => 'text'
-            }).deliver
+            }).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
     user = Journal.find(1).user
     assert "text\n\n#{user.name}, #{user.firstname}, #{user.lastname}, #{user.mail}, #{user.login}", email.body.to_s
@@ -112,7 +112,7 @@ class MacroExpanderTest < ActionMailer::TestCase
             {:recipient => "owner@example.com",
              :journal   => Journal.find(1),
              :text      =>'text'
-            }).deliver
+            }).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
     assert "text\n\njunior senior, epic motto, .", email.body.to_s
   end
@@ -134,7 +134,7 @@ class MacroExpanderTest < ActionMailer::TestCase
                 :recipient => "owner@example.com",
                 :journal   => Journal.find(1),
                 :text      => 'text'
-            }).deliver
+            }).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
     assert "text\n\n, , .", email.body.to_s
   end
@@ -156,7 +156,7 @@ class MacroExpanderTest < ActionMailer::TestCase
                 :recipient => "owner@example.com",
                 :journal   => Journal.find(1),
                 :text      => 'text'
-            }).deliver
+            }).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
     assert "text\n\n#{t1}", email.body.to_s
   end

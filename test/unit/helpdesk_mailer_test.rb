@@ -78,7 +78,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
     custom_value.save
 
     email = HelpdeskMailer.
-        email_to_supportclient(issue, {:recipient => "owner@example.com"}).deliver
+        email_to_supportclient(issue, {:recipient => "owner@example.com"}).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal "Redmine helpdesk <reply@example.com>", email.header['From'].to_s
   end
@@ -154,7 +154,7 @@ class HelpdeskMailerTest < ActionMailer::TestCase
             {:recipient => "owner@example.com",
              :journal   => Journal.find(3),
              :text      => 'text'
-            }).deliver
+            }).deliver_now
     assert !ActionMailer::Base.deliveries.empty?
     mail = ActionMailer::Base.deliveries.last
     assert_not_nil mail
