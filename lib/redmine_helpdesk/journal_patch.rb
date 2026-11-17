@@ -22,7 +22,7 @@ module RedmineHelpdesk
           Mailer.deliver_issue_edit(self)
         end
         # do not send on private-notes
-        if private_notes == true && send_to_owner == true 
+        if private_notes == true && send_to_owner == true
           self.send_to_owner = false
           self.save( validate: false )
         end

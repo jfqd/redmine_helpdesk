@@ -30,7 +30,7 @@ module RedmineHelpdesk
         reply_separator = issue.project.custom_value_for(f).try(:value)
         if !reply_separator.blank? and !journal.notes.nil?
           journal.notes = journal.notes.gsub(/#{reply_separator}.*/m, '')
-          journal.save(:validate => false)
+          journal.save(validate: false)
         end
 
         # add owner-email to the recipients
@@ -57,7 +57,11 @@ module RedmineHelpdesk
             custom_value = CustomValue.where(
               "customized_id = ? AND custom_field_id = ?", issue.project.id, custom_field.id
             ).first
-            cc_users = custom_value.value.split(',').map(&:strip) if custom_value.value.present?
+            cc_users = if custom_value.present? && custom_value.value.present?
+              custom_value.value.split(',').map(&:strip)
+            else
+              nil
+            end
           end
         rescue Exception => e
           Rails.logger.error "Error while adding cc-users to recipients of email notification: \"#{e.message}\"."
@@ -71,11 +75,16 @@ module RedmineHelpdesk
         @user = u
         @journal = journal
         @journal_details = journal.visible_details
-        @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue, :anchor => "change-#{journal.id}")
+        @issue_url = url_for(
+          controller: 'issues',
+          action:     'show',
+          id:         issue,
+          anchor:     "change-#{journal.id}"
+        )
         mail(
-          :to => u,
-          :cc => cc_users,
-          :subject => s
+          to:      u,
+          cc:      cc_users,
+          subject: s
         )
       end
       
