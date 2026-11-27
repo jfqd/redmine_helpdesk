@@ -1,3 +1,10 @@
+*.log
+*.tmp
+*.bak
+*.ori
 .DS_Store
-*~
-test/app/*
+Thumbs.db
+.vscode/
+.idea/
+tmp/
+log/
