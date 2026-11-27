@@ -1,0 +1,49 @@
+<div style="margin-bottom: 16px;">
+  <h3 style="margin-top: 0;">Global Helpdesk Defaults</h3>
+  <p>
+    <label for="settings_default_sla_first_response">Default First Response SLA (hours):</label>
+    <%= number_field_tag 'settings[default_sla_first_response]', @settings['default_sla_first_response'] || 4, min: 1 %>
+  </p>
+  <p>
+    <label for="settings_default_sla_resolution">Default Resolution SLA (hours):</label>
+    <%= number_field_tag 'settings[default_sla_resolution]', @settings['default_sla_resolution'] || 24, min: 1 %>
+  </p>
+  <p>
+    <label>Instant Inbound Webhook URL:</label>
+    <code><%= "#{Setting.protocol}://#{Setting.host_name}/helpdesk/inbound_email" %></code>
+  </p>
+</div>
+
+<fieldset class="box">
+  <legend>Project Helpdesk Queues (Enable &amp; Configure per Project)</legend>
+  <table class="list">
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th>Status</th>
+        <th>Support Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% Project.active.order(:name).each do |proj| %>
+        <% cfg = (Setting.plugin_redmine_helpdesk || {})["project_#{proj.id}"] || {} %>
+        <% enabled = cfg['enabled'] == '1' %>
+        <tr class="<%= cycle('odd', 'even') %>">
+          <td><%= link_to proj.name, project_path(proj) %></td>
+          <td>
+            <span style="color: <%= enabled ? '#16a34a' : '#64748b' %>; font-weight: 600;">
+              <%= enabled ? 'Enabled' : 'Disabled' %>
+            </span>
+          </td>
+          <td><%= cfg['sender_email'].presence || '-' %></td>
+          <td>
+            <%= link_to 'Configure', project_helpdesk_settings_path(proj), class: 'icon icon-settings' %> |
+            <%= link_to 'Dashboard', project_helpdesk_dashboard_path(proj), class: 'icon icon-stats' %> |
+            <%= link_to 'Reports', project_helpdesk_reports_path(proj), class: 'icon icon-document' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</fieldset>
