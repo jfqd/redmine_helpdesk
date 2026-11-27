@@ -65,6 +65,10 @@
 | `GET` | `/projects/:project_id/helpdesk/dashboard` | Member | User-configurable Helpdesk Queue Dashboard |
 | `POST` | `/helpdesk/escalate/:id` | API / Member | Escalate ticket to a private task in `target_project_id` |
 | `POST` | `/helpdesk/merge/:id` | Member | Merge ticket into `target_issue_id` |
+| `GET` | `/helpdesk/status` | Public | Public ticket status lookup & customer reply portal |
+| `POST` | `/helpdesk/status/reply` | Public | Submit a customer reply from the public portal |
+| `GET` | `/helpdesk/widget/:project_id.js` | Public | Embeddable floating Support widget script for external sites |
+| `POST` | `/helpdesk/gdpr_anonymize/:id` | Member | Redact customer PII/emails & record GDPR audit log |
 
 ---
 
