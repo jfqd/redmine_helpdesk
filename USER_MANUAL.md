@@ -1,70 +1,75 @@
-# Redmine Enterprise Helpdesk — User Manual
+# Redmine Enterprise Helpdesk — Complete Step-by-Step User Manual
 
-## 1. Configuring a Project as a Dedicated Helpdesk Queue
-Each Redmine project can act as an independent helpdesk queue with its own domain/email:
+Welcome! This guide walks you through everything from **first-time setup** to **daily agent workflows** in plain, easy-to-follow steps.
 
-1. Navigate to `/projects/<project_identifier>/helpdesk/settings`.
+---
+
+## Part 1: First-Time Setup (For Administrators)
+
+### Step 1: Open Global Helpdesk Settings
+1. Log in to Redmine as an **Administrator**.
+2. Click **Administration** (top menu) → **Plugins**.
+3. Find **Redmine Enterprise Helpdesk** and click **Configure**.
+4. Here you can:
+   - Set **Default First Response SLA (hours)** (e.g. `4`).
+   - Set **Default Resolution SLA (hours)** (e.g. `24`).
+   - Set an optional **Inbound Webhook Secret** to secure incoming email webhooks.
+   - See your **Instant Inbound Webhook URL** (e.g. `https://your-redmine-domain/helpdesk/inbound_email`).
+   - View the **Project Helpdesk Queues** table listing every active project.
+
+### Step 2: Enable Helpdesk on a Project
+1. In the **Project Helpdesk Queues** table, click **Configure** next to the project you want to turn into a support queue (or visit `/projects/<project_id>/helpdesk/settings`).
 2. **Tab 1 — Mailbox & Routing:**
    - Check **Enable Helpdesk for this Project**.
-   - Enter **Dedicated Support Email** (e.g., `support@clientA.com`).
-   - Enter **Reply-To Email** (e.g., `support@clientA.com`).
+   - **Dedicated Support Email:** Enter the email address customers write to (e.g. `support@clientA.com`). You can also use `##user-name## <support@clientA.com>` to show the agent's name in the customer's inbox.
+   - **Reply-To Email:** Enter the same support email.
+   - **Outgoing SMTP Settings:** Enter your **SMTP Host**, **Port** (`587`), **Username**, **Password**, and check **Enable STARTTLS / TLS**. Click **Save**, then click **Test SMTP Connection** to verify it works.
+   - **Incoming IMAP Settings (if not using Webhook):** Enter **IMAP Host**, **Port** (`993`), **Username**, and **Password**.
+   - **Modern Auth (Microsoft 365):** If using Exchange Online, switch **Authentication Mode** to **Modern Auth (Microsoft 365 / OAuth2 XOAUTH2)** and enter your **Tenant ID**, **Client ID**, and **Client Secret**.
 3. **Tab 2 — SLA & Canned Responses:**
-   - Set **First Response SLA (hours)** (default: `4`).
-   - Set **Resolution SLA (hours)** (default: `24`).
-   - Add **Canned Responses**, one per line in `Title | Body` format:
+   - Set **First Response SLA (hours)** and **Resolution SLA (hours)** for this project.
+   - Add **Canned Responses** (one per line, `Title | Body`):
      ```text
-     Greeting | Thank you for contacting support. We are reviewing your request.
-     Resolved | Your issue has been resolved. Please reply if you need further assistance.
+     Greeting | Thank you for contacting support. We are looking into your request.
+     Resolved | Your issue has been resolved. Please reply if you need anything else.
      ```
+   - Check **Send Auto-Reply Confirmation** if you want customers to receive an instant confirmation email + first note on new tickets.
+   - **Auto-Priority Keywords:** Comma-separated words (e.g. `urgent, down, outage`) that automatically bump a new ticket's priority to Urgent/High.
+   - **Spam / Blacklist Domains:** Comma-separated domains to block (e.g. `spam.com, blocked.org`).
+   - **Blocked Attachment Extensions:** Comma-separated extensions to block (e.g. `.exe, .bat, .sh, .js`).
+   - **Embeddable Support Widget:** Copy the `<script src="...">` snippet and paste it into any website to add a floating **Support** button.
 4. Click **Save**.
 
 ---
 
-## 2. Setting Up Instant Inbound Email (Zero-Delay)
-Instead of waiting for cron jobs, configure your mail provider (Mailgun, SendGrid, Postmark, AWS SES) or local Postfix pipe to POST incoming emails to:
+## Part 2: Daily Agent Workflows
 
-```text
-POST https://your-redmine-host/helpdesk/inbound_email
-```
+### 1. Using the Helpdesk Dashboard
+- Click the **Helpdesk** tab in your project's top menu (or visit `/projects/<project_id>/helpdesk/dashboard`).
+- You will see 4 live boxes: **Open Tickets**, **Unassigned Queue**, **SLA Breached**, and **My Assigned Tickets**.
+- Use the checkboxes at the top right to hide/show any box (your preference is saved automatically).
 
-**Payload Parameters:**
-- `recipient`: Target support email address (e.g., `support@clientA.com`). Used to route the email to the matching project.
-- `raw_email` (or `body_mime` / raw HTTP body): The full MIME email content.
-
-**Example `curl` test:**
-```bash
-curl -X POST https://your-redmine-host/helpdesk/inbound_email \
-  -d "recipient=support@clientA.com" \
-  --data-urlencode "raw_email@sample.eml"
-```
-
----
-
-## 3. Agent Workflows
-
-### A. Helpdesk Dashboard (`/projects/<project_identifier>/helpdesk/dashboard`)
-- View live counts and ticket lists for **Open Tickets**, **Unassigned Queue**, **SLA Breached**, and **My Assigned Tickets**.
-- Use the checkboxes at the top-right to show or hide any widget; your layout is saved automatically per browser.
-
-### B. SLA Badge & Canned Responses on Tickets
+### 2. Replying to Customers & Using Canned Responses
 - Open any ticket in a Helpdesk-enabled project.
-- Above the issue details, you will see:
-  - **Helpdesk SLA:** `elapsed_hours / target_hours` (`On Track` or `BREACHED`).
-  - **Insert Canned Response...** dropdown: selecting a template appends its body directly into the **Notes** box.
+- At the top of the ticket, you will see:
+  - **Helpdesk SLA:** Shows elapsed hours vs. target (`On Track` or `BREACHED`).
+  - **Also viewing:** Warns you if another agent opened the same ticket in the last 2 minutes.
+  - **CSAT:** Shows the customer's rating if they clicked a CSAT link.
+- Click **Edit** and use the **Insert Canned Response...** dropdown to paste a saved reply into **Notes** with one click.
 
-### C. Cross-Project Developer Escalation
-To escalate a customer ticket to an engineering/developer project without exposing internal notes:
-- Send `POST /helpdesk/escalate/<ticket_id>` with:
-  - `target_project_id`: ID of the engineering project
-  - `assigned_to_id`: Developer user ID
-- A **private** (`is_private: true`) task is created in the target project and linked to the customer ticket.
+### 3. Escalating to a Developer Project
+- If a support ticket needs engineering work in another project, send `POST /helpdesk/escalate/<ticket_id>` with `target_project_id` and `assigned_to_id`.
+- A **private** developer task is created in the engineering project and linked to the customer ticket—internal developer notes are never exposed to the customer.
 
-### D. Merging Duplicate Tickets
-To merge a duplicate ticket into a master ticket:
-- Send `POST /helpdesk/merge/<source_ticket_id>` with `target_issue_id=<master_ticket_id>`.
-- All journals are moved to the master ticket, an audit note is recorded, and the duplicate ticket is closed.
+### 4. Merging Duplicate Tickets
+- If a customer opens two tickets for the same issue, send `POST /helpdesk/merge/<duplicate_id>` with `target_issue_id=<master_id>`.
+- All replies are moved to the master ticket and the duplicate is closed.
+
+### 5. GDPR / Privacy Anonymization
+- To erase a customer's email address from a ticket, send `POST /helpdesk/gdpr_anonymize/<ticket_id>`.
 
 ---
 
-## 4. Public Customer Portal
-Share `/helpdesk/public/<project_identifier>` with external customers so they can submit tickets directly without needing a Redmine account.
+## Part 3: Customer Self-Service Portals (No Login Required)
+- **Submit a Ticket:** Share `/helpdesk/public/<project_id>` with customers.
+- **Check Status & Reply:** Share `/helpdesk/status` so customers can enter their Ticket ID, view status, and post a reply.
