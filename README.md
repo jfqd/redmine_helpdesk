@@ -1,7 +1,7 @@
 # Redmine Enterprise Helpdesk
 
 [![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/Arean82/redmine_helpdesk)
-[![Redmine](https://img.shields.io/badge/redmine->=7.0.0-blue?logo=redmine&logoColor=%23B32024&labelColor=f0f0f0)](https://www.redmine.org)
+[![Redmine](https://img.shields.io/badge/redmine->=6.0.0-blue?logo=redmine&logoColor=%23B32024&labelColor=f0f0f0)](https://www.redmine.org)
 [![Ruby](https://img.shields.io/badge/ruby->=3.2-red?logo=ruby&logoColor=white)](https://www.ruby-lang.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 

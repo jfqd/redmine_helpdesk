@@ -1,6 +1,6 @@
 1.0.0 (2026-11-27)
 ---
-* **Redmine 7.0+ Compatibility:** Upgraded plugin metadata and dropped Redmine 5/6 requirement (`requires_redmine >= 7.0.0`).
+* **Redmine 6.0+ & 7.0+ Compatibility:** Upgraded plugin metadata (`requires_redmine >= 6.0.0`).
 * **Multi-Domain Email Routing & Instant Inbound Webhook:** Added `POST /helpdesk/inbound_email` with optional `webhook_secret` verification and per-project `sender_email` / `reply_to` routing.
 * **Public Customer Portals:** Added anonymous ticket submission (`GET/POST /helpdesk/public/:project_id`) and ticket status lookup (`GET /helpdesk/status`).
 * **SLA Tracking & Canned Responses:** Added configurable First Response / Resolution SLA hours, live SLA timer badges on tickets, and one-click canned response insertion.
