@@ -142,6 +142,11 @@ class HelpdeskInboundController < ApplicationController
       'enabled' => params[:enabled] == '1' ? '1' : '0',
       'sender_email' => params[:sender_email].to_s.strip,
       'reply_to' => params[:reply_to].to_s.strip,
+      'smtp_address' => params[:smtp_address].to_s.strip,
+      'smtp_port' => params[:smtp_port].present? ? params[:smtp_port].to_i : 587,
+      'smtp_username' => params[:smtp_username].to_s.strip,
+      'smtp_password' => params[:smtp_password].to_s,
+      'smtp_tls' => params[:smtp_tls] == '1' ? '1' : '0',
       'sla_first_response_hours' => params[:sla_first_response_hours].to_i,
       'sla_resolution_hours' => params[:sla_resolution_hours].to_i,
       'canned_responses' => params[:canned_responses].to_s

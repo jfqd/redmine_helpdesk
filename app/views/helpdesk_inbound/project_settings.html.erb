@@ -26,6 +26,27 @@
         <label for="helpdesk_reply_to">Reply-To Email</label>
         <%= text_field_tag 'reply_to', @helpdesk_config['reply_to'], id: 'helpdesk_reply_to', size: 45, placeholder: 'support@client-domain.com' %>
       </p>
+      <hr />
+      <p>
+        <label for="helpdesk_smtp_address">SMTP Host / Server</label>
+        <%= text_field_tag 'smtp_address', @helpdesk_config['smtp_address'], id: 'helpdesk_smtp_address', size: 40, placeholder: 'smtp.client-domain.com' %>
+      </p>
+      <p>
+        <label for="helpdesk_smtp_port">SMTP Port</label>
+        <%= number_field_tag 'smtp_port', @helpdesk_config['smtp_port'] || 587, id: 'helpdesk_smtp_port', min: 1, max: 65535 %>
+      </p>
+      <p>
+        <label for="helpdesk_smtp_username">SMTP Username</label>
+        <%= text_field_tag 'smtp_username', @helpdesk_config['smtp_username'], id: 'helpdesk_smtp_username', size: 40 %>
+      </p>
+      <p>
+        <label for="helpdesk_smtp_password">SMTP Password</label>
+        <%= password_field_tag 'smtp_password', @helpdesk_config['smtp_password'], id: 'helpdesk_smtp_password', size: 40 %>
+      </p>
+      <p>
+        <label for="helpdesk_smtp_tls">Enable STARTTLS / TLS</label>
+        <%= check_box_tag 'smtp_tls', '1', @helpdesk_config['smtp_tls'] != '0', id: 'helpdesk_smtp_tls' %>
+      </p>
     </div>
 
     <div id="hd-tab-1" class="box" style="display: none; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; padding: 16px;">
