@@ -231,11 +231,11 @@ class HelpdeskInboundController < ApplicationController
       subject: params[:subject].to_s.strip,
       description: "From: #{params[:customer_email]}\n\n#{params[:description]}"
     )
+    if issue.subject.downcase.include?('urgent') || issue.subject.downcase.include?('down') || issue.subject.downcase.include?('outage')
+      urgent_prio = IssuePriority.where("LOWER(name) IN ('urgent', 'immediate', 'high')").order(position: :desc).first
+      issue.priority = urgent_prio if urgent_prio
+    end
     if issue.save
-      if issue.subject.downcase.include?('urgent') || issue.subject.downcase.include?('down') || issue.subject.downcase.include?('outage')
-        urgent_prio = IssuePriority.where("LOWER(name) IN ('urgent', 'immediate', 'high')").order(position: :desc).first
-        issue.update(priority: urgent_prio) if urgent_prio
-      end
       cfg = (Setting.plugin_redmine_helpdesk || {})["project_#{@project.id}"] || {}
       if cfg['auto_reply_enabled'] == '1' && params[:customer_email].present?
         first_reply_cf = CustomField.find_by(name: 'helpdesk-first-reply')
