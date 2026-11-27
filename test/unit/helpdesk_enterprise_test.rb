@@ -10,7 +10,7 @@ class HelpdeskEnterpriseTest < ActiveSupport::TestCase
 
   def test_inbound_controller_actions_defined
     actions = HelpdeskInboundController.action_methods
-    %w[receive escalate merge dashboard reports project_settings save_project_settings public_new public_create public_status csat].each do |act|
+    %w[receive escalate merge dashboard reports project_settings save_project_settings public_new public_create public_status public_reply widget gdpr_anonymize test_smtp contacts csat].each do |act|
       assert_includes actions, act
     end
   end
