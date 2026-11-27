@@ -9,6 +9,10 @@
     <%= number_field_tag 'settings[default_sla_resolution]', @settings['default_sla_resolution'] || 24, min: 1 %>
   </p>
   <p>
+    <label for="settings_webhook_secret">Inbound Webhook Secret (Optional):</label>
+    <%= text_field_tag 'settings[webhook_secret]', @settings['webhook_secret'], size: 40, placeholder: 'Leave blank to disable' %>
+  </p>
+  <p>
     <label>Instant Inbound Webhook URL:</label>
     <code><%= "#{Setting.protocol}://#{Setting.host_name}/helpdesk/inbound_email" %></code>
   </p>

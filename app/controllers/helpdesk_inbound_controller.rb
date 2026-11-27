@@ -8,6 +8,12 @@ class HelpdeskInboundController < ApplicationController
 
   # Instant inbound email webhook (Mailgun / SendGrid / Postmark / Postfix pipe)
   def receive
+    secret = (Setting.plugin_redmine_helpdesk || {})['webhook_secret'].to_s.strip
+    if secret.present? && params[:secret].to_s != secret && request.headers['X-Helpdesk-Secret'].to_s != secret
+      render json: { error: 'Unauthorized webhook secret' }, status: :unauthorized
+      return
+    end
+
     raw_email = params[:raw_email] || params[:body_mime] || request.raw_post
     if raw_email.blank?
       render json: { error: 'Empty email payload' }, status: :bad_request
