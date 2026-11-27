@@ -72,7 +72,7 @@ module RedmineHelpdesk
         s += issue.subject
         u = (alternative_user.present? ? alternative_user : user)
         @issue = issue
-        @user = u
+        @user = user
         @journal = journal
         @journal_details = journal.visible_details
         @issue_url = url_for(
