@@ -1,0 +1,12 @@
+<h2>Helpdesk Customer Contacts &mdash; <%= @project.name %></h2>
+<div class="box" style="border-radius: 8px; padding: 16px; background: #fff; border: 1px solid #e2e8f0;">
+  <% if @contacts.empty? %>
+    <p class="nodata">No external customer contacts recorded yet.</p>
+  <% else %>
+    <ul style="margin: 0; padding-left: 18px;">
+      <% @contacts.each do |email| %>
+        <li style="margin-bottom: 6px;"><strong><%= email %></strong></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

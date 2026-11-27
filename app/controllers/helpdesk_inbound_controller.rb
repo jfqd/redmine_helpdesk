@@ -1,7 +1,7 @@
 class HelpdeskInboundController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:receive]
-  before_action :find_project_by_project_id, only: [:project_settings, :save_project_settings, :dashboard, :reports, :public_new, :public_create]
-  before_action :authorize, only: [:project_settings, :save_project_settings, :dashboard, :reports]
+  before_action :find_project_by_project_id, only: [:project_settings, :save_project_settings, :dashboard, :reports, :test_smtp, :contacts, :public_new, :public_create]
+  before_action :authorize, only: [:project_settings, :save_project_settings, :dashboard, :reports, :test_smtp, :contacts]
   skip_before_action :check_if_login_required, only: [:receive, :public_new, :public_create, :csat, :public_status], raise: false
 
   accept_api_auth :receive, :escalate
@@ -23,6 +23,16 @@ class HelpdeskInboundController < ApplicationController
     # Route to project by recipient email if configured
     to_addr = params[:recipient].to_s.downcase.strip
     target_project = find_project_by_helpdesk_email(to_addr)
+
+    if target_project
+      cfg = (Setting.plugin_redmine_helpdesk || {})["project_#{target_project.id}"] || {}
+      blacklist = cfg['blacklist_domains'].to_s.split(',').map(&:strip).reject(&:blank?)
+      sender_str = params[:sender].to_s.downcase
+      if blacklist.any? { |b| sender_str.include?(b.downcase) }
+        render json: { error: 'Sender is blacklisted' }, status: :forbidden
+        return
+      end
+    end
 
     options = {}
     options[:issue] = { project: target_project.identifier } if target_project
@@ -62,6 +72,29 @@ class HelpdeskInboundController < ApplicationController
     if params[:ticket_id].present?
       @ticket = Issue.find_by(id: params[:ticket_id].to_i)
     end
+  end
+
+  def test_smtp
+    cfg = (Setting.plugin_redmine_helpdesk || {})["project_#{@project.id}"] || {}
+    host = cfg['smtp_address'].to_s.strip
+    port = (cfg['smtp_port'] || 587).to_i
+    if host.blank?
+      flash[:error] = 'SMTP Host is blank.'
+    else
+      begin
+        require 'net/smtp'
+        Net::SMTP.start(host, port) { |smtp| smtp.finish }
+        flash[:notice] = "SMTP connection to #{host}:#{port} succeeded!"
+      rescue => e
+        flash[:error] = "SMTP connection failed: #{e.message}"
+      end
+    end
+    redirect_to project_helpdesk_settings_path(@project)
+  end
+
+  def contacts
+    @issues = @project.issues.order(created_on: :desc).limit(100)
+    @contacts = @issues.map { |i| i.description.to_s.lines.first.to_s.strip }.select { |l| l.start_with?('From:') }.map { |l| l.sub('From:', '').strip }.uniq
   end
 
   def reports
@@ -147,6 +180,13 @@ class HelpdeskInboundController < ApplicationController
       'smtp_username' => params[:smtp_username].to_s.strip,
       'smtp_password' => params[:smtp_password].to_s,
       'smtp_tls' => params[:smtp_tls] == '1' ? '1' : '0',
+      'imap_host' => params[:imap_host].to_s.strip,
+      'imap_port' => params[:imap_port].present? ? params[:imap_port].to_i : 993,
+      'imap_username' => params[:imap_username].to_s.strip,
+      'imap_password' => params[:imap_password].to_s,
+      'blacklist_domains' => params[:blacklist_domains].to_s.strip,
+      'auto_priority_keywords' => params[:auto_priority_keywords].to_s.strip,
+      'auto_reply_enabled' => params[:auto_reply_enabled] == '1' ? '1' : '0',
       'sla_first_response_hours' => params[:sla_first_response_hours].to_i,
       'sla_resolution_hours' => params[:sla_resolution_hours].to_i,
       'canned_responses' => params[:canned_responses].to_s

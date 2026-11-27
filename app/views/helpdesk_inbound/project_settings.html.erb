@@ -46,6 +46,24 @@
       <p>
         <label for="helpdesk_smtp_tls">Enable STARTTLS / TLS</label>
         <%= check_box_tag 'smtp_tls', '1', @helpdesk_config['smtp_tls'] != '0', id: 'helpdesk_smtp_tls' %>
+        &nbsp; <%= link_to 'Test SMTP Connection', project_helpdesk_test_smtp_path(@project), method: :post, class: 'icon icon-reload' %>
+      </p>
+      <hr />
+      <p>
+        <label for="helpdesk_imap_host">Incoming IMAP Host</label>
+        <%= text_field_tag 'imap_host', @helpdesk_config['imap_host'], id: 'helpdesk_imap_host', size: 40, placeholder: 'imap.client-domain.com' %>
+      </p>
+      <p>
+        <label for="helpdesk_imap_port">IMAP Port (SSL)</label>
+        <%= number_field_tag 'imap_port', @helpdesk_config['imap_port'] || 993, id: 'helpdesk_imap_port', min: 1, max: 65535 %>
+      </p>
+      <p>
+        <label for="helpdesk_imap_username">IMAP Username</label>
+        <%= text_field_tag 'imap_username', @helpdesk_config['imap_username'], id: 'helpdesk_imap_username', size: 40 %>
+      </p>
+      <p>
+        <label for="helpdesk_imap_password">IMAP Password</label>
+        <%= password_field_tag 'imap_password', @helpdesk_config['imap_password'], id: 'helpdesk_imap_password', size: 40 %>
       </p>
     </div>
 
@@ -61,6 +79,18 @@
       <p>
         <label for="helpdesk_canned">Canned Responses (Title | Body)</label>
         <%= text_area_tag 'canned_responses', @helpdesk_config['canned_responses'], id: 'helpdesk_canned', rows: 5, cols: 60, placeholder: "Greeting | Thank you for contacting support.\nResolved | Your issue has been resolved." %>
+      </p>
+      <p>
+        <label for="helpdesk_auto_reply">Send Auto-Reply Confirmation</label>
+        <%= check_box_tag 'auto_reply_enabled', '1', @helpdesk_config['auto_reply_enabled'] == '1', id: 'helpdesk_auto_reply' %>
+      </p>
+      <p>
+        <label for="helpdesk_auto_prio">Auto-Priority Keywords (comma-separated)</label>
+        <%= text_field_tag 'auto_priority_keywords', @helpdesk_config['auto_priority_keywords'] || 'urgent, down, outage', id: 'helpdesk_auto_prio', size: 50 %>
+      </p>
+      <p>
+        <label for="helpdesk_blacklist">Spam / Blacklist Domains (comma-separated)</label>
+        <%= text_field_tag 'blacklist_domains', @helpdesk_config['blacklist_domains'], id: 'helpdesk_blacklist', size: 50, placeholder: 'spam.com, blocked.org' %>
       </p>
     </div>
 
