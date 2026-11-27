@@ -169,6 +169,19 @@ class HelpdeskInboundController < ApplicationController
         urgent_prio = IssuePriority.where("LOWER(name) IN ('urgent', 'immediate', 'high')").order(position: :desc).first
         issue.update(priority: urgent_prio) if urgent_prio
       end
+      cfg = (Setting.plugin_redmine_helpdesk || {})["project_#{@project.id}"] || {}
+      if cfg['auto_reply_enabled'] == '1' && params[:customer_email].present?
+        first_reply_cf = CustomField.find_by(name: 'helpdesk-first-reply')
+        reply_msg = first_reply_cf ? @project.custom_value_for(first_reply_cf)&.value : nil
+        reply_msg = "Thank you for contacting support. Your ticket ##{issue.id} has been received." if reply_msg.blank?
+        issue.init_journal(User.anonymous, reply_msg)
+        issue.save
+        begin
+          HelpdeskMailer.email_to_supportclient(issue, { recipient: params[:customer_email], text: reply_msg }).deliver_later
+        rescue
+          HelpdeskMailer.email_to_supportclient(issue, { recipient: params[:customer_email], text: reply_msg }).deliver_now rescue nil
+        end
+      end
       flash[:notice] = "Ticket ##{issue.id} submitted successfully."
       redirect_to helpdesk_public_new_path(@project)
     else
