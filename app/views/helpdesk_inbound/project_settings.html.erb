@@ -65,6 +65,23 @@
         <label for="helpdesk_imap_password">IMAP Password</label>
         <%= password_field_tag 'imap_password', @helpdesk_config['imap_password'], id: 'helpdesk_imap_password', size: 40 %>
       </p>
+      <hr />
+      <p>
+        <label for="helpdesk_auth_mode">Authentication Mode</label>
+        <%= select_tag 'auth_mode', options_for_select([['Basic Auth (Username / Password)', 'basic'], ['Modern Auth (Microsoft 365 / OAuth2 XOAUTH2)', 'oauth2']], @helpdesk_config['auth_mode'] || 'basic'), id: 'helpdesk_auth_mode' %>
+      </p>
+      <p>
+        <label for="helpdesk_oauth_tenant">OAuth2 Tenant ID (Microsoft 365)</label>
+        <%= text_field_tag 'oauth_tenant_id', @helpdesk_config['oauth_tenant_id'], id: 'helpdesk_oauth_tenant', size: 45 %>
+      </p>
+      <p>
+        <label for="helpdesk_oauth_client">OAuth2 Client ID</label>
+        <%= text_field_tag 'oauth_client_id', @helpdesk_config['oauth_client_id'], id: 'helpdesk_oauth_client', size: 45 %>
+      </p>
+      <p>
+        <label for="helpdesk_oauth_secret">OAuth2 Client Secret</label>
+        <%= password_field_tag 'oauth_client_secret', @helpdesk_config['oauth_client_secret'], id: 'helpdesk_oauth_secret', size: 45 %>
+      </p>
     </div>
 
     <div id="hd-tab-1" class="box" style="display: none; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; padding: 16px;">

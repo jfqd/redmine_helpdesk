@@ -39,7 +39,9 @@ module RedmineHelpdesk
           if (!@email.cc.nil?) && (custom_value.value == '1')
             carbon_copy = @email[:cc].formatted.join(', ')
             custom_value = custom_field_value(issue,'copy-to')
-            custom_value.value = carbon_copy
+            existing = custom_value.value.to_s.split(',').map(&:strip).reject(&:blank?)
+            incoming = @email[:cc].formatted.map(&:strip).reject(&:blank?)
+            custom_value.value = (existing + incoming).uniq.join(', ')
             custom_value.save( validate: false ) # skip validation!
           else
             carbon_copy = nil
