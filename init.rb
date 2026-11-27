@@ -9,6 +9,8 @@ require 'redmine_helpdesk/mailer_patch'
 Redmine::Plugin.register :redmine_helpdesk do
   name 'Redmine Enterprise Helpdesk'
   author 'Arean Narrayan'
+  author_url 'https://github.com/Arean82'
+  url 'https://github.com/Arean82/redmine_helpdesk'
   description 'Multi-domain enterprise helpdesk with instant inbound email, SLA tracking, canned responses, and cross-project escalation'
   version '1.0.0'
   requires_redmine :version_or_higher => '7.0.0'
