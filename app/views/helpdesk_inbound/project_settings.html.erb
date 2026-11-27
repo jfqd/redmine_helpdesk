@@ -92,6 +92,14 @@
         <label for="helpdesk_blacklist">Spam / Blacklist Domains (comma-separated)</label>
         <%= text_field_tag 'blacklist_domains', @helpdesk_config['blacklist_domains'], id: 'helpdesk_blacklist', size: 50, placeholder: 'spam.com, blocked.org' %>
       </p>
+      <p>
+        <label for="helpdesk_att_blacklist">Blocked Attachment Extensions</label>
+        <%= text_field_tag 'attachment_blacklist', @helpdesk_config['attachment_blacklist'] || '.exe, .bat, .sh, .js', id: 'helpdesk_att_blacklist', size: 50 %>
+      </p>
+      <p>
+        <label>Embeddable Support Widget</label>
+        <code>&lt;script src="<%= helpdesk_widget_url(@project, format: :js) %>"&gt;&lt;/script&gt;</code>
+      </p>
     </div>
 
     <%= submit_tag l(:button_save), class: 'button-positive' %>

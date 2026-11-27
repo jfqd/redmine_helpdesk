@@ -2,7 +2,7 @@ class HelpdeskInboundController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:receive]
   before_action :find_project_by_project_id, only: [:project_settings, :save_project_settings, :dashboard, :reports, :test_smtp, :contacts, :public_new, :public_create]
   before_action :authorize, only: [:project_settings, :save_project_settings, :dashboard, :reports, :test_smtp, :contacts]
-  skip_before_action :check_if_login_required, only: [:receive, :public_new, :public_create, :csat, :public_status], raise: false
+  skip_before_action :check_if_login_required, only: [:receive, :public_new, :public_create, :csat, :public_status, :public_reply, :widget], raise: false
 
   accept_api_auth :receive, :escalate
 
@@ -72,6 +72,39 @@ class HelpdeskInboundController < ApplicationController
     if params[:ticket_id].present?
       @ticket = Issue.find_by(id: params[:ticket_id].to_i)
     end
+  end
+
+  def public_reply
+    ticket = Issue.find(params[:ticket_id].to_i)
+    if params[:reply_text].present?
+      ticket.init_journal(User.anonymous, "Customer Reply (#{params[:customer_email]}):\n\n#{params[:reply_text]}")
+      ticket.save
+      flash[:notice] = 'Reply added to ticket.'
+    end
+    redirect_to helpdesk_public_status_path(ticket_id: ticket.id)
+  end
+
+  def widget
+    @project = Project.find_by(identifier: params[:project_id]) || Project.find_by(id: params[:project_id])
+    render content_type: 'application/javascript', plain: <<~JS
+      (function(){
+        var btn = document.createElement('a');
+        btn.href = '#{helpdesk_public_new_url(@project)}';
+        btn.target = '_blank';
+        btn.textContent = 'Support';
+        btn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#2563eb;color:#fff;padding:10px 18px;border-radius:999px;font-family:sans-serif;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:9999;';
+        document.body.appendChild(btn);
+      })();
+    JS
+  end
+
+  def gdpr_anonymize
+    ticket = Issue.find(params[:id])
+    ticket.description = ticket.description.to_s.gsub(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/, '[REDACTED_EMAIL]')
+    ticket.init_journal(User.current, 'GDPR: Customer PII anonymized.')
+    ticket.save
+    flash[:notice] = "Ticket ##{ticket.id} anonymized."
+    redirect_to issue_path(ticket)
   end
 
   def test_smtp
@@ -185,6 +218,7 @@ class HelpdeskInboundController < ApplicationController
       'imap_username' => params[:imap_username].to_s.strip,
       'imap_password' => params[:imap_password].to_s,
       'blacklist_domains' => params[:blacklist_domains].to_s.strip,
+      'attachment_blacklist' => params[:attachment_blacklist].to_s.strip,
       'auto_priority_keywords' => params[:auto_priority_keywords].to_s.strip,
       'auto_reply_enabled' => params[:auto_reply_enabled] == '1' ? '1' : '0',
       'sla_first_response_hours' => params[:sla_first_response_hours].to_i,

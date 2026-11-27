@@ -12,6 +12,18 @@
       <strong>#<%= @ticket.id %>: <%= @ticket.subject %></strong><br />
       Status: <strong><%= @ticket.status.name %></strong> | Updated: <%= format_time(@ticket.updated_on) %>
     </div>
+    <%= form_tag(helpdesk_public_reply_path, method: :post, style: 'margin-top: 14px;') do %>
+      <%= hidden_field_tag :ticket_id, @ticket.id %>
+      <p>
+        <label><strong>Your Email:</strong></label><br />
+        <%= email_field_tag :customer_email, '', required: true, style: 'width: 100%; padding: 6px; box-sizing: border-box;' %>
+      </p>
+      <p>
+        <label><strong>Add Reply:</strong></label><br />
+        <%= text_area_tag :reply_text, '', rows: 4, required: true, style: 'width: 100%; padding: 6px; box-sizing: border-box;' %>
+      </p>
+      <%= submit_tag 'Send Reply', class: 'button-positive' %>
+    <% end %>
   <% elsif params[:ticket_id].present? %>
     <p style="color: #dc2626; margin-top: 12px;">Ticket not found.</p>
   <% end %>
