@@ -1,3 +1,13 @@
+1.0.0 (2026-11-27)
+---
+* **Redmine 7.0+ Compatibility:** Upgraded plugin metadata and dropped Redmine 5/6 requirement (`requires_redmine >= 7.0.0`).
+* **Multi-Domain Email Routing & Instant Inbound Webhook:** Added `POST /helpdesk/inbound_email` with optional `webhook_secret` verification and per-project `sender_email` / `reply_to` routing.
+* **Public Customer Portals:** Added anonymous ticket submission (`GET/POST /helpdesk/public/:project_id`) and ticket status lookup (`GET /helpdesk/status`).
+* **SLA Tracking & Canned Responses:** Added configurable First Response / Resolution SLA hours, live SLA timer badges on tickets, and one-click canned response insertion.
+* **Cross-Project Escalation & Ticket Merging:** Added `POST /helpdesk/escalate/:id` (private developer task creation) and `POST /helpdesk/merge/:id`.
+* **CSAT, Auto-Priority & Agent Collision:** Added `GET /helpdesk/csat/:id` rating endpoint, keyword-based priority triggers, and active-viewer collision badges.
+* **Dashboards, Reports & Global Settings:** Added user-configurable Helpdesk Dashboard, Reports page, Project Menu tab, and Global Plugin Settings overview.
+
 0.0.20
 ---
 * Make plugin compatibility with Redmine 5.0.x
