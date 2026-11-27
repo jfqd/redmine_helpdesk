@@ -1,7 +1,7 @@
 class HelpdeskInboundController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:receive]
   before_action :find_project_by_project_id, only: [:project_settings, :save_project_settings, :dashboard, :reports, :test_smtp, :contacts, :public_new, :public_create]
-  before_action :authorize, only: [:project_settings, :save_project_settings, :dashboard, :reports, :test_smtp, :contacts]
+  before_action :authorize_unless_admin, only: [:project_settings, :save_project_settings, :dashboard, :reports, :test_smtp, :contacts]
   skip_before_action :check_if_login_required, only: [:receive, :public_new, :public_create, :csat, :public_status, :public_reply, :widget], raise: false
 
   accept_api_auth :receive, :escalate
@@ -227,10 +227,15 @@ class HelpdeskInboundController < ApplicationController
     }
     Setting.plugin_redmine_helpdesk = s
     flash[:notice] = l(:notice_successful_update)
-    redirect_to settings_project_path(@project, tab: 'helpdesk')
+    redirect_to project_helpdesk_settings_path(@project)
   end
 
   private
+
+  def authorize_unless_admin
+    return true if User.current.admin?
+    authorize
+  end
 
   def find_project_by_helpdesk_email(email)
     return nil if email.blank?
