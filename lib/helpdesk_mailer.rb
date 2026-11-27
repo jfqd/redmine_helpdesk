@@ -36,6 +36,11 @@ class HelpdeskMailer < ActionMailer::Base
     p = issue.project
     s = CustomField.find_by_name('helpdesk-sender-email')
     sender = p.custom_value_for(s).try(:value) if p.present? && s.present?
+    if sender.blank? && p.present?
+      cfg = (Setting.plugin_redmine_helpdesk || {})["project_#{p.id}"] || {}
+      sender = cfg['sender_email'].presence if cfg['enabled'] == '1'
+    end
+    sender = sender.gsub('##user-name##', User.current.name) if sender.present?
     # If a custom field with text for the first reply is
     # available then use this one instead of the regular
     r = CustomField.find_by_name('helpdesk-first-reply')
