@@ -12,6 +12,8 @@ RedmineApp::Application.routes.draw do
   post 'helpdesk/status/reply', to: 'helpdesk_inbound#public_reply', as: 'helpdesk_public_reply'
   get 'helpdesk/widget/:project_id.js', to: 'helpdesk_inbound#widget', as: 'helpdesk_widget'
   post 'helpdesk/gdpr_anonymize/:id', to: 'helpdesk_inbound#gdpr_anonymize', as: 'helpdesk_gdpr_anonymize'
+  post 'helpdesk/split/:id', to: 'helpdesk_inbound#split_ticket', as: 'helpdesk_split_ticket'
+  post 'helpdesk/ai_draft/:id', to: 'helpdesk_inbound#ai_draft', as: 'helpdesk_ai_draft'
   get 'projects/:project_id/helpdesk/reports', to: 'helpdesk_inbound#reports', as: 'project_helpdesk_reports'
   post 'projects/:project_id/helpdesk/test_smtp', to: 'helpdesk_inbound#test_smtp', as: 'project_helpdesk_test_smtp'
   get 'projects/:project_id/helpdesk/contacts', to: 'helpdesk_inbound#contacts', as: 'project_helpdesk_contacts'

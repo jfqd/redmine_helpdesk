@@ -103,6 +103,32 @@ class HelpdeskInboundController < ApplicationController
     JS
   end
 
+  def split_ticket
+    source = Issue.find(params[:id])
+    new_issue = Issue.new(
+      project: source.project,
+      tracker: source.tracker,
+      author: User.current,
+      assigned_to: source.assigned_to,
+      subject: params[:subject].presence || "Split from ##{source.id}: #{source.subject}",
+      description: params[:notes].presence || source.description
+    )
+    if new_issue.save
+      IssueRelation.create(issue_from: source, issue_to: new_issue, relation_type: IssueRelation::TYPE_RELATES)
+      flash[:notice] = "Split into new Ticket ##{new_issue.id}"
+      redirect_to issue_path(new_issue)
+    else
+      flash[:error] = new_issue.errors.full_messages.join(', ')
+      redirect_to issue_path(source)
+    end
+  end
+
+  def ai_draft
+    issue = Issue.find(params[:id])
+    draft = "Hello,\n\nThank you for reaching out regarding \"#{issue.subject}\" (Ticket ##{issue.id}). Our team is reviewing your request and will provide an update shortly.\n\nBest regards,\n#{User.current.name}"
+    render json: { draft: draft }
+  end
+
   def gdpr_anonymize
     ticket = Issue.find(params[:id])
     ticket.description = ticket.description.to_s.gsub(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/, '[REDACTED_EMAIL]')
@@ -137,11 +163,26 @@ class HelpdeskInboundController < ApplicationController
 
   def reports
     @cfg = (Setting.plugin_redmine_helpdesk || {})["project_#{@project.id}"] || {}
-    @total_tickets = @project.issues.count
+    @issues = @project.issues.includes(:status, :priority, :assigned_to)
+    @total_tickets = @issues.count
     @open_count = @project.issues.open.count
     @closed_count = @total_tickets - @open_count
     res_hours = (@cfg['sla_resolution_hours'] || 24).to_i
     @breached_count = @project.issues.open.select { |i| ((Time.now - i.created_on) / 3600.0) > res_hours }.size
+    @by_status = @issues.group_by(&:status).transform_values(&:size)
+    @by_priority = @issues.group_by(&:priority).transform_values(&:size)
+    @by_assignee = @issues.select(&:assigned_to).group_by(&:assigned_to).transform_values(&:size)
+
+    if params[:format] == 'csv'
+      require 'csv'
+      csv_data = CSV.generate(headers: true) do |csv|
+        csv << ['ID', 'Subject', 'Status', 'Priority', 'Assignee', 'Created On']
+        @issues.each do |i|
+          csv << [i.id, i.subject, i.status&.name, i.priority&.name, i.assigned_to&.name, i.created_on.strftime('%Y-%m-%d %H:%M')]
+        end
+      end
+      send_data csv_data, filename: "helpdesk-report-#{@project.identifier}.csv", type: 'text/csv'
+    end
   end
 
   def csat
@@ -241,6 +282,7 @@ class HelpdeskInboundController < ApplicationController
       'oauth_client_secret' => params[:oauth_client_secret].to_s,
       'blacklist_domains' => params[:blacklist_domains].to_s.strip,
       'attachment_blacklist' => params[:attachment_blacklist].to_s.strip,
+      'gpg_enabled' => params[:gpg_enabled] == '1' ? '1' : '0',
       'auto_priority_keywords' => params[:auto_priority_keywords].to_s.strip,
       'auto_reply_enabled' => params[:auto_reply_enabled] == '1' ? '1' : '0',
       'sla_first_response_hours' => params[:sla_first_response_hours].to_i,

@@ -114,6 +114,11 @@
         <%= text_field_tag 'attachment_blacklist', @helpdesk_config['attachment_blacklist'] || '.exe, .bat, .sh, .js', id: 'helpdesk_att_blacklist', size: 50 %>
       </p>
       <p>
+        <label for="helpdesk_gpg">Enable GPG / PGP Email Encryption</label>
+        <%= check_box_tag 'gpg_enabled', '1', @helpdesk_config['gpg_enabled'] == '1', id: 'helpdesk_gpg' %>
+        <em class="info">Toggle GPG/PGP encryption for outgoing customer replies.</em>
+      </p>
+      <p>
         <label>Embeddable Support Widget</label>
         <code>&lt;script src="<%= helpdesk_widget_url(@project, format: :js) %>"&gt;&lt;/script&gt;</code>
       </p>

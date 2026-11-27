@@ -48,9 +48,12 @@
       <% else %>
         <ul style="margin: 0; padding-left: 18px; font-size: 13px;">
           <% list.first(10).each do |t| %>
-            <li style="margin-bottom: 4px;">
-              <%= link_to "##{t.id} #{t.subject}", issue_path(t) %>
-              <span style="color: #64748b; font-size: 11px;">(<%= t.status.name %>)</span>
+            <% elapsed_h = ((Time.now - t.created_on) / 3600.0).round(1) %>
+            <% res_h = (@cfg['sla_resolution_hours'] || 24).to_i %>
+            <% is_breached = elapsed_h > res_h %>
+            <li style="margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; gap: 6px;">
+              <span><%= link_to "##{t.id} #{t.subject}", issue_path(t) %> <span style="color: #64748b; font-size: 11px;">(<%= t.status.name %>)</span></span>
+              <span style="padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; background: <%= is_breached ? '#fef2f2' : '#ecfdf5' %>; color: <%= is_breached ? '#dc2626' : '#059669' %>;">SLA <%= elapsed_h %>h</span>
             </li>
           <% end %>
         </ul>

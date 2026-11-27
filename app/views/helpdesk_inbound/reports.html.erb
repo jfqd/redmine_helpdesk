@@ -1,5 +1,9 @@
-<h2>Helpdesk Reports &mdash; <%= @project.name %></h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+  <h2 style="margin: 0;">Helpdesk Reports &amp; Analytics &mdash; <%= @project.name %></h2>
+  <%= link_to 'Export CSV', project_helpdesk_reports_path(@project, format: :csv), class: 'icon icon-download', style: 'background: #f8fafc; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: 600;' %>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px;">
   <div class="box" style="border-radius: 8px; padding: 14px; background: #fff; border: 1px solid #e2e8f0;">
     <div style="font-size: 12px; color: #64748b;">Total Tickets</div>
     <div style="font-size: 24px; font-weight: 700;"><%= @total_tickets %></div>
@@ -16,4 +20,28 @@
     <div style="font-size: 12px; color: #991b1b;">SLA Breached</div>
     <div style="font-size: 24px; font-weight: 700; color: #dc2626;"><%= @breached_count %></div>
   </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+  <% [
+    ['Tickets by Status', @by_status, '#3b82f6'],
+    ['Tickets by Priority', @by_priority, '#f59e0b'],
+    ['Tickets by Assignee', @by_assignee, '#10b981']
+  ].each do |title, map, color| %>
+    <div class="box" style="border-radius: 8px; padding: 14px; background: #fff; border: 1px solid #e2e8f0;">
+      <h3 style="margin-top: 0;"><%= title %></h3>
+      <% max_val = [map.values.max.to_i, 1].max %>
+      <% map.each do |obj, cnt| %>
+        <div style="margin-bottom: 8px; font-size: 12px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+            <span><%= obj ? obj.name : 'Unassigned' %></span>
+            <strong><%= cnt %></strong>
+          </div>
+          <div style="height: 8px; background: #f1f5f9; border-radius: 4px; overflow: hidden;">
+            <div style="width: <%= ((cnt.to_f / max_val) * 100).round(0) %>%; height: 100%; background: <%= color %>;"></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 </div>

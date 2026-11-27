@@ -31,7 +31,9 @@
         <%- end -%>
       </select>
     <%- end -%>
-    <div style="display: flex; gap: 8px; align-items: center; font-size: 12px;">
+    <div style="display: flex; gap: 8px; align-items: center; font-size: 12px; flex-wrap: wrap;">
+      <button type="button" onclick="fetch('<%= helpdesk_ai_draft_path(@issue) %>', {method:'POST', headers:{'X-CSRF-Token': document.querySelector('meta[name=csrf-token]').content}}).then(r=>r.json()).then(d=>{var n=document.getElementById('issue_notes'); if(n){n.value=d.draft;}})" style="padding: 3px 8px; border-radius: 4px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer;">AI Draft Reply</button>
+      <%= link_to 'Split Ticket', helpdesk_split_ticket_path(@issue), method: :post, data: { confirm: 'Split this ticket into a new related ticket?' }, class: 'icon icon-copy' %>
       <%= link_to 'GDPR Anonymize', helpdesk_gdpr_anonymize_path(@issue), method: :post, data: { confirm: l(:text_are_you_sure) }, class: 'icon icon-lock' %>
     </div>
   </div>
