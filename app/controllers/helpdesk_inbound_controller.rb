@@ -2,7 +2,7 @@ class HelpdeskInboundController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:receive]
   before_action :find_project_by_project_id, only: [:project_settings, :save_project_settings, :dashboard, :public_new, :public_create]
   before_action :authorize, only: [:project_settings, :save_project_settings, :dashboard]
-  skip_before_action :check_if_login_required, only: [:receive, :public_new, :public_create], raise: false
+  skip_before_action :check_if_login_required, only: [:receive, :public_new, :public_create, :csat], raise: false
 
   accept_api_auth :receive, :escalate
 
@@ -52,6 +52,19 @@ class HelpdeskInboundController < ApplicationController
     redirect_to issue_path(ticket)
   end
 
+  def csat
+    issue = Issue.find(params[:id])
+    rating = params[:rating].to_s
+    if %w[happy neutral unhappy].include?(rating)
+      s = Setting.plugin_redmine_helpdesk || {}
+      s["csat_#{issue.id}"] = rating
+      Setting.plugin_redmine_helpdesk = s
+      render plain: "Thank you for your feedback (#{rating}) on Ticket ##{issue.id}."
+    else
+      render plain: 'Invalid rating', status: :bad_request
+    end
+  end
+
   def public_new
     @helpdesk_config = (Setting.plugin_redmine_helpdesk || {})["project_#{@project.id}"] || {}
   end
@@ -65,6 +78,10 @@ class HelpdeskInboundController < ApplicationController
       description: "From: #{params[:customer_email]}\n\n#{params[:description]}"
     )
     if issue.save
+      if issue.subject.downcase.include?('urgent') || issue.subject.downcase.include?('down') || issue.subject.downcase.include?('outage')
+        urgent_prio = IssuePriority.where("LOWER(name) IN ('urgent', 'immediate', 'high')").order(position: :desc).first
+        issue.update(priority: urgent_prio) if urgent_prio
+      end
       flash[:notice] = "Ticket ##{issue.id} submitted successfully."
       redirect_to helpdesk_public_new_path(@project)
     else

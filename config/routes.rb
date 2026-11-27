@@ -7,4 +7,5 @@ RedmineApp::Application.routes.draw do
   post 'helpdesk/merge/:id', to: 'helpdesk_inbound#merge', as: 'helpdesk_merge_ticket'
   get 'helpdesk/public/:project_id', to: 'helpdesk_inbound#public_new', as: 'helpdesk_public_new'
   post 'helpdesk/public/:project_id', to: 'helpdesk_inbound#public_create', as: 'helpdesk_public_create'
+  get 'helpdesk/csat/:id', to: 'helpdesk_inbound#csat', as: 'helpdesk_csat'
 end
