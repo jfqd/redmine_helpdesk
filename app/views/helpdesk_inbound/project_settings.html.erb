@@ -1,0 +1,56 @@
+<div style="max-width: 860px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+    <h2 style="margin: 0;">Helpdesk &amp; Multi-Domain Settings &mdash; <%= @project.name %></h2>
+    <span style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 600;">Enterprise v1.0.0</span>
+  </div>
+
+  <div class="tabs" id="helpdesk-tabs" style="margin-bottom: 14px;">
+    <ul>
+      <li><a href="#hd-mailbox" class="selected" onclick="hdSwitchTab(this, 0); return false;">Mailbox &amp; Routing</a></li>
+      <li><a href="#hd-sla" onclick="hdSwitchTab(this, 1); return false;">SLA &amp; Canned Responses</a></li>
+    </ul>
+  </div>
+
+  <%= form_tag(project_helpdesk_settings_path(@project), method: :post, class: 'tabular') do %>
+    <div id="hd-tab-0" class="box" style="border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; padding: 16px;">
+      <p>
+        <label for="helpdesk_enabled">Enable Helpdesk for this Project</label>
+        <%= check_box_tag 'enabled', '1', @helpdesk_config['enabled'] == '1', id: 'helpdesk_enabled' %>
+      </p>
+      <p>
+        <label for="helpdesk_sender_email">Dedicated Support Email</label>
+        <%= text_field_tag 'sender_email', @helpdesk_config['sender_email'], id: 'helpdesk_sender_email', size: 45, placeholder: 'support@client-domain.com' %>
+        <em class="info">Incoming emails to this address route directly to this project.</em>
+      </p>
+      <p>
+        <label for="helpdesk_reply_to">Reply-To Email</label>
+        <%= text_field_tag 'reply_to', @helpdesk_config['reply_to'], id: 'helpdesk_reply_to', size: 45, placeholder: 'support@client-domain.com' %>
+      </p>
+    </div>
+
+    <div id="hd-tab-1" class="box" style="display: none; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; padding: 16px;">
+      <p>
+        <label for="helpdesk_sla_first">First Response SLA (hours)</label>
+        <%= number_field_tag 'sla_first_response_hours', @helpdesk_config['sla_first_response_hours'] || 4, id: 'helpdesk_sla_first', min: 1 %>
+      </p>
+      <p>
+        <label for="helpdesk_sla_res">Resolution SLA (hours)</label>
+        <%= number_field_tag 'sla_resolution_hours', @helpdesk_config['sla_resolution_hours'] || 24, id: 'helpdesk_sla_res', min: 1 %>
+      </p>
+      <p>
+        <label for="helpdesk_canned">Canned Responses (Title | Body)</label>
+        <%= text_area_tag 'canned_responses', @helpdesk_config['canned_responses'], id: 'helpdesk_canned', rows: 5, cols: 60, placeholder: "Greeting | Thank you for contacting support.\nResolved | Your issue has been resolved." %>
+      </p>
+    </div>
+
+    <%= submit_tag l(:button_save), class: 'button-positive' %>
+  <% end %>
+</div>
+<script>
+function hdSwitchTab(el, idx) {
+  document.querySelectorAll('#helpdesk-tabs a').forEach(function(a) { a.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('hd-tab-0').style.display = idx === 0 ? '' : 'none';
+  document.getElementById('hd-tab-1').style.display = idx === 1 ? '' : 'none';
+}
+</script>

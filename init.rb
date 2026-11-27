@@ -7,12 +7,14 @@ require 'redmine_helpdesk/mail_handler_patch'
 require 'redmine_helpdesk/mailer_patch'
 
 Redmine::Plugin.register :redmine_helpdesk do
-  name 'Redmine helpdesk plugin'
-  author 'Stefan Husch'
-  description 'Redmine helpdesk plugin'
-  version '0.0.20'
-  requires_redmine :version_or_higher => '5.0.0'
+  name 'Redmine Enterprise Helpdesk'
+  author 'Arean Narrayan'
+  description 'Multi-domain enterprise helpdesk with instant inbound email, SLA tracking, canned responses, and cross-project escalation'
+  version '1.0.0'
+  requires_redmine :version_or_higher => '7.0.0'
+  settings default: {}
   project_module :issue_tracking do
     permission :treat_user_as_supportclient, {}
+    permission :manage_helpdesk_settings, { helpdesk_inbound: [:project_settings, :save_project_settings, :escalate, :dashboard, :merge] }
   end
 end

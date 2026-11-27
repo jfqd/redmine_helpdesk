@@ -1,0 +1,24 @@
+<%-
+  cfg = (Setting.plugin_redmine_helpdesk || {})["project_#{@project.id}"] || {}
+  if cfg['enabled'] == '1' && @issue && !@issue.closed?
+    res_hours = (cfg['sla_resolution_hours'] || 24).to_i
+    elapsed_hours = ((Time.now - @issue.created_on) / 3600.0).round(1)
+    breached = elapsed_hours > res_hours
+    canned_lines = cfg['canned_responses'].to_s.split("\n").map(&:strip).reject(&:blank?)
+-%>
+  <div style="margin: 10px 0; padding: 8px 12px; border-radius: 6px; background: <%= breached ? '#fef2f2' : '#f0fdf4' %>; border: 1px solid <%= breached ? '#fecaca' : '#bbf7d0' %>; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+    <span>
+      <strong>Helpdesk SLA:</strong> <%= elapsed_hours %>h / <%= res_hours %>h
+      (<%= breached ? 'BREACHED' : 'On Track' %>)
+    </span>
+    <%- if canned_lines.any? -%>
+      <select onchange="if(this.value){ var n = document.getElementById('issue_notes'); if(n){ n.value += (n.value ? '\n' : '') + this.value; } this.selectedIndex = 0; }" style="padding: 4px 8px; border-radius: 4px;">
+        <option value="">Insert Canned Response...</option>
+        <%- canned_lines.each do |line| -%>
+          <%- title, body = line.split('|', 2).map(&:strip) -%>
+          <option value="<%= body || title %>"><%= title %></option>
+        <%- end -%>
+      </select>
+    <%- end -%>
+  </div>
+<%- end -%>

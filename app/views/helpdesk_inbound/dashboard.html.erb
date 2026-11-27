@@ -1,0 +1,67 @@
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+  <h2 style="margin: 0;">Helpdesk Dashboard &mdash; <%= @project.name %></h2>
+  <div style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 12px;">
+    <label><input type="checkbox" checked onchange="hdToggleWidget('w-open', this.checked)" /> Open</label>
+    <label><input type="checkbox" checked onchange="hdToggleWidget('w-unassigned', this.checked)" /> Unassigned</label>
+    <label><input type="checkbox" checked onchange="hdToggleWidget('w-sla', this.checked)" /> SLA Breached</label>
+    <label><input type="checkbox" checked onchange="hdToggleWidget('w-mine', this.checked)" /> My Tickets</label>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 18px;">
+  <div class="box" style="border-radius: 8px; padding: 14px; background: #fff; border: 1px solid #e2e8f0;">
+    <div style="font-size: 12px; color: #64748b;">Open Tickets</div>
+    <div style="font-size: 24px; font-weight: 700; color: #0f172a;"><%= @open_tickets.size %></div>
+  </div>
+  <div class="box" style="border-radius: 8px; padding: 14px; background: #fff; border: 1px solid #e2e8f0;">
+    <div style="font-size: 12px; color: #64748b;">Unassigned</div>
+    <div style="font-size: 24px; font-weight: 700; color: #d97706;"><%= @unassigned_tickets.size %></div>
+  </div>
+  <div class="box" style="border-radius: 8px; padding: 14px; background: #fef2f2; border: 1px solid #fecaca;">
+    <div style="font-size: 12px; color: #991b1b;">SLA Breached</div>
+    <div style="font-size: 24px; font-weight: 700; color: #dc2626;"><%= @sla_breached.size %></div>
+  </div>
+  <div class="box" style="border-radius: 8px; padding: 14px; background: #eff6ff; border: 1px solid #bfdbfe;">
+    <div style="font-size: 12px; color: #1e40af;">My Assigned</div>
+    <div style="font-size: 24px; font-weight: 700; color: #1d4ed8;"><%= @my_tickets.size %></div>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px;">
+  <% [
+    ['w-sla', 'SLA Breached Tickets', @sla_breached, '#fef2f2'],
+    ['w-unassigned', 'Unassigned Queue', @unassigned_tickets, '#fffbeb'],
+    ['w-mine', 'My Assigned Tickets', @my_tickets, '#eff6ff'],
+    ['w-open', 'All Open Tickets', @open_tickets, '#ffffff']
+  ].each do |wid, title, list, bg| %>
+    <div id="<%= wid %>" class="box" style="border-radius: 8px; padding: 14px; background: <%= bg %>; border: 1px solid #e2e8f0;">
+      <h3 style="margin-top: 0;"><%= title %> (<%= list.size %>)</h3>
+      <% if list.empty? %>
+        <p style="color: #64748b; font-size: 12px;">No tickets.</p>
+      <% else %>
+        <ul style="margin: 0; padding-left: 18px; font-size: 13px;">
+          <% list.first(10).each do |t| %>
+            <li style="margin-bottom: 4px;">
+              <%= link_to "##{t.id} #{t.subject}", issue_path(t) %>
+              <span style="color: #64748b; font-size: 11px;">(<%= t.status.name %>)</span>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+function hdToggleWidget(id, show) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = show ? '' : 'none';
+  localStorage.setItem('hd_' + id, show ? '1' : '0');
+}
+document.addEventListener('DOMContentLoaded', function() {
+  ['w-open', 'w-unassigned', 'w-sla', 'w-mine'].forEach(function(id) {
+    var saved = localStorage.getItem('hd_' + id);
+    if (saved === '0') hdToggleWidget(id, false);
+  });
+});
+</script>

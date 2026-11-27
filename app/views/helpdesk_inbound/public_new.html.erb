@@ -1,0 +1,18 @@
+<div style="max-width: 640px; margin: 24px auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff;">
+  <h2 style="margin-top: 0;">Submit Support Ticket — <%= @project.name %></h2>
+  <%= form_tag(helpdesk_public_create_path(@project), method: :post) do %>
+    <p>
+      <label for="customer_email"><strong>Your Email:</strong></label><br />
+      <%= email_field_tag :customer_email, '', required: true, style: 'width: 100%; padding: 8px; box-sizing: border-box;' %>
+    </p>
+    <p>
+      <label for="subject"><strong>Subject:</strong></label><br />
+      <%= text_field_tag :subject, '', required: true, style: 'width: 100%; padding: 8px; box-sizing: border-box;' %>
+    </p>
+    <p>
+      <label for="description"><strong>Description:</strong></label><br />
+      <%= text_area_tag :description, '', rows: 6, required: true, style: 'width: 100%; padding: 8px; box-sizing: border-box;' %>
+    </p>
+    <%= submit_tag 'Submit Ticket', class: 'button-positive' %>
+  <% end %>
+</div>
