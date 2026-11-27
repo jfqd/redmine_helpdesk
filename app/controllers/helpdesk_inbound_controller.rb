@@ -125,7 +125,28 @@ class HelpdeskInboundController < ApplicationController
 
   def ai_draft
     issue = Issue.find(params[:id])
-    draft = "Hello,\n\nThank you for reaching out regarding \"#{issue.subject}\" (Ticket ##{issue.id}). Our team is reviewing your request and will provide an update shortly.\n\nBest regards,\n#{User.current.name}"
+    api_key = (Setting.plugin_redmine_helpdesk || {})['ai_api_key'].to_s.strip
+    draft = nil
+    if api_key.present?
+      begin
+        require 'net/http'
+        require 'uri'
+        uri = URI.parse('https://api.openai.com/v1/chat/completions')
+        req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{api_key}")
+        req.body = {
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: 'You are a helpful customer support agent. Draft a polite, concise reply.' },
+            { role: 'user', content: "Ticket ##{issue.id}: #{issue.subject}\n\n#{issue.description.to_s[0, 1000]}" }
+          ]
+        }.to_json
+        res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true, read_timeout: 8) { |http| http.request(req) }
+        parsed = JSON.parse(res.body) rescue {}
+        draft = parsed.dig('choices', 0, 'message', 'content')
+      rescue
+      end
+    end
+    draft ||= "Hello,\n\nThank you for reaching out regarding \"#{issue.subject}\" (Ticket ##{issue.id}). Our team is reviewing your request and will provide an update shortly.\n\nBest regards,\n#{User.current.name}"
     render json: { draft: draft }
   end
 

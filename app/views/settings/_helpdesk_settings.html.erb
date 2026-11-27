@@ -13,6 +13,10 @@
     <%= text_field_tag 'settings[webhook_secret]', @settings['webhook_secret'], size: 40, placeholder: 'Leave blank to disable' %>
   </p>
   <p>
+    <label for="settings_ai_api_key">AI Draft API Key (OpenAI / Compatible, Optional):</label>
+    <%= password_field_tag 'settings[ai_api_key]', @settings['ai_api_key'], size: 40, placeholder: 'sk-...' %>
+  </p>
+  <p>
     <label>Instant Inbound Webhook URL:</label>
     <code><%= "#{Setting.protocol}://#{Setting.host_name}/helpdesk/inbound_email" %></code>
   </p>

@@ -85,7 +85,7 @@ class HelpdeskMailer < ActionMailer::Base
         body = reply_separator + "\n\n" + body
       end
 
-      mail(
+      mail_opts = {
         :from     => sender.present? && sender || Setting.mail_from,
         :reply_to => sender.present? && sender || Setting.mail_from,
         :to       => recipient,
@@ -93,7 +93,20 @@ class HelpdeskMailer < ActionMailer::Base
         :body     => body,
         :date     => Time.zone.now,
         :cc       => carbon_copy
-      )
+      }
+      if p.present?
+        cfg = (Setting.plugin_redmine_helpdesk || {})["project_#{p.id}"] || {}
+        if cfg['enabled'] == '1' && cfg['smtp_address'].present?
+          mail_opts[:delivery_method_options] = {
+            address: cfg['smtp_address'],
+            port: (cfg['smtp_port'] || 587).to_i,
+            user_name: cfg['smtp_username'].presence,
+            password: cfg['smtp_password'].presence,
+            enable_starttls_auto: cfg['smtp_tls'] != '0'
+          }.compact
+        end
+      end
+      mail(mail_opts)
     else
       # fallback to a regular notifications email with redmine view
       @issue = issue
