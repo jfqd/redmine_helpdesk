@@ -1,8 +1,8 @@
 class HelpdeskInboundController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:receive]
-  before_action :find_project_by_project_id, only: [:project_settings, :save_project_settings, :dashboard, :public_new, :public_create]
-  before_action :authorize, only: [:project_settings, :save_project_settings, :dashboard]
-  skip_before_action :check_if_login_required, only: [:receive, :public_new, :public_create, :csat], raise: false
+  before_action :find_project_by_project_id, only: [:project_settings, :save_project_settings, :dashboard, :reports, :public_new, :public_create]
+  before_action :authorize, only: [:project_settings, :save_project_settings, :dashboard, :reports]
+  skip_before_action :check_if_login_required, only: [:receive, :public_new, :public_create, :csat, :public_status], raise: false
 
   accept_api_auth :receive, :escalate
 
@@ -50,6 +50,21 @@ class HelpdeskInboundController < ApplicationController
       flash[:error] = dev_task.errors.full_messages.join(', ')
     end
     redirect_to issue_path(ticket)
+  end
+
+  def public_status
+    if params[:ticket_id].present?
+      @ticket = Issue.find_by(id: params[:ticket_id].to_i)
+    end
+  end
+
+  def reports
+    @cfg = (Setting.plugin_redmine_helpdesk || {})["project_#{@project.id}"] || {}
+    @total_tickets = @project.issues.count
+    @open_count = @project.issues.open.count
+    @closed_count = @total_tickets - @open_count
+    res_hours = (@cfg['sla_resolution_hours'] || 24).to_i
+    @breached_count = @project.issues.open.select { |i| ((Time.now - i.created_on) / 3600.0) > res_hours }.size
   end
 
   def csat

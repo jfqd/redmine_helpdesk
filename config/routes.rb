@@ -8,4 +8,6 @@ RedmineApp::Application.routes.draw do
   get 'helpdesk/public/:project_id', to: 'helpdesk_inbound#public_new', as: 'helpdesk_public_new'
   post 'helpdesk/public/:project_id', to: 'helpdesk_inbound#public_create', as: 'helpdesk_public_create'
   get 'helpdesk/csat/:id', to: 'helpdesk_inbound#csat', as: 'helpdesk_csat'
+  get 'helpdesk/status', to: 'helpdesk_inbound#public_status', as: 'helpdesk_public_status'
+  get 'projects/:project_id/helpdesk/reports', to: 'helpdesk_inbound#reports', as: 'project_helpdesk_reports'
 end

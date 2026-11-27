@@ -1,0 +1,19 @@
+<h2>Helpdesk Reports &mdash; <%= @project.name %></h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+  <div class="box" style="border-radius: 8px; padding: 14px; background: #fff; border: 1px solid #e2e8f0;">
+    <div style="font-size: 12px; color: #64748b;">Total Tickets</div>
+    <div style="font-size: 24px; font-weight: 700;"><%= @total_tickets %></div>
+  </div>
+  <div class="box" style="border-radius: 8px; padding: 14px; background: #fff; border: 1px solid #e2e8f0;">
+    <div style="font-size: 12px; color: #64748b;">Open</div>
+    <div style="font-size: 24px; font-weight: 700; color: #2563eb;"><%= @open_count %></div>
+  </div>
+  <div class="box" style="border-radius: 8px; padding: 14px; background: #fff; border: 1px solid #e2e8f0;">
+    <div style="font-size: 12px; color: #64748b;">Closed</div>
+    <div style="font-size: 24px; font-weight: 700; color: #16a34a;"><%= @closed_count %></div>
+  </div>
+  <div class="box" style="border-radius: 8px; padding: 14px; background: #fef2f2; border: 1px solid #fecaca;">
+    <div style="font-size: 12px; color: #991b1b;">SLA Breached</div>
+    <div style="font-size: 24px; font-weight: 700; color: #dc2626;"><%= @breached_count %></div>
+  </div>
+</div>

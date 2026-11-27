@@ -1,0 +1,18 @@
+<div style="max-width: 560px; margin: 24px auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff;">
+  <h2 style="margin-top: 0;">Check Ticket Status</h2>
+  <%= form_tag(helpdesk_public_status_path, method: :get) do %>
+    <p>
+      <label><strong>Ticket ID:</strong></label><br />
+      <%= number_field_tag :ticket_id, params[:ticket_id], required: true, style: 'width: 100%; padding: 8px; box-sizing: border-box;' %>
+    </p>
+    <%= submit_tag 'Check Status', class: 'button-positive' %>
+  <% end %>
+  <% if @ticket %>
+    <div style="margin-top: 16px; padding: 12px; background: #f8fafc; border-radius: 6px; border: 1px solid #cbd5e1;">
+      <strong>#<%= @ticket.id %>: <%= @ticket.subject %></strong><br />
+      Status: <strong><%= @ticket.status.name %></strong> | Updated: <%= format_time(@ticket.updated_on) %>
+    </div>
+  <% elsif params[:ticket_id].present? %>
+    <p style="color: #dc2626; margin-top: 12px;">Ticket not found.</p>
+  <% end %>
+</div>
