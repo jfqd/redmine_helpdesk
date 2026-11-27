@@ -1,5 +1,12 @@
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
-  <h2 style="margin: 0;">Helpdesk Dashboard &mdash; <%= @project.name %></h2>
+  <div>
+    <h2 style="margin: 0 0 4px 0;">Helpdesk Dashboard &mdash; <%= @project.name %></h2>
+    <div style="font-size: 12px;">
+      <%= link_to 'Reports', project_helpdesk_reports_path(@project), class: 'icon icon-document' %> &nbsp;|&nbsp;
+      <%= link_to 'Contacts', project_helpdesk_contacts_path(@project), class: 'icon icon-user' %> &nbsp;|&nbsp;
+      <%= link_to 'Settings', project_helpdesk_settings_path(@project), class: 'icon icon-settings' %>
+    </div>
+  </div>
   <div style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 12px;">
     <label><input type="checkbox" checked onchange="hdToggleWidget('w-open', this.checked)" /> Open</label>
     <label><input type="checkbox" checked onchange="hdToggleWidget('w-unassigned', this.checked)" /> Unassigned</label>

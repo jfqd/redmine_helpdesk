@@ -32,6 +32,11 @@ class HelpdeskInboundController < ApplicationController
         render json: { error: 'Sender is blacklisted' }, status: :forbidden
         return
       end
+      att_blacklist = cfg['attachment_blacklist'].to_s.split(',').map { |e| e.strip.downcase }.reject(&:blank?)
+      if att_blacklist.any? && att_blacklist.any? { |ext| raw_email.downcase.include?("filename=\"") && raw_email.downcase.include?(ext) }
+        render json: { error: 'Blocked attachment extension' }, status: :forbidden
+        return
+      end
     end
 
     options = {}

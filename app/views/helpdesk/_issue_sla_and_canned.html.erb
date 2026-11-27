@@ -31,5 +31,8 @@
         <%- end -%>
       </select>
     <%- end -%>
+    <div style="display: flex; gap: 8px; align-items: center; font-size: 12px;">
+      <%= link_to 'GDPR Anonymize', helpdesk_gdpr_anonymize_path(@issue), method: :post, data: { confirm: l(:text_are_you_sure) }, class: 'icon icon-lock' %>
+    </div>
   </div>
 <%- end -%>
