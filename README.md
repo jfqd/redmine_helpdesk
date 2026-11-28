@@ -1,6 +1,6 @@
 # Redmine Helpdesk
 
-Lightweight helpdesk plugin for redmine. Adds the email sender-address of an anonymous supportclient to the custom field 'owner-email' of a ticket which was created by a support email. Answers can be send to the supportclient by checking the support checkbox on a journal.
+Lightweight helpdesk plugin for redmine. Adds the email sender-address of an anonymous supportclient to the custom field `owner-email` of a ticket which was created by a support email. Answers can be send to the supportclient by checking the support checkbox on a journal.
 
 ## Support
 
@@ -69,12 +69,14 @@ Further information about plugin installation can be found at: https://www.redmi
 
 To use the helpdesk functionality you need to
 
-* add the custom field 'owner-email' to a project in the project configuration
-* add a standard first reply message into the custom_field 'helpdesk-first-reply' in the project configuration (optional)
-* add an email-footer into the custom_field 'helpdesk-email-footer' in the project configuration
-* add a sender email address into the custom_field 'helpdesk-sender-email' in the project configuration (optional)
+* add the custom field `owner-email` to a project in the project configuration (under tickets)
+* add a standard first reply message into the custom_field `helpdesk-first-reply` in the project configuration (optional)
+* add an email-footer into the custom_field `'helpdesk-email-footer` in the project configuration
+* add a sender email address into the custom_field `helpdesk-sender-email` in the project configuration (optional)
+* set `helpdesk-send-to-owner-default` in the project configuration to `yes` to always check the `send_to_owner` checkbox, otherwise you need to check it on evey answer you want to send
+* set `reopen-issues-with` to the state you want to be set the issue after it was reopend by an email from a support client
 * make sure 'Issue added' and 'Issue updated' in the general redmine settings for email notifications are checked
-* add the permission 'Treat as supportclient' to all roles you want to be treated as supportclient (the permission is automatically added to the 'Anonymous' role)
+* add the permission `Treat as supportclient` to all roles (in the genral roles administration) you want to be treated as supportclient (the permission is automatically added to the 'Anonymous' role)
 * disable standard notifications for non-anonymous supportclients to prevent their spamming (optional)
 * add a cronjob for creating issues from support emails
 
@@ -179,4 +181,4 @@ This plugin is licensed under the MIT license. See LICENSE-file for details.
 
 ## Copyright
 
-Copyright (c) 2012-2022 qutic development GmbH
+Copyright (c) 2012-2026 qutic development GmbH
