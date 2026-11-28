@@ -7,8 +7,16 @@ module RedmineHelpdesk
         alias_method :dispatch_to_default_without_helpdesk, :dispatch_to_default
         alias_method :dispatch_to_default, :dispatch_to_default_with_helpdesk
         # needed for reopening a closed issue
-        alias_method :receive_issue_reply_without_helpdesk, :receive_issue_reply
-        alias_method :receive_issue_reply, :receive_issue_reply_with_helpdesk
+        # Check for both public and private methods to handle Redmine 6+
+        unless method_defined?(:receive_issue_reply_without_helpdesk) ||
+           private_method_defined?(:receive_issue_reply_without_helpdesk)
+
+           alias_method :receive_issue_reply_without_helpdesk, :receive_issue_reply
+           alias_method :receive_issue_reply, :receive_issue_reply_with_helpdesk
+
+           # Preserve private visibility from original method
+           private :receive_issue_reply, :receive_issue_reply_without_helpdesk
+        end
       end
     end
 
